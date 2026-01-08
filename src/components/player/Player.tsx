@@ -47,7 +47,7 @@ export default function Player() {
   const RepeatIcon = repeatMode === "one" ? Repeat1 : Repeat;
 
   return (
-    <div className="shrink-0 glass absolute inset-0 z-50 overflow-hidden">
+    <div className="shrink-0 glass absolute inset-0 z-50 overflow-hidden flex flex-col">
       <div className="w-full shrink-0 flex flex-row gap-2 px-4 py-4 bg-accent">
         <div className=" grow flex flex-row justify-center items-center">
           <span className="text-foreground">Now Playing</span>
@@ -61,7 +61,7 @@ export default function Player() {
           </button>
         </div>
       </div>
-      <div className="shrink-0 grow flex flex-col gap-4 px-4">
+      <div className="grow flex justify-center items-center">
         <div className="h-96 w-96 p-4">
           <img
             src={currentSong.coverUrl}
@@ -69,7 +69,10 @@ export default function Player() {
             className="w-full h-full rounded-lg object-cover"
           />
         </div>
-        <div className="flex flex-row w-full gap-2 items-center justify-between">
+      </div>
+      <div className="shrink-0 flex items-center justify-center px-4 py-4">
+        <div className="w-full flex flex-col gap-4">
+          <div className="flex flex-row w-full gap-2 items-center justify-between">
           <div className="flex-1 min-w-0 flex flex-col gap-2">
             <p className="font-medium text-sm line-clamp-1">
               {currentSong.title}
@@ -96,7 +99,7 @@ export default function Player() {
           </div>
         </div>
         <div className="flex flex-col justify-center">
-          <div className="w-full max-w-sm mx-auto space-y-2">
+          <div className="w-full max-w-sm mx-auto space-y-2 px-4">
             <div className="grid grid-cols-4 gap-8">
               <div className="col-span-1">
                 <button
@@ -173,6 +176,7 @@ export default function Player() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
