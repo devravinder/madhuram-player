@@ -1,7 +1,10 @@
 import AppLayout from "./components/layout/AppLayout";
+import { ThemeProvider } from "./hooks/useTheme";
 
 export default function App() {
   return (
-    <AppLayout/>
-  )
+    <ThemeProvider>
+      <AppLayout />
+    </ThemeProvider>
+  );
 }
