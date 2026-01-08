@@ -20,6 +20,7 @@ import { VolumeSlider } from "./VolumeSlider";
 
 export default function Player() {
   const [isMini, setMini] = useState(true);
+  const [favourite, setFavourite] = useState(false)
 
   const {
     currentSong,
@@ -82,7 +83,7 @@ export default function Player() {
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <button className="cursor-pointer p-2 rounded-lg bg-accent">
+            <button onClick={()=>setFavourite(!favourite)} className={`cursor-pointer p-2 rounded-lg bg-accent ${favourite ? "text-primary":"text-muted-foreground"}`}>
               <Heart className="w-5 h-5" />
             </button>
           </div>
