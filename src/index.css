@@ -141,7 +141,17 @@
   ::-webkit-scrollbar-thumb:hover{
     @apply bg-primary cursor-all-scroll;
   }
-  *{
-    scrollbar-gutter: stable;
+  /* *{ scrollbar-gutter: stable; } */
+}
+
+/*  */
+
+@layer components {
+  .glass {
+    @apply bg-card/60 backdrop-blur-xl border border-border/50;
+  }
+
+  .glass-hover {
+    @apply hover:bg-card/80 transition-all duration-300;
   }
 }
