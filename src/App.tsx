@@ -1,6 +1,7 @@
+import AppLayout from "./components/layout/AppLayout";
 
 export default function App() {
   return (
-    <div>App</div>
+    <AppLayout/>
   )
 }
