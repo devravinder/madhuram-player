@@ -121,3 +121,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Scroll */
+
+
+@layer base {
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+    
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full transition-colors;
+  }
+
+  ::-webkit-scrollbar-thumb:hover{
+    @apply bg-primary cursor-all-scroll;
+  }
+  *{
+    scrollbar-gutter: stable;
+  }
+}
