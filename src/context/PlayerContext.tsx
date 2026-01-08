@@ -1,0 +1,329 @@
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import type { RepeatMode, SleepTimer, Song } from "@/types/music";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+interface PlayerContextType {
+  // State
+  currentSong: Song | null;
+  isPlaying: boolean;
+  volume: number;
+  progress: number;
+  duration: number;
+  repeatMode: RepeatMode;
+  shuffle: boolean;
+  queue: Song[];
+  queueIndex: number;
+  recentlyPlayed: Song[];
+  sleepTimer: SleepTimer;
+
+  // Actions
+  playSong: (song: Song, queue?: Song[]) => void;
+  playQueue: (songs: Song[], startIndex?: number) => void;
+  togglePlay: () => void;
+  pause: () => void;
+  resume: () => void;
+  next: () => void;
+  previous: () => void;
+  seek: (time: number) => void;
+  setVolume: (volume: number) => void;
+  toggleRepeat: () => void;
+  toggleShuffle: () => void;
+  setSleepTimer: (minutes: number) => void;
+  cancelSleepTimer: () => void;
+}
+
+const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
+
+export function PlayerProvider({ children }: { children: React.ReactNode }) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const [currentSong, setCurrentSong] = useState<Song | null>();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolumeState] = useLocalStorage("volume", 0.7);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [repeatMode, setRepeatMode] = useLocalStorage<RepeatMode>(
+    "repeatMode",
+    "off"
+  );
+  const [shuffle, setShuffle] = useLocalStorage("shuffle", false);
+  const [queue, setQueue] = useState<Song[]>([]);
+  const [queueIndex, setQueueIndex] = useState(0);
+  const [recentlyPlayed, setRecentlyPlayed] = useLocalStorage<Song[]>(
+    "recentlyPlayed",
+    []
+  );
+  const [sleepTimer, setSleepTimerState] = useState<SleepTimer>({
+    isActive: false,
+    endTime: null,
+    duration: 0,
+  });
+
+  const pause = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, []);
+  const addToRecentlyPlayed = useCallback(
+    (song: Song) => {
+      setRecentlyPlayed((prev) => {
+        const filtered = prev.filter((s) => s.id !== song.id);
+        return [song, ...filtered].slice(0, 10);
+      });
+    },
+    [setRecentlyPlayed]
+  );
+
+  const loadAndPlay = useCallback(
+    (song: Song) => {
+      if (!audioRef.current) return;
+
+      setCurrentSong(song);
+      audioRef.current.src = song.audioUrl;
+      audioRef.current
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          addToRecentlyPlayed(song);
+        })
+        .catch((err) => console.error("Error playing audio:", err));
+    },
+    [addToRecentlyPlayed]
+  );
+
+  const handleSongEnd = useCallback(() => {
+    if (repeatMode === "one") {
+      audioRef.current!.currentTime = 0;
+      audioRef.current!.play();
+    } else if (queueIndex < queue.length - 1) {
+      const nextIndex = shuffle
+        ? Math.floor(Math.random() * queue.length)
+        : queueIndex + 1;
+      setQueueIndex(nextIndex);
+      loadAndPlay(queue[nextIndex]);
+    } else if (repeatMode === "all" && queue.length > 0) {
+      setQueueIndex(0);
+      loadAndPlay(queue[0]);
+    } else {
+      setIsPlaying(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [repeatMode, queueIndex, queue, shuffle]);
+
+  // Initialize audio element
+  useEffect(() => {
+    audioRef.current = new Audio();
+    audioRef.current.volume = volume;
+
+    const audio = audioRef.current;
+
+    const handleTimeUpdate = () => {
+      setProgress(audio.currentTime);
+    };
+
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration);
+    };
+
+    const handleEnded = () => {
+      handleSongEnd();
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("ended", handleEnded);
+      audio.pause();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update volume when changed
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  // Sleep timer effect
+  useEffect(() => {
+    if (!sleepTimer.isActive || !sleepTimer.endTime) return;
+
+    const checkTimer = setInterval(() => {
+      if (Date.now() >= sleepTimer.endTime!) {
+        pause();
+        setSleepTimerState({ isActive: false, endTime: null, duration: 0 });
+      }
+    }, 1000);
+
+    return () => clearInterval(checkTimer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sleepTimer]);
+
+  const playSong = useCallback(
+    (song: Song, newQueue?: Song[]) => {
+      if (newQueue) {
+        setQueue(newQueue);
+        const index = newQueue.findIndex((s) => s.id === song.id);
+        setQueueIndex(index >= 0 ? index : 0);
+      }
+      loadAndPlay(song);
+    },
+    [loadAndPlay]
+  );
+
+  const playQueue = useCallback(
+    (songs: Song[], startIndex = 0) => {
+      if (songs.length === 0) return;
+      setQueue(songs);
+      setQueueIndex(startIndex);
+      loadAndPlay(songs[startIndex]);
+    },
+    [loadAndPlay]
+  );
+
+  const togglePlay = useCallback(() => {
+    if (!audioRef.current || !currentSong) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  }, [isPlaying, currentSong]);
+
+  const resume = useCallback(() => {
+    if (audioRef.current && currentSong) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  }, [currentSong]);
+
+  const next = useCallback(() => {
+    if (queue.length === 0) return;
+
+    let nextIndex: number;
+    if (shuffle) {
+      nextIndex = Math.floor(Math.random() * queue.length);
+    } else {
+      nextIndex = (queueIndex + 1) % queue.length;
+    }
+
+    setQueueIndex(nextIndex);
+    loadAndPlay(queue[nextIndex]);
+  }, [queue, queueIndex, shuffle, loadAndPlay]);
+
+  const previous = useCallback(() => {
+    if (!audioRef.current) return;
+
+    // If more than 3 seconds in, restart current song
+    if (audioRef.current.currentTime > 3) {
+      audioRef.current.currentTime = 0;
+      return;
+    }
+
+    if (queue.length === 0) return;
+
+    const prevIndex = queueIndex === 0 ? queue.length - 1 : queueIndex - 1;
+    setQueueIndex(prevIndex);
+    loadAndPlay(queue[prevIndex]);
+  }, [queue, queueIndex, loadAndPlay]);
+
+  const seek = useCallback((time: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setProgress(time);
+    }
+  }, []);
+
+  const setVolume = useCallback(
+    (newVolume: number) => {
+      setVolumeState(Math.max(0, Math.min(1, newVolume)));
+    },
+    [setVolumeState]
+  );
+
+  const toggleRepeat = useCallback(() => {
+    setRepeatMode((prev) => {
+      if (prev === "off") return "all";
+      if (prev === "all") return "one";
+      return "off";
+    });
+  }, [setRepeatMode]);
+
+  const toggleShuffle = useCallback(() => {
+    setShuffle((prev) => !prev);
+  }, [setShuffle]);
+
+  const setSleepTimer = useCallback((minutes: number) => {
+    setSleepTimerState({
+      isActive: true,
+      endTime: Date.now() + minutes * 60 * 1000,
+      duration: minutes,
+    });
+  }, []);
+
+  const cancelSleepTimer = useCallback(() => {
+    setSleepTimerState({
+      isActive: false,
+      endTime: null,
+      duration: 0,
+    });
+  }, []);
+
+  return (
+    <PlayerContext.Provider
+      value={{
+        currentSong,
+        isPlaying,
+        volume,
+        progress,
+        duration,
+        repeatMode,
+        shuffle,
+        queue,
+        queueIndex,
+        recentlyPlayed,
+        sleepTimer,
+        playSong,
+        playQueue,
+        togglePlay,
+        pause,
+        resume,
+        next,
+        previous,
+        seek,
+        setVolume,
+        toggleRepeat,
+        toggleShuffle,
+        setSleepTimer,
+        cancelSleepTimer,
+      }}
+    >
+      {children}
+    </PlayerContext.Provider>
+  );
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function usePlayer() {
+  const context = useContext(PlayerContext);
+  if (context === undefined) {
+    throw new Error("usePlayer must be used within a PlayerProvider");
+  }
+  return context;
+}

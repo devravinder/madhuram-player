@@ -4,7 +4,7 @@ import tw from "tailwind-styled-components";
 export const Layout = tw.div`h-screen w-full overflow-hidden bg-background text-foreground`;
 export const Header = tw.header`glass fixed top-0 left-0 right-0 h-14 flex items-center px-4 z-10`;
 export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-14 flex items-center justify-center px-4 z-10`;
-export const Main = tw.main`absolute py-17 left-0 right-0 overflow-y-auto px-4`; // p=14+3
+export const Main = tw.main`absolute py-14 inset-0 overflow-y-auto`; // p=14
 
 // Elements
 
