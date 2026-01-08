@@ -270,11 +270,18 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   }, [setShuffle]);
 
   const setSleepTimer = useCallback((minutes: number) => {
-    setSleepTimerState({
+
+    const endTime = new Date().getTime() + minutes * 60 * 1000
+
+    const s = {c:new Date(), e:new Date(endTime) }
+
+    console.log({s, seconds:(s.e.getTime()-s.c.getTime())/1000} )
+
+    setSleepTimerState(()=>({
       isActive: true,
-      endTime: Date.now() + minutes * 60 * 1000,
+      endTime,
       duration: minutes,
-    });
+    }));
   }, []);
 
   const cancelSleepTimer = useCallback(() => {
