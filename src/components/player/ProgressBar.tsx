@@ -23,7 +23,7 @@ export function ProgressBar({ progress, duration, onSeek }: ProgressBarProps) {
   return (
     <div 
       ref={barRef}
-      className="h-1 bg-muted rounded-full overflow-hidden cursor-pointer group relative"
+      className="h-1 bg-muted rounded-full cursor-pointer group relative"
       onClick={handleClick}
     >
       <div 

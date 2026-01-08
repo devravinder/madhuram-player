@@ -1,5 +1,5 @@
 import React, { useRef, useCallback } from "react";
-import { Volume2, VolumeX, Volume1 } from "lucide-react";
+import { Volume2, VolumeX, Volume1, Plus, Minus } from "lucide-react";
 
 interface VolumeSliderProps {
   volume: number;
@@ -27,22 +27,37 @@ export function VolumeSlider({ volume, onVolumeChange }: VolumeSliderProps) {
   const VolumeIcon = volume === 0 ? VolumeX : volume < 0.5 ? Volume1 : Volume2;
 
   return (
-    <div className="flex items-center gap-2">
-      <button onClick={toggleMute} className="btn-icon p-2">
+    <div className="w-full flex items-center gap-2">
+      <button
+        onClick={()=>onVolumeChange(volume >0.1 ? volume - 0.1 : 0)}
+        className="p-2 cursor-pointer rounded-full hover:bg-accent"
+      >
+        <Minus size={18} />
+      </button>
+      <button
+        onClick={toggleMute}
+        className="p-2 cursor-pointer rounded-full hover:bg-accent"
+      >
         <VolumeIcon size={18} />
       </button>
       <div
         ref={barRef}
-        className="w-20 h-1 bg-muted rounded-full cursor-pointer group"
+        className="grow h-1 bg-muted rounded-full cursor-pointer group"
         onClick={handleClick}
       >
         <div
           className="h-full bg-foreground rounded-full relative transition-all"
           style={{ width: `${volume * 100}%` }}
         >
-          <div className="slider-thumb absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2" />
+          <div className="w-3 h-3 bg-primary rounded-full shadow-lg cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2" />
         </div>
       </div>
+      <button
+        onClick={()=>onVolumeChange(volume < 1 ? volume + 0.1 : 1)}
+        className="p-2 cursor-pointer rounded-full hover:bg-accent"
+      >
+        <Plus size={18} />
+      </button>
     </div>
   );
 }

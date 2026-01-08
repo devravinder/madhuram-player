@@ -112,7 +112,7 @@ export default function Player() {
                   </span>
                 </button>
               </div>
-              <div className=" col-span-2 flex flex-row items-center justify-center gap-1">
+              <div className="col-span-2 flex flex-row items-center justify-between gap-1">
                 <button
                   onClick={previous}
                   className="p-2 cursor-pointer rounded-full hover:bg-accent"
