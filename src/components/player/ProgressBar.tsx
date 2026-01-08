@@ -10,6 +10,7 @@ export function ProgressBar({ progress, duration, onSeek }: ProgressBarProps) {
   const barRef = useRef<HTMLDivElement>(null);
 
   const handleClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
     if (!barRef.current || duration === 0) return;
     
     const rect = barRef.current.getBoundingClientRect();

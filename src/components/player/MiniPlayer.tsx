@@ -2,7 +2,7 @@ import { usePlayer } from "@/context/PlayerContext";
 import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
 import { ProgressBar } from "./ProgressBar";
 
-export default function MiniPlayer() {
+export default function MiniPlayer({ onClick }: { onClick?: VoidFunction }) {
   const {
     currentSong,
     isPlaying,
@@ -14,43 +14,51 @@ export default function MiniPlayer() {
     seek,
   } = usePlayer();
 
-   if (!currentSong) {
+  if (!currentSong) {
     return undefined;
   }
-
-//   const RepeatIcon = repeatMode === 'one' ? Repeat1 : Repeat;
 
   return (
     <div className="shrink-0 glass">
       <div className="px-4 pt-2">
         <ProgressBar progress={progress} duration={duration} onSeek={seek} />
       </div>
-      <div className="flex items-center gap-3 p-3">
-        <img
-          src={currentSong.coverUrl}
-          alt={currentSong.title}
-          className="w-12 h-12 rounded-lg object-cover"
-        />
-        <div className="flex-1 min-w-0">
-          <p className="font-medium text-sm line-clamp-1">
-            {currentSong.title}
-          </p>
-          <p className="text-xs text-muted-foreground line-clamp-1">
-            {currentSong.artist}
-          </p>
+      <div className="flex flex-row justify-between gap-3 p-3">
+        <div
+          onClick={onClick}
+          className="flex flex-row grow items-center gap-3 cursor-pointer"
+        >
+          <img
+            src={currentSong.coverUrl}
+            alt={currentSong.title}
+            className="w-12 h-12 rounded-lg object-cover"
+          />
+          <div className="flex-1 min-w-0">
+            <p className="font-medium text-sm line-clamp-1">
+              {currentSong.title}
+            </p>
+            <p className="text-xs text-muted-foreground line-clamp-1">
+              {currentSong.artist}
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-1">
-          <button onClick={previous} className="btn-icon p-2">
+          <button
+            onClick={previous}
+            className="p-2 cursor-pointer rounded-full hover:bg-accent"
+          >
             <SkipBack size={20} />
           </button>
-          <button onClick={togglePlay} className="rounded-full bg-muted p-3">
-            {isPlaying ? (
-              <Pause size={20} />
-            ) : (
-              <Play size={20} className="ml-0.5" />
-            )}
+          <button
+            onClick={togglePlay}
+            className="rounded-full cursor-pointer bg-muted p-3"
+          >
+            {isPlaying ? <Pause size={20} /> : <Play size={20} />}
           </button>
-          <button onClick={next} className="btn-icon p-2">
+          <button
+            onClick={next}
+            className="p-2 cursor-pointer rounded-full hover:bg-accent"
+          >
             <SkipForward size={20} />
           </button>
         </div>
