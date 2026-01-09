@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import tw from "tailwind-styled-components";
 
 // Note:- don't change these layout elements (carefull)
@@ -17,10 +18,7 @@ export const Uppercase = tw.span`font-semibold uppercase`;
 export const Card = tw.div`bg-card text-card-foreground shadow rounded-md p-4`;
 
 export const Nav=tw.nav`flex items-center justify-around py-2 w-full max-w-5xl`
-export const NavButton = tw.button<{ $active?: boolean }>`${(p) =>
-  p.$active
-    ? "text-primary"
-    : "text-muted-foreground"} flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-colors`;
 
+export const NavLink = tw(Link)`text-muted-foreground flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-colors`    
 
 export const Input = tw.input`w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200`    

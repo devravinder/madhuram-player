@@ -1,31 +1,35 @@
-import { Clock, Home, Library, ListMusic, User } from "lucide-react";
-import { Nav, NavButton } from "../Elements";
+import type { RoutePath } from "@/AppRouter";
+import { Clock, Home, Import, Library, ListMusic, User } from "lucide-react";
+import { Nav, NavLink } from "../Elements";
 
-interface NavProps {
-  activeTab: string;
-  onTabChange: (tab: string) => void;
-}
+type NavItem = {
+  path: RoutePath;
+  label: string;
+  icon: typeof User;
+};
 
-export function NavContent({ activeTab, onTabChange }: NavProps) {
-  const navItems = [
-    { id: "home", label: "Home", icon: Home },
-    { id: "library", label: "Library", icon: Library },
-    { id: "recent", label: "Recent", icon: Clock },
-    { id: "playlists", label: "Playlists", icon: ListMusic },
-    { id: "profile", label: "Profile", icon: User },
-  ];
-
+const navItems: NavItem[] = [
+  { path: "/", label: "Home", icon: Home },
+  { path: "/library", label: "Library", icon: Library },
+  { path: "/recent", label: "Recent", icon: Clock },
+  { path: "/playlists", label: "Playlists", icon: ListMusic },
+  { path: "/import", label: "Import", icon: Import },
+];
+export function NavContent() {
   return (
     <Nav>
       {navItems.map((item) => (
-        <NavButton
-          $active={activeTab === item.id}
-          key={item.id}
-          onClick={() => onTabChange(item.id)}
+        <NavLink
+          to={item.path}
+          key={item.path}
+          activeProps={{
+            className: "text-primary",
+          }}
+          activeOptions={{ exact: true }}
         >
           <item.icon size={20} />
           <span className="text-xs">{item.label}</span>
-        </NavButton>
+        </NavLink>
       ))}
     </Nav>
   );
