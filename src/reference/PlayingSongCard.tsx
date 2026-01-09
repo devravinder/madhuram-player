@@ -1,6 +1,6 @@
 import { Play, Pause, SkipBack, SkipForward, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
-import Waves from "../Waves";
+import Waves from "../components/Waves";
 
 interface PlayingSongCardProps {
   title?: string;

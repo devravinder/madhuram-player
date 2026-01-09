@@ -1,4 +1,4 @@
-import PlayingSongCard from '@/components/songs/PlayingSongCard'
+import PlayingSongCard from '@/reference/PlayingSongCard'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
