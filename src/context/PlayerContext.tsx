@@ -39,6 +39,7 @@ interface PlayerContextType {
   cancelSleepTimer: () => void;
 }
 
+const RECENTLY_PLAYED_LIMIT = 10
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 export function PlayerProvider({ children }: { children: React.ReactNode }) {
@@ -76,7 +77,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     (song: Song) => {
       setRecentlyPlayed((prev) => {
         const filtered = prev.filter((s) => s.id !== song.id);
-        return [song, ...filtered].slice(0, 10);
+        return [song, ...filtered].slice(0, RECENTLY_PLAYED_LIMIT);
       });
     },
     [setRecentlyPlayed]
