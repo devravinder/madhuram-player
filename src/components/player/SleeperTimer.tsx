@@ -2,7 +2,7 @@ import { usePlayer } from "@/context/PlayerContext";
 import { Timer, X } from "lucide-react";
 import { useState } from "react";
 import StopWatch from "../StopWatch";
-import TimeInput from "../TimeInput";
+import TimeInput from "../input/TimeInput";
 import { timeDiffInSecods } from "@/util/timeUtil";
 
 export default function SleeperTimer({ onClose }: { onClose?: VoidFunction }) {
