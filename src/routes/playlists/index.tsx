@@ -3,6 +3,8 @@ import {
   PageMain,
   PageHeader,
   PageLayout,
+  PageMainSection,
+  PageMainContainer,
 } from "@/components/Elements";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ListMusic, Plus } from "lucide-react";
@@ -56,18 +58,22 @@ function PlayList() {
         </div>
       </PageHeader>
       <PageMain>
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-          {arr.map((ele) => (
-            <PlayListCard
-              onClick={() =>
-                navigate({ to: "/playlists/$id", params: { id: ele.id } })
-              }
-              key={ele.id}
-              name={ele.name}
-              noOfSongs={ele.noOfSongs}
-            />
-          ))}
-        </div>
+        <PageMainContainer>
+          <PageMainSection>
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              {arr.map((ele) => (
+                <PlayListCard
+                  onClick={() =>
+                    navigate({ to: "/playlists/$id", params: { id: ele.id } })
+                  }
+                  key={ele.id}
+                  name={ele.name}
+                  noOfSongs={ele.noOfSongs}
+                />
+              ))}
+            </div>
+          </PageMainSection>
+        </PageMainContainer>
       </PageMain>
     </PageLayout>
   );

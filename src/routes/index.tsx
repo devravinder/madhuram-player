@@ -1,5 +1,4 @@
-import SongsList from '@/components/songs/SongsList'
-import { staticSongs } from '@/data/songs'
+import PlayingSongCard from '@/components/songs/PlayingSongCard'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
@@ -7,5 +6,5 @@ export const Route = createFileRoute('/')({
 })
 
 function RouteComponent() {
-  return ( <SongsList songs={staticSongs}/>)
+  return ( <PlayingSongCard/>)
 }
