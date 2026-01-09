@@ -1,3 +1,4 @@
+import { UploadModal } from '@/components/UploadModal'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/import')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/import')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/import"!</div>
+  return <UploadModal/>
 }

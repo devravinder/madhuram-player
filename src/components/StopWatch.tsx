@@ -1,4 +1,4 @@
-import { formatSecods } from "@/util/timeUtil";
+import { formatSecods } from "@/services/timeUtil";
 import { useEffect, useState } from "react";
 
 
