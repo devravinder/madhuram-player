@@ -1,7 +1,6 @@
-import { User } from "lucide-react";
 import Avatar from "../Avatar";
-import { IconButton } from "../Elements";
 import ThemeToggle from "../ThemeToggle";
+import UserProfileDropDown from "../UserProfileDropDown";
 
 export default function HeaderContent() {
   return (
@@ -10,10 +9,7 @@ export default function HeaderContent() {
         <Avatar src="/favicon.svg" name="Avatar" />
         <div className="flex flex-row gap-2">
           <ThemeToggle />
-          <IconButton>
-            <User className="h-5 w-5"></User>
-            <span className="sr-only">Profile</span>
-          </IconButton>
+          <UserProfileDropDown/>
         </div>
       </h1>
     </>
