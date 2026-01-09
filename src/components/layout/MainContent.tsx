@@ -1,11 +1,13 @@
 import { Outlet } from "@tanstack/react-router";
-import { MainContainer } from "../Elements";
+import { MainContainer, MainSection } from "../Elements";
 import Player from "../player/Player";
 
 export default function MainContent() {
   return (
     <MainContainer>
-      <Outlet />
+      <MainSection>
+        <Outlet />
+      </MainSection>
       <Player />
     </MainContainer>
   );
