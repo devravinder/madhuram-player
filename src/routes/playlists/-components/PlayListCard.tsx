@@ -1,5 +1,5 @@
 import { ListMusic } from "lucide-react";
-import { IconButton } from "../Elements";
+import { IconButton } from "@/components/Elements";
 
 type PlayListCardProps = {
     name: string,

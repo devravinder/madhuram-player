@@ -1,9 +1,9 @@
-import { NavContent } from "./NavContent";
+import { Navigation } from '../Navigation'
 
 export default function FooterContent() {
   return (
     <>
-      <NavContent />
+    <Navigation/>
     </>
-  );
+  )
 }

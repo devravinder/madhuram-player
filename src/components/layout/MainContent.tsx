@@ -1,11 +1,12 @@
 import { Outlet } from "@tanstack/react-router";
+import { MainContainer } from "../Elements";
 import Player from "../player/Player";
 
 export default function MainContent() {
   return (
-    <div className="h-full flex flex-col">
+    <MainContainer>
       <Outlet />
       <Player />
-    </div>
+    </MainContainer>
   );
 }

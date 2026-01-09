@@ -1,6 +1,6 @@
 import type { RoutePath } from "@/AppRouter";
 import { Clock, Home, Import, Library, ListMusic, User } from "lucide-react";
-import { Nav, NavLink } from "../Elements";
+import { Nav, NavLink } from "./Elements";
 
 type NavItem = {
   path: RoutePath;
@@ -15,7 +15,7 @@ const navItems: NavItem[] = [
   { path: "/playlists", label: "Playlists", icon: ListMusic },
   { path: "/import", label: "Import", icon: Import },
 ];
-export function NavContent() {
+export function Navigation() {
   return (
     <Nav>
       {navItems.map((item) => (

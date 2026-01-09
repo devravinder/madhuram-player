@@ -7,6 +7,19 @@ export const Header = tw.header`glass fixed top-0 left-0 right-0 h-14 flex items
 export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-14 flex items-center justify-center px-4 z-10`;
 export const Main = tw.main`absolute py-14 inset-0 overflow-y-auto`; // p=14
 
+
+
+export const MainContainer = tw.section`h-full flex flex-col relative`
+export const HeaderContainer = tw.h1`w-full flex flex-row justify-between items-center cursor-pointer`
+
+export const MainContent = tw.section`flex-1 overflow-y-auto px-4 py-3` // part of Main ( Main = MainContent + Player )
+
+// like main layout but for Page (route)
+export const PageLayout = tw.section`relative flex-1 flex flex-col gap-8 p-4 border-2 border-red-500`
+export const PageHeader = tw.h1``
+export const PageFooter = tw.div`fixed bottom-0 left-0 right-0 h-14`
+export const PageContent = tw.div`flex-1 overflow-y-auto border-2 border-green-500`
+
 // Elements
 
 export const IconButton = tw.button`h-10 w-10 relative cursor-pointer bg-accent flex flex-row justify-center items-center rounded-lg`;
