@@ -2,6 +2,7 @@ import { usePlayer } from "@/context/PlayerContext";
 import type { Song } from "@/types/music";
 import { formatTime } from "@/services/timeUtil";
 import { Pause, Play } from "lucide-react";
+import Waves from "../Waves";
 
 interface SongCardProps {
   song: Song;
@@ -10,7 +11,12 @@ interface SongCardProps {
   index?: number;
 }
 
-export default function SongCard({ song, queue, showIndex, index }: SongCardProps) {
+export default function SongCard({
+  song,
+  queue,
+  showIndex,
+  index,
+}: SongCardProps) {
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
   const isCurrentSong = currentSong?.id === song.id;
 
@@ -24,7 +30,11 @@ export default function SongCard({ song, queue, showIndex, index }: SongCardProp
 
   return (
     <div
-      className={isCurrentSong ? "flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-200 bg-primary/10" : "flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 cursor-pointer transition-all duration-200"}
+      className={
+        isCurrentSong
+          ? "flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-200 bg-primary/10"
+          : "flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/50 cursor-pointer transition-all duration-200"
+      }
       onClick={handleClick}
     >
       {showIndex && (
@@ -33,9 +43,7 @@ export default function SongCard({ song, queue, showIndex, index }: SongCardProp
         </span>
       )}
       <div
-        className={`relative ${
-          showIndex ? "hidden group-hover:block" : ""
-        }`}
+        className={`relative ${showIndex ? "hidden group-hover:block" : ""}`}
       >
         {showIndex ? (
           <div className="w-6 flex justify-center">
@@ -48,11 +56,16 @@ export default function SongCard({ song, queue, showIndex, index }: SongCardProp
         ) : null}
       </div>
 
-      <img
-        src={song.coverUrl}
-        alt={song.title}
-        className="w-12 h-12 rounded-lg object-cover"
-      />
+      <div className="w-12 h-12 relative">
+        <img
+          src={song.coverUrl}
+          alt={song.title}
+          className="w-full h-full rounded-lg object-cover"
+        />
+        <div className="absolute border p-2 inset-0 flex justify-center items-center">
+         {isCurrentSong && <Waves start={isPlaying}/>}
+        </div>
+      </div>
 
       <div className="flex-1 min-w-0">
         <p

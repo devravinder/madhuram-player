@@ -1,5 +1,6 @@
 import { Play, Pause, SkipBack, SkipForward, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
+import Waves from "../Waves";
 
 interface PlayingSongCardProps {
   title?: string;
@@ -73,19 +74,8 @@ export default function PlayingSongCard({
             <p className="text-slate-500 text-xs">{album}</p>
           </div>
 
-          <div className="flex items-center justify-center gap-3 h-12">
-            {[...Array(5)].map((_, i) => (
-              <div
-                key={i}
-                className={`w-1 bg-linear-to-t from-emerald-500 to-emerald-300 rounded-full transition-all ${
-                  isPlaying ? "animate-wave" : "h-4"
-                }`}
-                style={{
-                  animationDelay: `${i * 0.1}s`,
-                  height: isPlaying ? undefined : "16px",
-                }}
-              />
-            ))}
+          <div className="w-full flex justify-center items-center">
+            <div className="w-16 h-10"><Waves start={isPlaying} /></div>
           </div>
 
           <div className="space-y-2">

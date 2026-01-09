@@ -146,6 +146,7 @@
 
 /*  */
 
+
 @layer components {
   .glass {
     @apply bg-card/60 backdrop-blur-xl border border-border/50;
@@ -158,13 +159,14 @@
 
 @keyframes wave {
   0%, 100% {
-    height: 16px;
+    height: 30%;
   }
   50% {
-    height: 48px;
+    height: 100%;
   }
 }
 
-.animate-wave {
+@utility animate-wave{
   animation: wave 1.2s ease-in-out infinite;
 }
+
