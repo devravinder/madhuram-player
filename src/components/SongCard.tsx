@@ -1,6 +1,6 @@
 import { usePlayer } from "@/context/PlayerContext";
 import type { Song } from "@/types/music";
-import { formatTime } from "@/util/formatTime";
+import { formatTime } from "@/util/timeUtil";
 import { Pause, Play } from "lucide-react";
 
 interface SongCardProps {

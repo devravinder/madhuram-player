@@ -1,32 +1,15 @@
 import { usePlayer } from "@/context/PlayerContext";
 import { Timer, X } from "lucide-react";
-import { useMemo, useState } from "react";
-import TimeInput from "./TimeInput";
-import StopWatch from "./StopWatch";
+import { useState } from "react";
+import StopWatch from "../StopWatch";
+import TimeInput from "../TimeInput";
+import { timeDiffInSecods } from "@/util/timeUtil";
 
 export default function SleeperTimer({ onClose }: { onClose?: VoidFunction }) {
   const { sleepTimer, setSleepTimer, cancelSleepTimer } = usePlayer();
   const [time, setTime] = useState(0);
 
-  const setTimer = () => {
-    console.log({time})
-    setSleepTimer(time);
-    onClose?.();
-  };
-
-  // BUG HERE
-  const remainingTime = useMemo(() => {
-    if (!sleepTimer.isActive || !sleepTimer.endTime) return null;
-
-    console.log({e: new Date(sleepTimer.endTime)})
-    const remaining = Math.max(0, sleepTimer.endTime - new Date().getTime());
-
-    const seconds = Math.floor(remaining / 1000)
-
-    console.log({seconds})
-
-    return seconds;
-  }, [sleepTimer.isActive, sleepTimer.endTime]);
+  const showTimer = sleepTimer.isActive && sleepTimer.endTime;
 
   return (
     <div className="glass rounded-lg p-4 w-xs flex flex-col gap-2">
@@ -49,12 +32,19 @@ export default function SleeperTimer({ onClose }: { onClose?: VoidFunction }) {
         <div className="mb-4 p-4 bg-primary/10 rounded-xl">
           <p className="text-sm text-muted-foreground">Timer active</p>
           <p className="text-2xl font-bold text-primary">
-            {!remainingTime ? undefined : (
-              <StopWatch key={sleepTimer.endTime} seconds={remainingTime} />
+            {!showTimer ? undefined : (
+              <StopWatch
+                key={sleepTimer.endTime}
+                seconds={timeDiffInSecods(
+                  new Date().getTime(),
+                  sleepTimer.endTime!
+                )}
+              />
             )}
           </p>
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation()
               cancelSleepTimer();
               onClose?.();
             }}
@@ -68,7 +58,11 @@ export default function SleeperTimer({ onClose }: { onClose?: VoidFunction }) {
       <div className="space-y-4">
         <TimeInput value={time} onChange={setTime} />
         <button
-          onClick={setTimer}
+          onClick={(e) => {
+            e.stopPropagation()
+            setSleepTimer(time);
+            onClose?.();
+          }}
           disabled={time == 0}
           className={`disabled:cursor-not-allowed cursor-pointer w-full flex items-center justify-center p-3 rounded-xl transition-colors bg-primary/10 text-primary`}
         >

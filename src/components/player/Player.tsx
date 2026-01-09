@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { usePlayer } from "@/context/PlayerContext";
 import { ProgressBar } from "./ProgressBar";
-import { formatTime } from "@/util/formatTime";
+import { formatTime } from "@/util/timeUtil";
 import { VolumeSlider } from "./VolumeSlider";
 import SleeperTimer from "./SleeperTimer";
 

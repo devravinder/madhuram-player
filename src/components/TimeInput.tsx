@@ -1,9 +1,11 @@
 import { useState } from "react";
 
 export default function TimeInput({
+  label="Sleep Timer",
   value,
   onChange,
 }: {
+  label?: string
   value?: number;
   onChange: (value: number) => void;
 }) {
@@ -55,7 +57,7 @@ export default function TimeInput({
   return (
     <div className="flex flex-col gap-1 w-full">
       <label className="text-xs font-medium text-muted-foreground">
-        Sleep Timer
+        {label}
       </label>
 
       <div className="w-full flex items-center gap-1">
