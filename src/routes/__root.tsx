@@ -1,6 +1,7 @@
 import AppLayout from "@/components/layout/AppLayout";
 import { AuthProvider, SecureComponent } from "@/context/AuthContext";
 import { PlayerProvider } from "@/context/PlayerContext";
+import { PlaylistProvider } from "@/context/PlaylistContext";
 import { ThemeProvider } from "@/hooks/useTheme";
 import { createRootRoute } from "@tanstack/react-router";
 
@@ -14,9 +15,11 @@ function RootComponent() {
       <AuthProvider>
         <ThemeProvider>
           <PlayerProvider>
-            <SecureComponent>
-              <AppLayout />
-            </SecureComponent>
+            <PlaylistProvider>
+              <SecureComponent>
+                <AppLayout />
+              </SecureComponent>
+            </PlaylistProvider>
           </PlayerProvider>
         </ThemeProvider>
       </AuthProvider>

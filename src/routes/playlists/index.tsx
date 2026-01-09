@@ -9,6 +9,9 @@ import {
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ListMusic, Plus } from "lucide-react";
 import PlayListCard from "./-components/PlayListCard";
+import { useState } from "react";
+import type { Playlist } from "@/types/music";
+import { EditPlaylistModal } from "@/components/EditPlaylistModal";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,
@@ -34,6 +37,12 @@ const arr = [
 
 function PlayList() {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
+  const newPlaylist = ():Omit<Playlist, "createdAt" | "updatedAt">=>({id:'', name:'', description:'', songIds:[]})
+
+  if(showModal)
+    return <EditPlaylistModal onClose={()=>setShowModal(false)} playlist={newPlaylist()} onDelete={()=>{}} />
 
   return (
     <PageLayout>
@@ -50,7 +59,7 @@ function PlayList() {
             </div>
           </div>
           <div className="">
-            <button className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-accent hover:bg-accent flex flex-row justify-center items-center gap-2">
+            <button onClick={()=>setShowModal(true)} className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-accent hover:bg-accent flex flex-row justify-center items-center gap-2">
               <Plus size={18} />
               Create
             </button>
