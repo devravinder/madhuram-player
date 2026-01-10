@@ -17,7 +17,7 @@ export const Route = createFileRoute("/library")({
 });
 
 function RouteComponent() {
-  const { playQueue } = usePlayer();
+  const { playSong } = usePlayer();
   const songs = staticSongs;
   return (
     <PageLayout>
@@ -35,7 +35,7 @@ function RouteComponent() {
           </div>
           <div className="flex flex-row gap-4">
             <button
-              onClick={() => playQueue(songs)}
+              onClick={() => playSong(songs)}
               className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-primary/40 hover:bg-primary/50 flex flex-row justify-center items-center gap-2"
             >
               <Play size={18} />

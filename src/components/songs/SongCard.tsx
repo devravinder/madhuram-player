@@ -17,14 +17,14 @@ export default function SongCard({
   showIndex,
   index,
 }: SongCardProps) {
-  const { currentSong, isPlaying, playQueue, togglePlay } = usePlayer();
+  const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
   const isCurrentSong = currentSong?.id === song.id;
 
   const handleClick = () => {
     if (isCurrentSong) {
       togglePlay();
     } else {
-      playQueue(queue, index);
+      playSong(queue, index);
     }
   };
 

@@ -24,7 +24,7 @@ interface PlayerContextType {
   sleepTimer: SleepTimer;
 
   // Actions
-  playQueue: (songs: Song[], startIndex?: number) => void;
+  playSong: (queue: Song[], songIndex?: number) => void;
   togglePlay: () => void;
   pause: () => void;
   resume: () => void;
@@ -188,12 +188,12 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     [recentlyPlayed]
   );
 
-  const playQueue = useCallback(
-    (queue: Song[], startIndex = 0) => {
+  const playSong = useCallback(
+    (queue: Song[], songIndex = 0) => {
       if (queue.length === 0) return;
       handleQueueChange(queue);
-      setQueueIndex(startIndex);
-      loadAndPlay(queue[startIndex]);
+      setQueueIndex(songIndex);
+      loadAndPlay(queue[songIndex]);
     },
     [loadAndPlay, handleQueueChange]
   );
@@ -304,7 +304,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         queueIndex,
         recentlyPlayed,
         sleepTimer,
-        playQueue,
+        playSong,
         togglePlay,
         pause,
         resume,
