@@ -61,10 +61,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     "recentlyPlayed",
     []
   );
-  const [isRecentQueue, setIsRecentQueue] = useLocalStorage(
-    "isRecentQueue",
-    false
-  );
+  const isRecentQueue = useRef(queue===recentlyPlayed)
   const [sleepTimer, setSleepTimerState] = useState<SleepTimer>({
     isActive: false,
     endTime: null,
@@ -97,7 +94,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         .play()
         .then(() => {
           setIsPlaying(true);
-          if (!isRecentQueue) {
+          if (!isRecentQueue.current) {
             addToRecentlyPlayed(song);
           }
         })
@@ -186,17 +183,17 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const handleQueueChange = useCallback(
     (newQueue: Song[]) => {
       setQueue(newQueue);
-      setIsRecentQueue(newQueue === recentlyPlayed);
+      isRecentQueue.current = newQueue === recentlyPlayed
     },
-    [recentlyPlayed, setIsRecentQueue]
+    [recentlyPlayed]
   );
 
   const playQueue = useCallback(
-    (songs: Song[], startIndex = 0) => {
-      if (songs.length === 0) return;
-      handleQueueChange(songs);
+    (queue: Song[], startIndex = 0) => {
+      if (queue.length === 0) return;
+      handleQueueChange(queue);
       setQueueIndex(startIndex);
-      loadAndPlay(songs[startIndex]);
+      loadAndPlay(queue[startIndex]);
     },
     [loadAndPlay, handleQueueChange]
   );
@@ -229,7 +226,6 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     } else {
       nextIndex = (queueIndex + 1) % queue.length;
     }
-
     setQueueIndex(nextIndex);
     loadAndPlay(queue[nextIndex]);
   }, [queue, queueIndex, shuffle, loadAndPlay]);
