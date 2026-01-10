@@ -42,4 +42,4 @@ export const Input = tw.input`w-full bg-secondary/50 border border-border rounde
 export const Like = tw(Heart)<{ $liked?: boolean }>`${(p) =>
   p.$liked
     ? "fill-red-500 text-red-500"
-    : "text-muted-foreground"} w-5 h-5 transition-all`;
+    : "text-foreground"} w-5 h-5 transition-all`;
