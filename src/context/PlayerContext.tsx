@@ -48,6 +48,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useLocalStorage("volume", 0.7);
+  const volumeRef = useRef(volume)
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [repeatMode, setRepeatMode] = useLocalStorage<RepeatMode>(
@@ -101,12 +102,10 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   );
 
   const handleSongEnd = useCallback(() => {
-    console.log({queueIndex, queue})
     if (repeatMode === "one") {
       audioRef.current!.currentTime = 0;
       audioRef.current!.play();
     } else if (queueIndex < queue.length - 1) {
-      console.log("======")
       // repeat mode off
       const nextIndex = shuffle
         ? Math.floor(Math.random() * queue.length)
@@ -117,15 +116,20 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       setQueueIndex(0);
       loadAndPlay(queue[0]);
     } else {
-      console.log("---else")
       setIsPlaying(false);
     }
   }, [repeatMode, queueIndex, queue, shuffle, loadAndPlay]);
 
+  const handleSongEndRef = useRef(handleSongEnd);
+
+  useEffect(() => {
+    handleSongEndRef.current = handleSongEnd;
+  }, [handleSongEnd]);
+
   // Initialize audio element
   useEffect(() => {
     audioRef.current = new Audio();
-    audioRef.current.volume = volume;
+    audioRef.current.volume = volumeRef.current;
 
     const audio = audioRef.current;
 
@@ -138,7 +142,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     };
 
     const handleEnded = () => {
-      handleSongEnd();
+      handleSongEndRef.current(); // bcz without destroying the audio ( with out re-rendering ), to get the latest method
     };
 
     audio.addEventListener("timeupdate", handleTimeUpdate);
@@ -176,7 +180,6 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
   const playSong = useCallback(
     (song: Song, newQueue?: Song[]) => {
-      console.log({song, newQueue})
       if (newQueue) {
         setQueue(newQueue);
         const index = newQueue.findIndex((s) => s.id === song.id);
@@ -255,7 +258,9 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
   const setVolume = useCallback(
     (newVolume: number) => {
-      setVolumeState(Math.max(0, Math.min(1, newVolume)));
+      const volume = Math.max(0, Math.min(1, newVolume))
+      setVolumeState(volume);
+      volumeRef.current = volume
     },
     [setVolumeState]
   );

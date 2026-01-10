@@ -192,5 +192,28 @@
 ##### Subtasks
 
 
+#### 008 | Bugs
+
+- Title: Bugs
+- Status: 🚀 In Progress
+- Priority: 🔴 Critical
+- createdDate: 2026-01-10 01:18:18:263
+- lastModifiedDate: 2026-01-10 01:34:01:949
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 008
+- Category: Frontend
+- AssignedTo: Ravinder
+
+##### Tags
+
+- #urgent
+- #feature
+- #ui
+
+##### Subtasks
+
+- [ ] Recently PLayed
+- [x] Next song after current song end
+
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
