@@ -15,7 +15,8 @@ import { staticSongs } from "@/data/songs";
 import { Music, Play } from "lucide-react";
 
 import { usePlaylists } from "@/context/PlaylistContext";
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import NoItems from "./playlists/-components/NoItems";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -24,7 +25,6 @@ export const Route = createFileRoute("/")({
 function RouteComponent() {
   const { playSong } = usePlayer();
   const { favourites } = usePlaylists();
-  if (!favourites?.length) return <Navigate to="/library" />;
   const songs = staticSongs.filter((song) => favourites.includes(song.id));
   return (
     <PageLayout>
@@ -51,7 +51,7 @@ function RouteComponent() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            <SongsList songs={songs} />
+            {songs.length ? <SongsList songs={songs} /> : <NoItems subTitle="Like any song to see here" />}
           </PageMainSection>
         </PageMainContainer>
       </PageMain>

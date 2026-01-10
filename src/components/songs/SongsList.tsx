@@ -10,7 +10,6 @@ export default function SongsList({ songs }: { songs: Song[] }) {
             key={song.id}
             song={song}
             queue={songs}
-            showIndex
             index={index}
           />
         ))}
