@@ -1,21 +1,24 @@
-import { ListMusic, Pencil, Play } from "lucide-react";
 import {
-  IconButton,
+  Button,
+  HeaderIcon,
+  HeaderSubTitle,
+  HeaderTitle,
   PageHeader,
   PageLayout,
   PageMain,
   PageMainContainer,
-  PageMainSection,
+  PageMainSection
 } from "@/components/Elements";
-import { fetchPlayListDetails } from "@/services/playlistService";
-import { createFileRoute } from "@tanstack/react-router";
-import NoItems from "./-components/NoItems";
+import { PlaylistModal } from "@/components/PlaylistModal";
 import SongsList from "@/components/songs/SongsList";
+import { usePlayer } from "@/context/PlayerContext";
 import { usePlaylists } from "@/context/PlaylistContext";
 import { staticSongs } from "@/data/songs";
-import { usePlayer } from "@/context/PlayerContext";
+import { fetchPlayListDetails } from "@/services/playlistService";
+import { createFileRoute } from "@tanstack/react-router";
+import { ListMusic, Pencil, Play } from "lucide-react";
 import { useMemo, useState } from "react";
-import { PlaylistModal } from "@/components/PlaylistModal";
+import NoItems from "./-components/NoItems";
 
 export const Route = createFileRoute("/playlists/$id")({
   component: PlaylistDetails,
@@ -55,32 +58,26 @@ function PlaylistDetails() {
       <PageHeader>
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row gap-4 items-center">
-            <IconButton className="p-4 h-14 w-14 rounded-xl">
+            <HeaderIcon>
               <ListMusic size={30} />
-            </IconButton>
+            </HeaderIcon>
 
             <div className="">
-              <div className="text-2xl font-bold line-clamp-1">
+              <HeaderTitle>
                 {playlist.name}
-              </div>
-              <div className="text-md text-muted-foreground">{`${playlist.songIds.length} songs`}</div>
+              </HeaderTitle>
+              <HeaderSubTitle>{`${playlist.songIds.length} songs`}</HeaderSubTitle>
             </div>
           </div>
           <div className="flex flex-row gap-4">
-            <button
-              onClick={() => playSong(songs)}
-              className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-primary/40 hover:bg-primary/50 flex flex-row justify-center items-center gap-2"
-            >
+            <Button.Primary onClick={() => playSong(songs)}>
               <Play size={18} />
-              Play
-            </button>
-            <button
-              onClick={() => setShowModal(true)}
-              className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-accent hover:bg-accent flex flex-row justify-center items-center gap-2"
-            >
+              <span className="hidden sm:block">Play</span>
+            </Button.Primary>
+            <Button.Secondary onClick={() => setShowModal(true)}>
               <Pencil size={18} />
-              Edit
-            </button>
+              <span className="hidden sm:block"> Edit</span>
+            </Button.Secondary>
           </div>
         </div>
       </PageHeader>

@@ -9,10 +9,10 @@ export const Main = tw.main`absolute pb-14 sm:pb-16 inset-0 overflow-y-auto`; //
 
 export const MainContainer = tw.section`h-full flex flex-col relative`;
 
-export const MainSection = tw.section`flex-1 overflow-y-auto px-4 py-3`; // part of Main ( Main = MainContainer(MainSection + Player )
+export const MainSection = tw.section`flex-1 overflow-y-auto px-4 py-2`; // part of Main ( Main = MainContainer(MainSection + Player )
 
 // like main layout but for Page (route)
-export const PageLayout = tw.section`relative h-full flex flex-col gap-8 p-4`;
+export const PageLayout = tw.section`relative h-full flex flex-col gap-6 px-4 pt-2`;
 export const PageHeader = tw.h1``;
 export const PageMain = tw.div`flex-1 overflow-y-auto`;
 export const PageMainContainer = tw.div`h-full flex flex-col relative`;
@@ -21,6 +21,11 @@ export const PageMainSection = tw.div`flex-1`;
 // Elements
 
 export const IconButton = tw.button`h-10 w-10 relative cursor-pointer bg-accent flex flex-row justify-center items-center rounded-lg`;
+export const HeaderIcon = tw(IconButton)`p-2 sm:p-4 h-12 w-12 sm:h-14 sm:w-14 rounded-xl cursor-default`
+
+export const HeaderTitle = tw.div`text-xl sm:text-2xl font-bold line-clamp-1`
+export const HeaderSubTitle = tw.div`text-xs sm:text-md text-muted-foreground`
+
 
 export const AvatarContainer = tw.div`text-foreground rounded-lg relative inline-flex items-center justify-center overflow-hidden select-none h-10 w-10`;
 export const Img = tw.img`h-full w-full object-contain object-center`;
@@ -40,3 +45,13 @@ export const Like = tw(Heart)<{ $liked?: boolean }>`${(p) =>
   p.$liked
     ? "fill-red-500 text-red-500"
     : "text-foreground"} w-5 h-5 transition-all`;
+
+const Secondary  = tw.button`cursor-pointer p-2 sm:px-6  sm:py-3 text-xl flex flex-row justify-center items-center gap-2 rounded-lg bg-accent hover:bg-accent/80`     
+const Primary = tw(Secondary)`bg-primary hover:bg-primary/90 text-secondary`
+// eslint-disable-next-line react-refresh/only-export-components
+export const Button = {
+
+  Primary,
+  Secondary
+
+}
