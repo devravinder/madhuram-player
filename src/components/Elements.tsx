@@ -8,7 +8,6 @@ export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-14 sm:h-16
 export const Main = tw.main`absolute pb-14 sm:pb-16 inset-0 overflow-y-auto`; // p=14
 
 export const MainContainer = tw.section`h-full flex flex-col relative`;
-export const HeaderContainer = tw.h1`w-full flex flex-row justify-between items-center cursor-pointer`;
 
 export const MainSection = tw.section`flex-1 overflow-y-auto px-4 py-3`; // part of Main ( Main = MainContainer(MainSection + Player )
 
