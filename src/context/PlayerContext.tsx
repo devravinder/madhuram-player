@@ -24,7 +24,6 @@ interface PlayerContextType {
   sleepTimer: SleepTimer;
 
   // Actions
-  playSong: (song: Song, queue?: Song[]) => void;
   playQueue: (songs: Song[], startIndex?: number) => void;
   togglePlay: () => void;
   pause: () => void;
@@ -39,7 +38,7 @@ interface PlayerContextType {
   cancelSleepTimer: () => void;
 }
 
-export const RECENTLY_PLAYED_LIMIT = 10
+export const RECENTLY_PLAYED_LIMIT = 10;
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 export function PlayerProvider({ children }: { children: React.ReactNode }) {
@@ -48,7 +47,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useLocalStorage("volume", 0.7);
-  const volumeRef = useRef(volume)
+  const volumeRef = useRef(volume);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [repeatMode, setRepeatMode] = useLocalStorage<RepeatMode>(
@@ -61,6 +60,10 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [recentlyPlayed, setRecentlyPlayed] = useLocalStorage<Song[]>(
     "recentlyPlayed",
     []
+  );
+  const [isRecentQueue, setIsRecentQueue] = useLocalStorage(
+    "isRecentQueue",
+    false
   );
   const [sleepTimer, setSleepTimerState] = useState<SleepTimer>({
     isActive: false,
@@ -94,11 +97,13 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         .play()
         .then(() => {
           setIsPlaying(true);
-          addToRecentlyPlayed(song);
+          if (!isRecentQueue) {
+            addToRecentlyPlayed(song);
+          }
         })
         .catch((err) => console.error("Error playing audio:", err));
     },
-    [addToRecentlyPlayed]
+    [addToRecentlyPlayed, isRecentQueue]
   );
 
   const handleSongEnd = useCallback(() => {
@@ -178,26 +183,22 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(checkTimer);
   }, [sleepTimer, pause]);
 
-  const playSong = useCallback(
-    (song: Song, newQueue?: Song[]) => {
-      if (newQueue) {
-        setQueue(newQueue);
-        const index = newQueue.findIndex((s) => s.id === song.id);
-        setQueueIndex(index >= 0 ? index : 0);
-      }
-      loadAndPlay(song);
+  const handleQueueChange = useCallback(
+    (newQueue: Song[]) => {
+      setQueue(newQueue);
+      setIsRecentQueue(newQueue === recentlyPlayed);
     },
-    [loadAndPlay]
+    [recentlyPlayed, setIsRecentQueue]
   );
 
   const playQueue = useCallback(
     (songs: Song[], startIndex = 0) => {
       if (songs.length === 0) return;
-      setQueue(songs);
+      handleQueueChange(songs);
       setQueueIndex(startIndex);
       loadAndPlay(songs[startIndex]);
     },
-    [loadAndPlay]
+    [loadAndPlay, handleQueueChange]
   );
 
   const togglePlay = useCallback(() => {
@@ -258,9 +259,9 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
 
   const setVolume = useCallback(
     (newVolume: number) => {
-      const volume = Math.max(0, Math.min(1, newVolume))
+      const volume = Math.max(0, Math.min(1, newVolume));
       setVolumeState(volume);
-      volumeRef.current = volume
+      volumeRef.current = volume;
     },
     [setVolumeState]
   );
@@ -278,10 +279,9 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   }, [setShuffle]);
 
   const setSleepTimer = useCallback((minutes: number) => {
-
     setSleepTimerState({
       isActive: true,
-      endTime:new Date().getTime() + minutes * 60 * 1000,
+      endTime: new Date().getTime() + minutes * 60 * 1000,
       duration: minutes,
     });
   }, []);
@@ -308,7 +308,6 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         queueIndex,
         recentlyPlayed,
         sleepTimer,
-        playSong,
         playQueue,
         togglePlay,
         pause,

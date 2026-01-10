@@ -6,7 +6,7 @@ import Waves from "../Waves";
 
 interface SongCardProps {
   song: Song;
-  queue?: Song[];
+  queue: Song[];
   showIndex?: boolean;
   index?: number;
 }
@@ -17,14 +17,14 @@ export default function SongCard({
   showIndex,
   index,
 }: SongCardProps) {
-  const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
+  const { currentSong, isPlaying, playQueue, togglePlay } = usePlayer();
   const isCurrentSong = currentSong?.id === song.id;
 
   const handleClick = () => {
     if (isCurrentSong) {
       togglePlay();
     } else {
-      playSong(song, queue);
+      playQueue(queue, index);
     }
   };
 
@@ -63,7 +63,7 @@ export default function SongCard({
           className="w-full h-full rounded-lg object-cover"
         />
         <div className="absolute border p-2 inset-0 flex justify-center items-center">
-         {isCurrentSong && <Waves start={isPlaying}/>}
+          {isCurrentSong && <Waves start={isPlaying} />}
         </div>
       </div>
 

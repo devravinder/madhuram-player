@@ -16,7 +16,7 @@ export const Route = createFileRoute("/recent")({
 });
 
 function RouteComponent() {
-  const {playQueue, recentlyPlayed } = usePlayer();
+  const { playQueue, recentlyPlayed } = usePlayer();
   const songs = recentlyPlayed;
   return (
     <PageLayout>
@@ -28,7 +28,9 @@ function RouteComponent() {
             </IconButton>
 
             <div className="">
-              <div className="text-2xl font-bold line-clamp-1">Recenctly PLayed</div>
+              <div className="text-2xl font-bold line-clamp-1">
+                Recenctly PLayed
+              </div>
               <div className="text-md text-muted-foreground">{`${songs.length} songs of ${RECENTLY_PLAYED_LIMIT} max`}</div>
             </div>
           </div>
