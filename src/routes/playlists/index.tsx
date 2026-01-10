@@ -11,38 +11,24 @@ import { ListMusic, Plus } from "lucide-react";
 import PlayListCard from "./-components/PlayListCard";
 import { useState } from "react";
 import type { Playlist } from "@/types/music";
-import { EditPlaylistModal } from "@/components/EditPlaylistModal";
+import { PlaylistModal } from "@/components/PlaylistModal";
+import { usePlaylists } from "@/context/PlaylistContext";
+import NoItems from "./-components/NoItems";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,
 });
 
-const arr = [
-  { id: "1", name: "Test Some", noOfSongs: 10 },
-  { id: "2", name: "Test Guru", noOfSongs: 9 },
-  { id: "3", name: "Test Whs", noOfSongs: 22 },
-  { id: "4", name: "Test Hello", noOfSongs: 11 },
-  { id: "5", name: "Test Some Things", noOfSongs: 10 },
-  { id: "11", name: "Test Some", noOfSongs: 10 },
-  { id: "12", name: "Test Guru", noOfSongs: 9 },
-  { id: "13", name: "Test Whs", noOfSongs: 22 },
-  { id: "14", name: "Test Hello", noOfSongs: 11 },
-  { id: "15", name: "Test Some Things", noOfSongs: 10 },
-  { id: "21", name: "Test Some", noOfSongs: 10 },
-  { id: "22", name: "Test Guru", noOfSongs: 9 },
-  { id: "23", name: "Test Whs", noOfSongs: 22 },
-  { id: "24", name: "Test Hello", noOfSongs: 11 },
-  { id: "25", name: "Test Some Things", noOfSongs: 10 },
-];
 
 function PlayList() {
   const navigate = useNavigate();
+  const {playlists} = usePlaylists()
   const [showModal, setShowModal] = useState(false);
 
   const newPlaylist = ():Omit<Playlist, "createdAt" | "updatedAt">=>({id:'', name:'', description:'', songIds:[]})
 
   if(showModal)
-    return <EditPlaylistModal onClose={()=>setShowModal(false)} playlist={newPlaylist()} onDelete={()=>{}} />
+    return <PlaylistModal title="Create Plalist" onClose={()=>setShowModal(false)} playlist={newPlaylist()} />
 
   return (
     <PageLayout>
@@ -55,7 +41,7 @@ function PlayList() {
 
             <div className="">
               <div className="text-2xl font-bold line-clamp-1">Playlists</div>
-              <div className="text-md text-muted-foreground">{`${2} playlists`}</div>
+              <div className="text-md text-muted-foreground">{`${playlists.length} playlists`}</div>
             </div>
           </div>
           <div className="">
@@ -70,16 +56,16 @@ function PlayList() {
         <PageMainContainer>
           <PageMainSection>
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {arr.map((ele) => (
+              {playlists.length ? playlists.map((ele) => (
                 <PlayListCard
                   onClick={() =>
                     navigate({ to: "/playlists/$id", params: { id: ele.id } })
                   }
                   key={ele.id}
                   name={ele.name}
-                  noOfSongs={ele.noOfSongs}
+                  noOfSongs={ele.songIds.length}
                 />
-              ))}
+              )): <div className="col-span-4"><NoItems title="No Playlists" subTitle='Click Create to add playlists' /></div>}
             </div>
           </PageMainSection>
         </PageMainContainer>

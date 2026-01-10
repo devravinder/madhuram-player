@@ -9,7 +9,7 @@ import {
 } from "@/components/Elements";
 import { fetchPlayListDetails } from "@/services/playlistService";
 import { createFileRoute } from "@tanstack/react-router";
-import NoSongs from "./-components/NoSongs";
+import NoItems from "./-components/NoItems";
 import SongsList from "@/components/songs/SongsList";
 
 export const Route = createFileRoute("/playlists/$id")({
@@ -53,7 +53,7 @@ function PlaylistDetails() {
             {playlistDetails.songs.length ? (
               <SongsList songs={playlistDetails.songs} />
             ) : (
-              <NoSongs />
+              <NoItems />
             )}
           </PageMainSection>
         </PageMainContainer>
