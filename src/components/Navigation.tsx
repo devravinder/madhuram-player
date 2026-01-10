@@ -27,8 +27,8 @@ export function Navigation() {
           }}
           activeOptions={{ exact: true }}
         >
-          <item.icon size={20} />
-          <span className="text-xs">{item.label}</span>
+          <item.icon className="h-6 w-6 sm:h-5 sm:w-5" />
+          <span className="text-xs hidden sm:block">{item.label}</span>
         </NavLink>
       ))}
     </Nav>

@@ -4,9 +4,8 @@ import tw from "tailwind-styled-components";
 
 // Note:- don't change these layout elements (carefull)
 export const Layout = tw.div`h-screen w-full overflow-hidden bg-background text-foreground`;
-export const Header = tw.header`glass fixed top-0 left-0 right-0 h-14 flex items-center px-4 z-10`;
-export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-14 flex items-center justify-center px-4 z-10`;
-export const Main = tw.main`absolute py-14 inset-0 overflow-y-auto`; // p=14
+export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-14 sm:h-16 flex items-center justify-center px-4 z-10`;
+export const Main = tw.main`absolute pb-14 sm:pb-16 inset-0 overflow-y-auto`; // p=14
 
 export const MainContainer = tw.section`h-full flex flex-col relative`;
 export const HeaderContainer = tw.h1`w-full flex flex-row justify-between items-center cursor-pointer`;
@@ -16,7 +15,6 @@ export const MainSection = tw.section`flex-1 overflow-y-auto px-4 py-3`; // part
 // like main layout but for Page (route)
 export const PageLayout = tw.section`relative h-full flex flex-col gap-8 p-4`;
 export const PageHeader = tw.h1``;
-export const PageFooter = tw.div`fixed bottom-0 left-0 right-0 h-14`;
 export const PageMain = tw.div`flex-1 overflow-y-auto`;
 export const PageMainContainer = tw.div`h-full flex flex-col relative`;
 export const PageMainSection = tw.div`flex-1`;
