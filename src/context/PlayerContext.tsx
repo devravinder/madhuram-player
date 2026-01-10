@@ -39,7 +39,7 @@ interface PlayerContextType {
   cancelSleepTimer: () => void;
 }
 
-const RECENTLY_PLAYED_LIMIT = 10
+export const RECENTLY_PLAYED_LIMIT = 10
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 export function PlayerProvider({ children }: { children: React.ReactNode }) {
@@ -101,10 +101,13 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   );
 
   const handleSongEnd = useCallback(() => {
+    console.log({queueIndex, queue})
     if (repeatMode === "one") {
       audioRef.current!.currentTime = 0;
       audioRef.current!.play();
     } else if (queueIndex < queue.length - 1) {
+      console.log("======")
+      // repeat mode off
       const nextIndex = shuffle
         ? Math.floor(Math.random() * queue.length)
         : queueIndex + 1;
@@ -114,10 +117,10 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       setQueueIndex(0);
       loadAndPlay(queue[0]);
     } else {
+      console.log("---else")
       setIsPlaying(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [repeatMode, queueIndex, queue, shuffle]);
+  }, [repeatMode, queueIndex, queue, shuffle, loadAndPlay]);
 
   // Initialize audio element
   useEffect(() => {
@@ -148,7 +151,6 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       audio.removeEventListener("ended", handleEnded);
       audio.pause();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update volume when changed
@@ -170,11 +172,11 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
     }, 1000);
 
     return () => clearInterval(checkTimer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sleepTimer]);
+  }, [sleepTimer, pause]);
 
   const playSong = useCallback(
     (song: Song, newQueue?: Song[]) => {
+      console.log({song, newQueue})
       if (newQueue) {
         setQueue(newQueue);
         const index = newQueue.findIndex((s) => s.id === song.id);

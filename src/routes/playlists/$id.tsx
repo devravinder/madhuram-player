@@ -25,7 +25,7 @@ export const Route = createFileRoute("/playlists/$id")({
 function PlaylistDetails() {
   const [showModal, setShowModal] = useState(false);
 
-  const { playSong } = usePlayer();
+  const { playQueue } = usePlayer();
 
   const { playlists } = usePlaylists();
   const { id } = Route.useParams();
@@ -68,7 +68,7 @@ function PlaylistDetails() {
           </div>
           <div className="flex flex-row gap-4">
             <button
-              onClick={() => playSong(songs[0], songs)}
+              onClick={() => playQueue(songs)}
               className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-primary/40 hover:bg-primary/50 flex flex-row justify-center items-center gap-2"
             >
               <Play size={18} />
