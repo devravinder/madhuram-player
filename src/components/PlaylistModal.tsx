@@ -5,9 +5,10 @@ import { Check, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { Input } from "./Elements";
+import { useNavigate } from "@tanstack/react-router";
 
 interface PlaylistModalProps {
-  title: string
+  title: string;
   playlist: Omit<Playlist, "createdAt" | "updatedAt">;
   onClose: () => void;
 }
@@ -17,6 +18,8 @@ export function PlaylistModal({
   playlist,
   onClose,
 }: PlaylistModalProps) {
+  const navigate = useNavigate();
+
   const {
     deletePlaylist,
     createPlaylist,
@@ -24,7 +27,7 @@ export function PlaylistModal({
     addSongToPlaylist,
     removeSongFromPlaylist,
   } = usePlaylists();
-  const isEditing = playlist.id
+  const isEditing = playlist.id;
   const [name, setName] = useState(playlist.name);
   const [description, setDescription] = useState(playlist.description || "");
   const [selectedSongs, setSelectedSongs] = useState<Set<string>>(
@@ -59,19 +62,22 @@ export function PlaylistModal({
       });
     } else {
       createPlaylist({
-        name, description, songIds: [...selectedSongs]
+        name,
+        description,
+        songIds: [...selectedSongs],
       });
     }
 
     onClose();
   };
 
-  const onDelete=()=>{
-    if(isEditing){
-      deletePlaylist(playlist.id)
-      onClose()
+  const onDelete = () => {
+    if (isEditing) {
+      deletePlaylist(playlist.id);
+      onClose();
+      navigate({ to: "/playlists" });
     }
-  }
+  };
 
   const toggleSong = (songId: string) => {
     setSelectedSongs((prev) => {
@@ -167,24 +173,29 @@ export function PlaylistModal({
           </div>
 
           <div className="px-8 pt-4 flex flex-row justify-between border-t border-border">
-            {isEditing && <button
-              onClick={onDelete}
-              className="cursor-pointer p-2 px-4 rounded-lg text-destructive hover:text-primary hover:bg-accent/70 flex items-center gap-2"
-            >
-              <Trash2 size={18} />
-              Delete
-            </button>}
-            <div className="flex-1 flex flex-row justify-end gap-4" >
-            <button onClick={onClose} className="cursor-pointer p-2 px-4 rounded-lg bg-primary/20 hover:bg-primary/30 text-primary">
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              className="cursor-pointer p-2 px-4 rounded-lg bg-primary hover:bg-primary/90 text-secondary"
-              disabled={!name.trim()}
-            >
-              Save
-            </button>
+            {isEditing && (
+              <button
+                onClick={onDelete}
+                className="cursor-pointer p-2 px-4 rounded-lg text-destructive hover:text-primary hover:bg-accent/70 flex items-center gap-2"
+              >
+                <Trash2 size={18} />
+                Delete
+              </button>
+            )}
+            <div className="flex-1 flex flex-row justify-end gap-4">
+              <button
+                onClick={onClose}
+                className="cursor-pointer p-2 px-4 rounded-lg bg-primary/20 hover:bg-primary/30 text-primary"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="cursor-pointer p-2 px-4 rounded-lg bg-primary hover:bg-primary/90 text-secondary"
+                disabled={!name.trim()}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>

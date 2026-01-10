@@ -11,6 +11,11 @@ import { fetchPlayListDetails } from "@/services/playlistService";
 import { createFileRoute } from "@tanstack/react-router";
 import NoItems from "./-components/NoItems";
 import SongsList from "@/components/songs/SongsList";
+import { usePlaylists } from "@/context/PlaylistContext";
+import { staticSongs } from "@/data/songs";
+import { usePlayer } from "@/context/PlayerContext";
+import { useMemo, useState } from "react";
+import { PlaylistModal } from "@/components/PlaylistModal";
 
 export const Route = createFileRoute("/playlists/$id")({
   component: PlaylistDetails,
@@ -18,7 +23,33 @@ export const Route = createFileRoute("/playlists/$id")({
 });
 
 function PlaylistDetails() {
-  const playlistDetails = Route.useLoaderData();
+  const [showModal, setShowModal] = useState(false);
+
+  const { playSong } = usePlayer();
+
+  const { playlists } = usePlaylists();
+  const { id } = Route.useParams();
+  const playlist = playlists.find((ele) => ele.id === id);
+  // const playlist = Route.useLoaderData();
+
+  const songs = useMemo(
+    () =>
+      playlist
+        ? staticSongs.filter((song) => playlist.songIds.includes(song.id))
+        : [],
+    [playlist]
+  );
+  if (!playlist) return undefined;
+
+  if (showModal)
+    return (
+      <PlaylistModal
+        title="Edit Plalist"
+        onClose={() => setShowModal(false)}
+        playlist={playlist}
+      />
+    );
+
   return (
     <PageLayout>
       <PageHeader>
@@ -30,17 +61,23 @@ function PlaylistDetails() {
 
             <div className="">
               <div className="text-2xl font-bold line-clamp-1">
-                {playlistDetails.name}
+                {playlist.name}
               </div>
-              <div className="text-md text-muted-foreground">{`${playlistDetails.songs.length} songs`}</div>
+              <div className="text-md text-muted-foreground">{`${playlist.songIds.length} songs`}</div>
             </div>
           </div>
           <div className="flex flex-row gap-4">
-            <button className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-primary/40 hover:bg-primary/50 flex flex-row justify-center items-center gap-2">
+            <button
+              onClick={() => playSong(songs[0], songs)}
+              className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-primary/40 hover:bg-primary/50 flex flex-row justify-center items-center gap-2"
+            >
               <Play size={18} />
               Play
             </button>
-            <button className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-accent hover:bg-accent flex flex-row justify-center items-center gap-2">
+            <button
+              onClick={() => setShowModal(true)}
+              className="cursor-pointer px-4 sm:px-8 py-3 text-xl rounded-lg bg-accent hover:bg-accent flex flex-row justify-center items-center gap-2"
+            >
               <Pencil size={18} />
               Edit
             </button>
@@ -50,8 +87,8 @@ function PlaylistDetails() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            {playlistDetails.songs.length ? (
-              <SongsList songs={playlistDetails.songs} />
+            {playlist.songIds?.length ? (
+              <SongsList songs={songs} />
             ) : (
               <NoItems />
             )}

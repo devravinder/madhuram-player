@@ -1,4 +1,3 @@
-import { staticSongs } from "@/data/songs";
 import type { Song } from "@/types/music";
 import SongCard from "./SongCard";
 
@@ -10,7 +9,7 @@ export default function SongsList({ songs }: { songs: Song[] }) {
           <SongCard
             key={song.id}
             song={song}
-            queue={staticSongs}
+            queue={songs}
             showIndex
             index={index}
           />
