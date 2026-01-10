@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as ImportRouteImport } from './routes/import'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,11 @@ import { Route as PlaylistsRootRouteImport } from './routes/playlists/root'
 import { Route as PlaylistsRecentRouteImport } from './routes/playlists/recent'
 import { Route as PlaylistsIdRouteImport } from './routes/playlists/$id'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/import': typeof ImportRoute
   '/library': typeof LibraryRoute
+  '/settings': typeof SettingsRoute
   '/playlists/$id': typeof PlaylistsIdRoute
   '/playlists/recent': typeof PlaylistsRecentRoute
   '/playlists/root': typeof PlaylistsRootRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/import': typeof ImportRoute
   '/library': typeof LibraryRoute
+  '/settings': typeof SettingsRoute
   '/playlists/$id': typeof PlaylistsIdRoute
   '/playlists/recent': typeof PlaylistsRecentRoute
   '/playlists/root': typeof PlaylistsRootRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/import': typeof ImportRoute
   '/library': typeof LibraryRoute
+  '/settings': typeof SettingsRoute
   '/playlists/$id': typeof PlaylistsIdRoute
   '/playlists/recent': typeof PlaylistsRecentRoute
   '/playlists/root': typeof PlaylistsRootRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/import'
     | '/library'
+    | '/settings'
     | '/playlists/$id'
     | '/playlists/recent'
     | '/playlists/root'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/import'
     | '/library'
+    | '/settings'
     | '/playlists/$id'
     | '/playlists/recent'
     | '/playlists/root'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/import'
     | '/library'
+    | '/settings'
     | '/playlists/$id'
     | '/playlists/recent'
     | '/playlists/root'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ImportRoute: typeof ImportRoute
   LibraryRoute: typeof LibraryRoute
+  SettingsRoute: typeof SettingsRoute
   PlaylistsIdRoute: typeof PlaylistsIdRoute
   PlaylistsRecentRoute: typeof PlaylistsRecentRoute
   PlaylistsRootRoute: typeof PlaylistsRootRoute
@@ -123,6 +136,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/library': {
       id: '/library'
       path: '/library'
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ImportRoute: ImportRoute,
   LibraryRoute: LibraryRoute,
+  SettingsRoute: SettingsRoute,
   PlaylistsIdRoute: PlaylistsIdRoute,
   PlaylistsRecentRoute: PlaylistsRecentRoute,
   PlaylistsRootRoute: PlaylistsRootRoute,

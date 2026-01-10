@@ -13,7 +13,7 @@ const navItems: NavItem[] = [
   { path: "/playlists", label: "Playlists", icon: ListMusic },
   { path: "/", label: "Favourites", icon: Heart },
   { path: "/import", label: "Import", icon: Import },
-  { path: "/import", label: "Settings", icon: Settings },
+  { path: "/settings", label: "Settings", icon: Settings },
 ];
 export function Navigation() {
   return (
