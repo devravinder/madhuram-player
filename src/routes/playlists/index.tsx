@@ -7,7 +7,7 @@ import {
   PageLayout,
   PageMain,
   PageMainContainer,
-  PageMainSection
+  PageMainSection,
 } from "@/components/Elements";
 import { PlaylistModal } from "@/components/PlaylistModal";
 import { usePlaylists } from "@/context/PlaylistContext";
@@ -17,6 +17,7 @@ import { ListMusic, Plus } from "lucide-react";
 import { useState } from "react";
 import NoItems from "./-components/NoItems";
 import PlayListCard from "./-components/PlayListCard";
+import { usePlayer } from "@/context/PlayerContext";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,
@@ -24,6 +25,7 @@ export const Route = createFileRoute("/playlists/")({
 
 function PlayList() {
   const navigate = useNavigate();
+  const { recentlyPlayed } = usePlayer();
   const { playlists } = usePlaylists();
   const [showModal, setShowModal] = useState(false);
 
@@ -42,6 +44,8 @@ function PlayList() {
         playlist={newPlaylist()}
       />
     );
+
+  const noItems = !(recentlyPlayed.length || playlists.length);
 
   return (
     <PageLayout>
@@ -69,18 +73,27 @@ function PlayList() {
         <PageMainContainer>
           <PageMainSection>
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {playlists.length ? (
-                playlists.map((ele) => (
-                  <PlayListCard
-                    onClick={() =>
-                      navigate({ to: "/playlists/$id", params: { id: ele.id } })
-                    }
-                    key={ele.id}
-                    name={ele.name}
-                    noOfSongs={ele.songIds.length}
-                  />
-                ))
-              ) : (
+              {recentlyPlayed.length ? <PlayListCard
+                onClick={() => navigate({ to: "/playlists/recent" })}
+                name={"Recently PLayed"}
+                noOfSongs={recentlyPlayed.length}
+              />:undefined}
+              {playlists.length
+                ? playlists.map((ele) => (
+                    <PlayListCard
+                      onClick={() =>
+                        navigate({
+                          to: "/playlists/$id",
+                          params: { id: ele.id },
+                        })
+                      }
+                      key={ele.id}
+                      name={ele.name}
+                      noOfSongs={ele.songIds.length}
+                    />
+                  ))
+                : undefined}
+              {noItems && (
                 <div className="col-span-4">
                   <NoItems
                     title="No Playlists"

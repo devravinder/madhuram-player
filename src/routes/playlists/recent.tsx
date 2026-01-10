@@ -14,7 +14,7 @@ import { RECENTLY_PLAYED_LIMIT, usePlayer } from "@/context/PlayerContext";
 import { createFileRoute } from "@tanstack/react-router";
 import { Clock, Play } from "lucide-react";
 
-export const Route = createFileRoute("/recent")({
+export const Route = createFileRoute("/playlists/recent")({
   component: RouteComponent,
 });
 
