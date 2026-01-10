@@ -139,7 +139,7 @@ export function PlaylistModal({
               <label className="block text-sm font-medium mb-2">
                 Select Songs
               </label>
-              <div className="space-y-1 max-h-48 overflow-y-auto border border-border rounded-xl p-2">
+              <div className="space-y-2 max-h-48 overflow-y-auto border border-border rounded-xl p-2">
                 {staticSongs.map((song) => (
                   <button
                     key={song.id}
@@ -147,7 +147,7 @@ export function PlaylistModal({
                     className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors ${
                       selectedSongs.has(song.id)
                         ? "bg-primary/20 text-primary"
-                        : "hover:bg-secondary/50"
+                        : "hover:bg-secondary"
                     }`}
                   >
                     <img
