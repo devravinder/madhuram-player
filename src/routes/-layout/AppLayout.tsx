@@ -1,4 +1,4 @@
-import { Footer, Header, Layout, Main } from "../Elements";
+import { Footer, Header, Layout, Main } from "@/components/Elements";
 import FooterContent from "./FooterContent";
 import HeaderContent from "./HeaderContent";
 import MainContent from "./MainContent";

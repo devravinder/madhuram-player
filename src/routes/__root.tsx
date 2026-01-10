@@ -1,8 +1,4 @@
-import AppLayout from "@/components/layout/AppLayout";
-import { AuthProvider, SecureComponent } from "@/context/AuthContext";
-import { PlayerProvider } from "@/context/PlayerContext";
-import { PlaylistProvider } from "@/context/PlaylistContext";
-import { ThemeProvider } from "@/hooks/useTheme";
+import AppLayout from "./-layout/AppLayout";
 import { createRootRoute } from "@tanstack/react-router";
 
 export const Route = createRootRoute({
@@ -12,17 +8,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <AuthProvider>
-        <ThemeProvider>
-          <PlayerProvider>
-            <PlaylistProvider>
-              <SecureComponent>
-                <AppLayout />
-              </SecureComponent>
-            </PlaylistProvider>
-          </PlayerProvider>
-        </ThemeProvider>
-      </AuthProvider>
+      <AppLayout />
       {/* <TanStackRouterDevtools position="bottom-right" /> */}
     </>
   );

@@ -1,7 +1,7 @@
-import Avatar from "../Avatar";
-import { HeaderContainer } from "../Elements";
-import ThemeToggle from "../ThemeToggle";
-import UserProfileDropDown from "../UserProfileDropDown";
+import Avatar from "@/components/Avatar";
+import { HeaderContainer } from "@/components/Elements";
+import ThemeToggle from "@/components/ThemeToggle";
+import UserProfileDropDown from "@/components/UserProfileDropDown";
 
 export default function HeaderContent() {
   return (
