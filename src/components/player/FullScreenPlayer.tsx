@@ -19,17 +19,18 @@ import { ProgressBar } from "./ProgressBar";
 import SleeperTimer from "./SleeperTimer";
 import { VolumeSlider } from "./VolumeSlider";
 import Waves from "../Waves";
+import { usePlaylists } from "@/context/PlaylistContext";
 
 export default function FullScreenPlayer({
   onClose,
 }: {
   onClose?: VoidFunction;
 }) {
-  const [isLiked, setIsLiked] = useState(false);
+  const {favourites, toggleLike} = usePlaylists()
   const [showMenu, setShowMenu] = useState(false);
 
   const {
-    currentSong,
+    currentSong: song,
     isPlaying,
     progress,
     duration,
@@ -45,24 +46,25 @@ export default function FullScreenPlayer({
     seek,
   } = usePlayer();
 
-  if (!currentSong) {
+  if (!song) {
     return undefined;
   }
 
   const RepeatIcon = repeatMode === "one" ? Repeat1 : Repeat;
+  const isLiked = favourites.includes(song?.id);
 
   return (
     <div className="w-full max-w-md mx-auto h-full p-4 flex flex-col">
       <div className="flex-1 min-h-0 flex flex-col bg-linear-to-br from-slate-900 to-slate-800 rounded-3xl shadow-2xl">
         <div className="flex justify-center items-center relative">
           <img
-            src={currentSong.coverUrl}
-            alt={currentSong.title}
+            src={song.coverUrl}
+            alt={song.title}
             className="w-full aspect-square rounded-t-3xl object-cover"
           />
           <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-transparent to-transparent" />
           <button
-            onClick={() => setIsLiked(!isLiked)}
+            onClick={() => toggleLike(song.id)}
             className="absolute top-4 right-4 p-2.5 bg-black/30 backdrop-blur-sm rounded-full hover:bg-black/50 transition-all"
           >
             <Like $liked={isLiked} />
@@ -73,10 +75,10 @@ export default function FullScreenPlayer({
             <div className="flex flex-row w-full gap-2 items-center justify-between">
               <div className="flex flex-col gap-2">
                 <p className="font-medium text-sm line-clamp-1 text-ellipsis">
-                  {currentSong.title}
+                  {song.title}
                 </p>
                 <p className="text-xs text-muted-foreground line-clamp-1 text-ellipsis">
-                  {currentSong.artist}
+                  {song.artist}
                 </p>
               </div>
               <div className="h-10 w-10">

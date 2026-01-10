@@ -1,5 +1,5 @@
 import type { RoutePath } from "@/AppRouter";
-import { Clock, Home, Import, Library, ListMusic, User } from "lucide-react";
+import { Clock, Heart, Import, Library, ListMusic, User } from "lucide-react";
 import { Nav, NavLink } from "./Elements";
 
 type NavItem = {
@@ -9,7 +9,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { path: "/", label: "Home", icon: Home },
+  { path: "/", label: "Favourites", icon: Heart },
   { path: "/library", label: "Library", icon: Library },
   { path: "/recent", label: "Recent", icon: Clock },
   { path: "/playlists", label: "Playlists", icon: ListMusic },

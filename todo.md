@@ -192,17 +192,36 @@
 ##### Subtasks
 
 
+#### 009 | Favourites Feature
+
+- Title: Favourites Feature
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 03:44:10:851
+- lastModifiedDate: 2026-01-10 03:44:03:526
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 009
+
+##### Tags
+
+
+##### Subtasks
+
+
+### ✅ Done
+
 #### 008 | Bugs
 
 - Title: Bugs
-- Status: 🚀 In Progress
+- Status: ✅ Done
 - Priority: 🔴 Critical
 - createdDate: 2026-01-10 01:18:18:263
-- lastModifiedDate: 2026-01-10 01:34:01:949
+- lastModifiedDate: 2026-01-10 03:40:24:740
 - dueDate: 2026-01-10 05:30:00:000
 - Id: 008
 - Category: Frontend
 - AssignedTo: Ravinder
+- completedDate: 2026-01-10 03:40:24:740
 
 ##### Tags
 
@@ -212,7 +231,7 @@
 
 ##### Subtasks
 
-- [ ] Recently PLayed
+- [x] Recently PLayed
 - [x] Next song after current song end
 
 ---

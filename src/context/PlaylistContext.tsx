@@ -15,6 +15,8 @@ interface PlaylistContextType {
   addSongToPlaylist: (playlistId: string, songId: string) => void;
   removeSongFromPlaylist: (playlistId: string, songId: string) => void;
   getPlaylist: (id: string) => Playlist | undefined;
+  toggleLike: (songId: string) => void;
+  favourites: string[];
 }
 
 const PlaylistContext = createContext<PlaylistContextType | undefined>(
@@ -22,11 +24,20 @@ const PlaylistContext = createContext<PlaylistContextType | undefined>(
 );
 
 export function PlaylistProvider({ children }: { children: React.ReactNode }) {
+  const [favourites, setFavourities] = useLocalStorage<string[]>(
+    "favourites",
+    []
+  ); // songIds
   const [playlists, setPlaylists] = useLocalStorage<Playlist[]>(
     "playlists",
     []
   );
 
+  const toggleLike = (songId: string) => {
+    const index = favourites.findIndex((id) => id === songId);
+    if (index >= 0) setFavourities((pre) => pre.filter((id) => id !== songId));
+    else setFavourities([songId, ...favourites]);
+  };
   const createPlaylist = useCallback(
     (playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">): Playlist => {
       const newPlaylist: Playlist = {
@@ -107,6 +118,8 @@ export function PlaylistProvider({ children }: { children: React.ReactNode }) {
     <PlaylistContext.Provider
       value={{
         playlists,
+        favourites,
+        toggleLike,
         createPlaylist,
         updatePlaylist,
         deletePlaylist,
