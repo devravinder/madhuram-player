@@ -62,7 +62,7 @@ export default function SongCard({
           alt={song.title}
           className="w-full h-full rounded-lg object-cover"
         />
-        <div className="absolute border p-2 inset-0 flex justify-center items-center">
+        <div className="absolute border p-2 rounded-lg inset-0 flex justify-center items-center">
           {isCurrentSong && <Waves start={isPlaying} />}
         </div>
       </div>
