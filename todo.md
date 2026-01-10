@@ -175,40 +175,45 @@
 
 ##### Subtasks
 
+#### 010 | Bugs-2
+
+- Title: Bugs-2
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 07:50:55:343
+- lastModifiedDate: 2026-01-10 07:50:02:784
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 010
+
+##### Tags
+
+- #urgent
+- #ui
+
+##### Subtasks
+
+- [ ] Recent Played issue after sort & search feature
+- [ ] Audio playing even after logout
+
+### ✅ Done
+
 #### 007 | Search & Sort Feature
 
 - Title: Search & Sort Feature
-- Status: 🚀 In Progress
+- Status: ✅ Done
 - Priority: 🟢 Low
 - createdDate: 2026-01-10 12:17:02:069
-- lastModifiedDate: 2026-01-10 12:17:47:810
+- lastModifiedDate: 2026-01-10 07:50:00:470
 - dueDate: 2026-01-10 05:30:00:000
 - Id: 007
 - startedDate: 2026-01-10 12:17:47:809
+- completedDate: 2026-01-10 07:50:00:470
 
 ##### Tags
 
 
 ##### Subtasks
 
-
-#### 009 | Favourites Feature
-
-- Title: Favourites Feature
-- Status: 🚀 In Progress
-- Priority: 🟢 Low
-- createdDate: 2026-01-10 03:44:10:851
-- lastModifiedDate: 2026-01-10 03:44:03:526
-- dueDate: 2026-01-10 05:30:00:000
-- Id: 009
-
-##### Tags
-
-
-##### Subtasks
-
-
-### ✅ Done
 
 #### 008 | Bugs
 
@@ -233,6 +238,23 @@
 
 - [x] Recently PLayed
 - [x] Next song after current song end
+
+#### 009 | Favourites Feature
+
+- Title: Favourites Feature
+- Status: ✅ Done
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 03:44:10:851
+- lastModifiedDate: 2026-01-10 07:49:58:529
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 009
+- completedDate: 2026-01-10 07:49:58:529
+
+##### Tags
+
+
+##### Subtasks
+
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
