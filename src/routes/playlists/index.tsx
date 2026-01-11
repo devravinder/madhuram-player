@@ -18,7 +18,7 @@ import PlayListCard from "./-components/PlayListCard";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,
-  loader: () => db.playlists.toArray(),
+  loader: () => db.playlists.orderBy("createdAt").toArray(),
 });
 
 function PlayList() {
