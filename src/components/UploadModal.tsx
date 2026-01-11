@@ -1,9 +1,71 @@
+import { addSong } from "@/services/songsService";
+import type { Song } from "@/types/music";
 import { Import } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { parseBlob } from "music-metadata";
+import { useNavigate } from "@tanstack/react-router";
+
+export const UNKNOWN = "Unknown";
+export const DEFAULT_SONG_IMAGE = "/default-song.jpeg";
 
 export function UploadModal() {
+  const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isOpening, setIsOpening] = useState(false);
 
+  useEffect(() => {
+    const input = fileInputRef.current;
+    if (!input) return;
+
+    const handleCancel = () => {
+      setIsOpening(false);
+    };
+
+    input.addEventListener("cancel", handleCancel);
+
+    return () => input.removeEventListener("cancel", handleCancel);
+  }, []);
+
+  const uploadFile = async (file: File) => {
+    const blobUrl = URL.createObjectURL(file!);
+
+    const metadata = await parseBlob(file);
+
+    const title =
+      metadata.common.title || file.name.replace(/\.[^/.]+$/, "") || "uploaded";
+
+    const artist = metadata.common.artist || UNKNOWN;
+    const album = metadata.common.album || UNKNOWN;
+    const picture = metadata.common.picture?.[0] || DEFAULT_SONG_IMAGE;
+
+    const duration = Math.floor(metadata.format.duration || 0);
+
+    const song: Omit<Song, "id"> = {
+      title,
+      artist,
+      album,
+      duration, // in seconds
+      coverUrl: picture as string,
+      audioUrl: blobUrl,
+      addedAt: new Date(),
+    };
+
+    await addSong(song);
+  };
+
+  const uploadFiles = async (files: FileList) => {
+    for (const file of files) {
+      await uploadFile(file!);
+    }
+    navigate({ to: "/library" });
+  };
+
+  const onChange = async (files: FileList | null) => {
+    if (!files || !files.item(0)) return;
+
+    await uploadFiles(files);
+  };
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(true);
@@ -13,14 +75,27 @@ export function UploadModal() {
     setIsDragging(false);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    // Dummy upload - just close modal
+
+    const files = e.dataTransfer.files;
+    const invalidFiles = Array.from(files).filter(
+      (file) => !file.type.startsWith("audio/")
+    );
+
+    if (invalidFiles.length > 0) {
+      alert("Only audio files are allowed!");
+      console.log("Invalid files:", invalidFiles);
+      return false;
+    }
+
+    await uploadFiles(files);
   };
 
-  const handleFileSelect = () => {
-    // Dummy upload - just close modal
+  const openFiles = () => {
+    setIsOpening(true);
+    fileInputRef.current?.click();
   };
 
   return (
@@ -48,9 +123,21 @@ export function UploadModal() {
             Supports MP3, WAV, FLAC, AAC
           </p>
           <button
-            onClick={handleFileSelect}
+            onClick={openFiles}
+            disabled={isOpening}
             className={`disabled:cursor-not-allowed cursor-pointer w-full flex items-center justify-center p-3 rounded-xl transition-colors bg-primary/10 text-primary`}
           >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="audio/*"
+              className="hidden"
+              multiple={true}
+              onChange={(e) => {
+                onChange?.(e.currentTarget.files);
+                setIsOpening(false);
+              }}
+            />
             Choose Files
           </button>
         </div>

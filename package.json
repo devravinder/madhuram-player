@@ -22,6 +22,7 @@
     "dexie": "^4.2.1",
     "dexie-react-hooks": "^4.2.0",
     "lucide-react": "^0.562.0",
+    "music-metadata": "^11.10.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "redaxios": "^0.5.1",
@@ -33,10 +34,8 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
     "@vite-pwa/assets-generator": "^1.0.2",
-    "workbox-core": "^7.3.0",
-    "workbox-window": "^7.4.0",
+    "@vitejs/plugin-react": "^5.1.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -48,7 +47,9 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "npm:rolldown-vite@7.2.5",
-    "vite-plugin-pwa": "^1.2.0"
+    "vite-plugin-pwa": "^1.2.0",
+    "workbox-core": "^7.3.0",
+    "workbox-window": "^7.4.0"
   },
   "pnpm": {
     "overrides": {

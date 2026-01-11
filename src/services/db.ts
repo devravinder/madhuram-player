@@ -14,8 +14,8 @@ export const db = new Dexie("madhuram") as Dexie & {
 };
 
 db.version(1).stores({
-  songs: "++id, title, addedAt", // Primary key and indexed props
-  // ++ auto increment works only for numbers
+  songs: "id, title, addedAt", // Primary key and indexed props
+  // ++ auto increment works only for numbers ( so avoid ++id)
   playlists: "id, name, createdAt",
   audioFiles: "songId",
 });
@@ -23,7 +23,7 @@ db.version(1).stores({
 //====
 const createSampleSongs = async () => {
   console.log("createSampleSongs");
-  await db.songs.bulkAdd(staticSongs);
+  // await db.songs.bulkAdd(staticSongs);
 };
 
 export const RECENT_PLAYLIST_ID = "recent";
