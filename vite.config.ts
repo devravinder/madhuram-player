@@ -7,7 +7,7 @@ import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 
 
 const pwaOptions:Partial<VitePWAOptions> = {
-    registerType: 'prompt',
+    registerType: 'autoUpdate',
     injectRegister: false,
 
     pwaAssets: {
@@ -26,10 +26,11 @@ const pwaOptions:Partial<VitePWAOptions> = {
       globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
+      navigateFallback: 'index.html',
     },
 
     devOptions: {
-      enabled: false,
+      enabled: true,
       navigateFallback: 'index.html',
       suppressWarnings: true,
       type: 'module',
