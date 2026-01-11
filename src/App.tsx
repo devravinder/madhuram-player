@@ -4,6 +4,7 @@ import { PlaylistProvider } from "@/context/PlaylistContext";
 import { ThemeProvider } from "@/hooks/useTheme";
 import type { ReactNode } from "react";
 import AppRouter from "./AppRouter";
+import PWABadge from "./PWABadge";
 
 const ContextProviders = ({ children }: { children: ReactNode }) => (
   <AuthProvider>
@@ -21,6 +22,7 @@ export default function App() {
   return (
     <ContextProviders>
       <AppRouter />
+      <PWABadge />
     </ContextProviders>
   );
 }

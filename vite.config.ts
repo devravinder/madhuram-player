@@ -7,7 +7,7 @@ import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 
 
 const pwaOptions:Partial<VitePWAOptions> = {
-    registerType: 'autoUpdate',
+    registerType: 'prompt',
     injectRegister: false,
 
     pwaAssets: {
