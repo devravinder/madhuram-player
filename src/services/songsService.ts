@@ -15,6 +15,6 @@ export const addSong = async (song: Omit<Song, "id">, id?: string) => {
     id: id || `${crypto.randomUUID().slice(0, 4)}`,
     addedAt: new Date(),
   };
-  await db.songs.add(song);
+  await db.songs.add(newSong);
   return newSong;
 };

@@ -12,13 +12,22 @@ export const db = new Dexie("madhuram") as Dexie & {
   audioFiles: EntityTable<AudioFile, "songId">;
 };
 
-db.version(2).stores({
+db.version(1).stores({
   songs: "id, title, addedAt", // Primary key and indexed props
-  // ++ auto increment works only for numbers ( so avoid ++id)
   playlists: "id, name, createdAt",
   audioFiles: "songId",
 });
 
+/* db.version(2).stores({
+   songs: "id, title, addedAt",
+  // ++ auto increment works only for numbers ( so avoid ++id)
+  playlists: "id, name, createdAt",
+  audioFiles: "songId",
+}).upgrade(async tx => {
+  console.log("Upgrading to v2 → clearing old data");
+  await tx.table("songs").clear();
+  await tx.table("playlists").clear()
+}); */
 //====
 const createSampleSongs = async () => {
   console.log("createSampleSongs");
