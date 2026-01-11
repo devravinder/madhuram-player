@@ -173,45 +173,23 @@
 
 ##### Subtasks
 
-
-### 🚀 In Progress
+### ✅ Done
 
 #### 004 | Integrate with Indexdb
 
 - Title: Integrate with Indexdb
-- Status: 🚀 In Progress
+- Status: ✅ Done
 - Priority: 🟢 Low
 - createdDate: 2026-01-10 11:46:40:144
-- lastModifiedDate: 2026-01-10 12:14:02:801
+- lastModifiedDate: 2026-01-11 01:21:59:689
 - dueDate: 2026-01-10 05:30:00:000
 - Id: 004
 - startedDate: 2026-01-10 12:14:02:801
+- completedDate: 2026-01-11 01:21:59:688
 
 ##### Tags
 
 ##### Subtasks
-
-#### 010 | Bugs-2
-
-- Title: Bugs-2
-- Status: 🚀 In Progress
-- Priority: 🟢 Low
-- createdDate: 2026-01-10 07:50:55:343
-- lastModifiedDate: 2026-01-10 07:50:02:784
-- dueDate: 2026-01-10 05:30:00:000
-- Id: 010
-
-##### Tags
-
-- #urgent
-- #ui
-
-##### Subtasks
-
-- [ ] Recent Played issue after sort & search feature
-- [ ] Audio playing even after logout
-
-### ✅ Done
 
 #### 007 | Search & Sort Feature
 
@@ -267,6 +245,48 @@
 ##### Tags
 
 ##### Subtasks
+
+#### 010 | Bugs-2
+
+- Title: Bugs-2
+- Status: ✅ Done
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 07:50:55:343
+- lastModifiedDate: 2026-01-11 06:25:12:413
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 010
+- completedDate: 2026-01-11 06:25:12:413
+
+##### Tags
+
+- #urgent
+- #ui
+
+##### Subtasks
+
+- [x] Recent Played issue after sort & search feature
+- [x] Audio playing even after logout
+- [x] Audio Issue in Prod
+
+### 🚀 In Progress
+
+#### 012 | Pwa
+
+- Title: Pwa
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-11 06:25:26:464
+- lastModifiedDate: 2026-01-11 06:25:14:245
+- dueDate: 2026-01-11 05:30:00:000
+- Id: 012
+
+##### Tags
+
+- #feature
+- #ui
+
+##### Subtasks
+
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
