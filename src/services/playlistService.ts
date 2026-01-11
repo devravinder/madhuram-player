@@ -20,12 +20,10 @@ export const updatePlaylist = async (
   id: string,
   updates: Partial<Omit<Playlist, "id" | "createdAt">>
 ) => {
-  const res = await db.playlists.update(id, {
+  await db.playlists.update(id, {
     ...updates,
     updatedAt: new Date(),
   });
-
-  console.log({ res });
 };
 
 export const deletePlaylist = (id: string) => db.playlists.delete(id);

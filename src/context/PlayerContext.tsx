@@ -8,6 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { usePlaylists } from "./PlaylistContext";
 
 interface PlayerContextType {
   // State
@@ -42,6 +43,7 @@ export const RECENTLY_PLAYED_LIMIT = 10;
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 export function PlayerProvider({ children }: { children: React.ReactNode }) {
+  const { recentlyPlayed, addToRecentlyPlayed } = usePlaylists();
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
@@ -57,11 +59,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [shuffle, setShuffle] = useLocalStorage("shuffle", false);
   const [queue, setQueue] = useState<Song[]>([]);
   const [queueIndex, setQueueIndex] = useState(0);
-  const [recentlyPlayed, setRecentlyPlayed] = useLocalStorage<Song[]>(
-    "recentlyPlayed",
-    []
-  );
-  const isRecentQueue = useRef(queue===recentlyPlayed)
+  const isRecentQueue = useRef(queue === recentlyPlayed);
   const [sleepTimer, setSleepTimerState] = useState<SleepTimer>({
     isActive: false,
     endTime: null,
@@ -74,15 +72,6 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       setIsPlaying(false);
     }
   }, []);
-  const addToRecentlyPlayed = useCallback(
-    (song: Song) => {
-      setRecentlyPlayed((prev) => {
-        const filtered = prev.filter((s) => s.id !== song.id);
-        return [song, ...filtered].slice(0, RECENTLY_PLAYED_LIMIT);
-      });
-    },
-    [setRecentlyPlayed]
-  );
 
   const loadAndPlay = useCallback(
     (song: Song) => {
@@ -95,7 +84,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
         .then(() => {
           setIsPlaying(true);
           if (!isRecentQueue.current) {
-            addToRecentlyPlayed(song);
+            addToRecentlyPlayed(song.id);
           }
         })
         .catch((err) => console.error("Error playing audio:", err));
@@ -183,7 +172,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const handleQueueChange = useCallback(
     (newQueue: Song[]) => {
       setQueue(newQueue);
-      isRecentQueue.current = newQueue === recentlyPlayed
+      isRecentQueue.current = newQueue === recentlyPlayed;
     },
     [recentlyPlayed]
   );
