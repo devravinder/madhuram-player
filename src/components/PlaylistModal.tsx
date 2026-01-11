@@ -1,11 +1,12 @@
+import { usePlaylists } from "@/context/PlaylistContext";
 import { staticSongs } from "@/data/songs";
-import { addSongToPlaylist, createPlaylist, deletePlaylist, removeSongFromPlaylist, updatePlaylist } from "@/services/playlistService";
 import type { Playlist } from "@/types/music";
-import { useNavigate } from "@tanstack/react-router";
 import { Check, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Input } from "./Elements";
 import Modal from "./Modal";
+import { Input } from "./Elements";
+import { useNavigate } from "@tanstack/react-router";
+import { addSongToPlaylist, createPlaylist, removeSongFromPlaylist, updatePlaylist } from "@/services/playlistService";
 
 interface PlaylistModalProps {
   title: string;

@@ -27,7 +27,7 @@ export const Route = createFileRoute("/playlists/")({
 function PlayList() {
   const navigate = useNavigate();
   const playlists = Route.useLoaderData();
-  const {favourites}= usePlaylists()
+  const { favourites } = usePlaylists();
   const [showModal, setShowModal] = useState(false);
 
   const newPlaylist = (): Omit<Playlist, "createdAt" | "updatedAt"> => ({
@@ -46,7 +46,7 @@ function PlayList() {
       />
     );
 
-  const noItems = !(playlists.length);
+  const noItems = !playlists.length;
 
   return (
     <PageLayout>
@@ -84,8 +84,13 @@ function PlayList() {
                         })
                       }
                       key={ele.id}
+                      id={ele.id}
                       name={ele.name}
-                      noOfSongs={ FAVOURITE_PLAYLIST_ID === ele.id ? favourites.length : ele.songIds.length}
+                      noOfSongs={
+                        FAVOURITE_PLAYLIST_ID === ele.id
+                          ? favourites.length
+                          : ele.songIds.length
+                      }
                     />
                   ))
                 : undefined}

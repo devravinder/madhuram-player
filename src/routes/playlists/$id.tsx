@@ -14,9 +14,10 @@ import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
 import db from "@/services/db";
 import { createFileRoute } from "@tanstack/react-router";
-import { ListMusic, Pencil, Play } from "lucide-react";
+import { Pencil, Play } from "lucide-react";
 import { useState } from "react";
 import NoItems from "./-components/NoItems";
+import PlayListIcon from "./-components/PlayListIcon";
 
 export const Route = createFileRoute("/playlists/$id")({
   component: PlaylistDetails,
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/playlists/$id")({
     if (!playlist) return { playlist, songs: [] };
     const allSongs = await db.songs.toArray();
 
-    console.log("===== /playlists/$id in loader")
+    console.log("===== /playlists/$id in loader");
 
     const songs = allSongs.filter((song) => playlist.songIds.includes(song.id));
 
@@ -50,13 +51,15 @@ function PlaylistDetails() {
       />
     );
 
+
+
   return (
     <PageLayout>
       <PageHeader>
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row gap-4 items-center">
             <HeaderIcon>
-              <ListMusic size={30} />
+              <PlayListIcon id={playlist.id} />
             </HeaderIcon>
 
             <div className="">

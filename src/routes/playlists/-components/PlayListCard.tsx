@@ -1,17 +1,26 @@
-import { ListMusic } from "lucide-react";
 import { IconButton } from "@/components/Elements";
+import PlayListIcon from "./PlayListIcon";
 
 type PlayListCardProps = {
-    name: string,
-    noOfSongs: number,
-    onClick: VoidFunction
-}
+  id: string;
+  name: string;
+  noOfSongs: number;
+  onClick: VoidFunction;
+};
 
-export default function PlayListCard({name, noOfSongs, onClick}:PlayListCardProps) {
+export default function PlayListCard({
+  id,
+  name,
+  noOfSongs,
+  onClick,
+}: PlayListCardProps) {
   return (
-    <div onClick={onClick} className="border-card cursor-pointer text-foreground bg-card w-full flex flex-row items-center gap-4 p-4 rounded-xl">
+    <div
+      onClick={onClick}
+      className="border-card cursor-pointer text-foreground bg-card w-full flex flex-row items-center gap-4 p-4 rounded-xl"
+    >
       <IconButton className="p-4 h-16 w-16 rounded-xl">
-        <ListMusic size={30} />
+        <PlayListIcon id={id} />
       </IconButton>
 
       <div className="">
