@@ -27,7 +27,7 @@ const pwaOptions:Partial<VitePWAOptions> = {
       cleanupOutdatedCaches: true,
       clientsClaim: true,
       navigateFallback: 'index.html',
-      navigateFallbackDenylist: [/^\/src/],
+      // navigateFallbackDenylist: [/^\/src/],
     },
 
     devOptions: {
