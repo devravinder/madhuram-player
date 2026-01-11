@@ -26,7 +26,7 @@ export default function FullScreenPlayer({
 }: {
   onClose?: VoidFunction;
 }) {
-  const {favourites, toggleLike} = usePlaylists()
+  const {favouritePlaylist, toggleLike} = usePlaylists()
   const [showMenu, setShowMenu] = useState(false);
 
   const {
@@ -51,7 +51,7 @@ export default function FullScreenPlayer({
   }
 
   const RepeatIcon = repeatMode === "one" ? Repeat1 : Repeat;
-  const isLiked = favourites.includes(song?.id);
+  const isLiked = favouritePlaylist.songIds.includes(song?.id);
 
   return (
     <div className="w-full max-w-md mx-auto h-full p-4 flex flex-col">

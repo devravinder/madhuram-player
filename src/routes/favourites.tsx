@@ -7,22 +7,38 @@ import {
   PageLayout,
   PageMain,
   PageMainContainer,
-  PageMainSection
+  PageMainSection,
 } from "@/components/Elements";
 import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
-import db from "@/services/db";
-import { createFileRoute } from "@tanstack/react-router";
 import { Music, Play } from "lucide-react";
 
-export const Route = createFileRoute("/library")({
+import { FAVOURITE_PLAYLIST_ID } from "@/context/PlaylistContext";
+import db from "@/services/db";
+import { createFileRoute } from "@tanstack/react-router";
+import NoItems from "./playlists/-components/NoItems";
+
+
+
+export const Route = createFileRoute("/favourites")({
   component: RouteComponent,
-  loader:()=>db.songs.toArray()
+  loader: async () => {
+    console.log("/ loader");
+    
+    const favs = await db.playlists.get(FAVOURITE_PLAYLIST_ID);
+    if (!favs) return [];
+    const allSongs = await db.songs.toArray();
+    return allSongs.filter((song) => favs.songIds.includes(song.id));
+  },
 });
 
 function RouteComponent() {
   const { playSong } = usePlayer();
+
   const songs = Route.useLoaderData();
+
+  if (!songs) return undefined;
+
   return (
     <PageLayout>
       <PageHeader>
@@ -33,7 +49,7 @@ function RouteComponent() {
             </HeaderIcon>
 
             <div className="">
-              <HeaderTitle>Library</HeaderTitle>
+              <HeaderTitle>Favourites</HeaderTitle>
               <HeaderSubTitle>{`${songs.length} songs`}</HeaderSubTitle>
             </div>
           </div>
@@ -48,7 +64,11 @@ function RouteComponent() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            <SongsList songs={songs} />
+            {songs.length ? (
+              <SongsList songs={songs} />
+            ) : (
+              <NoItems subTitle="Like any song to see here" />
+            )}
           </PageMainSection>
         </PageMainContainer>
       </PageMain>

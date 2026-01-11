@@ -5,20 +5,22 @@ import { ThemeProvider } from "@/hooks/useTheme";
 import type { ReactNode } from "react";
 import AppRouter from "./AppRouter";
 
-const ContextProviders = ({children}:{children:ReactNode}) => (
+const ContextProviders = ({ children }: { children: ReactNode }) => (
   <AuthProvider>
     <ThemeProvider>
-      <PlayerProvider>
-        <PlaylistProvider>
-          <SecureComponent>
-           {children}
-          </SecureComponent>
-        </PlaylistProvider>
-      </PlayerProvider>
+      <PlaylistProvider>
+        <PlayerProvider>
+          <SecureComponent>{children}</SecureComponent>
+        </PlayerProvider>
+      </PlaylistProvider>
     </ThemeProvider>
   </AuthProvider>
 );
 
 export default function App() {
-  return <ContextProviders><AppRouter /></ContextProviders>;
+  return (
+    <ContextProviders>
+      <AppRouter />
+    </ContextProviders>
+  );
 }

@@ -7,41 +7,36 @@ import {
   PageLayout,
   PageMain,
   PageMainContainer,
-  PageMainSection
+  PageMainSection,
 } from "@/components/Elements";
 import { PlaylistModal } from "@/components/PlaylistModal";
 import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
-import { usePlaylists } from "@/context/PlaylistContext";
-import { staticSongs } from "@/data/songs";
-import { fetchPlayListDetails } from "@/services/playlistService";
+import db from "@/services/db";
 import { createFileRoute } from "@tanstack/react-router";
 import { ListMusic, Pencil, Play } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import NoItems from "./-components/NoItems";
 
 export const Route = createFileRoute("/playlists/$id")({
   component: PlaylistDetails,
-  loader: ({ params: { id } }) => fetchPlayListDetails(id),
+  loader: async ({ params: { id } }) => {
+    const playlist = await db.playlists.get(id); // working with only number ids
+    if (!playlist) return { playlist, songs: [] };
+    const allSongs = await db.songs.toArray();
+
+    const songs = allSongs.filter((song) => playlist.songIds.includes(song.id));
+
+    return { playlist, songs };
+  },
 });
 
 function PlaylistDetails() {
   const [showModal, setShowModal] = useState(false);
 
   const { playSong } = usePlayer();
+  const { playlist, songs } = Route.useLoaderData();
 
-  const { playlists } = usePlaylists();
-  const { id } = Route.useParams();
-  const playlist = playlists.find((ele) => ele.id === id);
-  // const playlist = Route.useLoaderData();
-
-  const songs = useMemo(
-    () =>
-      playlist
-        ? staticSongs.filter((song) => playlist.songIds.includes(song.id))
-        : [],
-    [playlist]
-  );
   if (!playlist) return undefined;
 
   if (showModal)
@@ -63,9 +58,7 @@ function PlaylistDetails() {
             </HeaderIcon>
 
             <div className="">
-              <HeaderTitle>
-                {playlist.name}
-              </HeaderTitle>
+              <HeaderTitle>{playlist.name}</HeaderTitle>
               <HeaderSubTitle>{`${playlist.songIds.length} songs`}</HeaderSubTitle>
             </div>
           </div>

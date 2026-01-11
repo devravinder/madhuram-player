@@ -14,7 +14,8 @@ export const db = new Dexie("madhuram") as Dexie & {
 
 db.version(1).stores({
   songs: "++id, title, addedAt", // Primary key and indexed props
-  playlists: '++id, name, songIds',
+  // ++ auto increment works only for numbers
+  playlists: 'id, name, songIds',
   audioFiles: 'songId'
 })
 

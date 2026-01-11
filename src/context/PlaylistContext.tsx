@@ -1,10 +1,16 @@
-import React, { createContext, useContext, useCallback } from "react";
-import { type Playlist } from "@/types/music";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import db from "@/services/db";
+import { type Playlist } from "@/types/music";
 import { useLiveQuery } from "dexie-react-hooks";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+} from "react";
 interface PlaylistContextType {
   playlists: Playlist[];
+  recentPlaylist: Playlist;
+  favouritePlaylist: Playlist;
   createPlaylist: (
     playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">
   ) => Promise<Playlist>;
@@ -17,44 +23,71 @@ interface PlaylistContextType {
   removeSongFromPlaylist: (playlistId: string, songId: string) => Promise<void>;
   getPlaylist: (id: string) => Playlist | undefined;
   toggleLike: (songId: string) => void;
-  favourites: string[];
 }
 
 const PlaylistContext = createContext<PlaylistContextType | undefined>(
   undefined
 );
 
+export const RECENT_PLAYLIST_ID = "recentPlaylist";
+export const FAVOURITE_PLAYLIST_ID = "favouritePlaylist";
+
+const recentPlaylistDefault: Playlist = {
+  id: RECENT_PLAYLIST_ID,
+  name: "Recently Played",
+  description: "recently played songs",
+  songIds: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+const favouritePlaylistDefault: Playlist = {
+  id: FAVOURITE_PLAYLIST_ID,
+  name: "Favourites",
+  description: "Favourite songs",
+  songIds: [],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
 export function PlaylistProvider({ children }: { children: React.ReactNode }) {
-  const [favourites, setFavourities] = useLocalStorage<string[]>(
-    "favourites",
-    []
-  ); // songIds
+  const recentPlaylist = useLiveQuery(async () => {
+    const playList = await db.playlists.get(RECENT_PLAYLIST_ID);
+    if (playList) return playList;
+  })!;
+
+  const favouritePlaylist = useLiveQuery(async () => {
+    const playList = await db.playlists.get(FAVOURITE_PLAYLIST_ID);
+    if (playList) return playList;
+  })!;
 
   const playlists = useLiveQuery(async () => {
     const res = await db.playlists.toArray();
     return res;
   })!;
 
-  const toggleLike = (songId: string) => {
-    const index = favourites.findIndex((id) => id === songId);
-    if (index >= 0) setFavourities((pre) => pre.filter((id) => id !== songId));
-    else setFavourities([songId, ...favourites]);
+  const toggleLike = async (songId: string) => {
+    const favourites = favouritePlaylist.songIds;
+    const songIds = favourites.includes(songId)
+      ? favourites.filter((id) => id !== songId)
+      : [songId, ...favourites];
+
+    await db.playlists.update(FAVOURITE_PLAYLIST_ID, { songIds });
   };
   const createPlaylist = useCallback(
     async (
-      playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">
+      playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">,
+      id?: string
     ): Promise<Playlist> => {
-      const newPlaylist: Omit<Playlist, "id"> = {
+      const newPlaylist: Playlist = {
         ...playlist,
+        id: id || `${playlists.length}`,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
-
-      const res = await db.playlists.add(newPlaylist);
-
-      return { ...newPlaylist, id: res };
+      await db.playlists.add(newPlaylist);
+      return newPlaylist;
     },
-    []
+    [playlists]
   );
 
   const updatePlaylist = useCallback(
@@ -81,7 +114,6 @@ export function PlaylistProvider({ children }: { children: React.ReactNode }) {
       const playlist = playlists.find((item) => item.id === playlistId)!;
 
       if (!playlist.songIds.includes(songId)) playlist.songIds.push(songId);
-
       const res = await db.playlists.update(playlistId, {
         songIds: playlist.songIds,
         updatedAt: new Date(),
@@ -115,11 +147,21 @@ export function PlaylistProvider({ children }: { children: React.ReactNode }) {
     [playlists]
   );
 
+  useEffect(() => {
+    const createInitialPlayLists = async () => {
+      console.log("createInitialPlayLists");
+      await createPlaylist(recentPlaylistDefault, RECENT_PLAYLIST_ID);
+      await createPlaylist(favouritePlaylistDefault, FAVOURITE_PLAYLIST_ID);
+    };
+    if (playlists && playlists.length == 0) createInitialPlayLists();
+  }, [playlists, createPlaylist]);
+
   return (
     <PlaylistContext.Provider
       value={{
         playlists,
-        favourites,
+        recentPlaylist,
+        favouritePlaylist,
         toggleLike,
         createPlaylist,
         updatePlaylist,

@@ -11,7 +11,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { path: "/library", label: "Library", icon: Music2 },
   { path: "/playlists", label: "Playlists", icon: ListMusic },
-  { path: "/", label: "Favourites", icon: Heart },
+  { path: "/favourites", label: "Favourites", icon: Heart },
   { path: "/import", label: "Import", icon: Import },
   { path: "/settings", label: "Settings", icon: Settings },
 ];
