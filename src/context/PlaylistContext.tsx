@@ -8,6 +8,7 @@ import React, {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -15,6 +16,7 @@ interface PlaylistContextType {
   addToRecentlyPlayed: (songId: string, playListId?: string) => Promise<void>;
   toggleLike: (songId: string) => void;
   favourites: string[];
+  setFavourites: (ids: string[]) => void;
 }
 
 const PlaylistContext = createContext<PlaylistContextType | undefined>(
@@ -64,10 +66,21 @@ export function PlaylistProvider({ children }: { children: React.ReactNode }) {
     },
     [setFavourites]
   );
+
+  useEffect(() => {
+    const syncData = async () => {
+      const favouritePlaylist = await getPlaylist(FAVOURITE_PLAYLIST_ID);
+      if (favouritePlaylist && favouritePlaylist.songIds)
+        setFavourites(favouritePlaylist?.songIds);
+    };
+    syncData();
+  }, []);
+
   return (
     <PlaylistContext.Provider
       value={{
         favourites,
+        setFavourites,
         addToRecentlyPlayed,
         toggleLike,
       }}

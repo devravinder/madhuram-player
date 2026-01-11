@@ -1,7 +1,7 @@
 import {
   createPlaylist,
   deletePlaylist,
-  updatePlaylist
+  updatePlaylist,
 } from "@/services/playlistService";
 import type { Playlist } from "@/types/music";
 import { useNavigate } from "@tanstack/react-router";
@@ -10,8 +10,9 @@ import { useEffect, useState } from "react";
 import { Input } from "./Elements";
 import Modal from "./Modal";
 
-import db from "@/services/db";
+import db, { FAVOURITE_PLAYLIST_ID } from "@/services/db";
 import { useLiveQuery } from "dexie-react-hooks";
+import { usePlaylists } from "@/context/PlaylistContext";
 
 interface PlaylistModalProps {
   title: string;
@@ -25,6 +26,7 @@ export function PlaylistModal({
   onClose,
 }: PlaylistModalProps) {
   const allSongs = useLiveQuery(() => db.songs.toArray());
+  const { setFavourites } = usePlaylists();
 
   const navigate = useNavigate();
 
@@ -43,19 +45,19 @@ export function PlaylistModal({
   }, [playlist]);
 
   const handleSave = () => {
-    const songIds= [...selectedSongs]
+    const songIds = [...selectedSongs];
     if (playlist.id) {
       updatePlaylist(playlist.id, {
         name,
         description: description || undefined,
-        songIds
+        songIds,
       });
-
+      if (playlist.id === FAVOURITE_PLAYLIST_ID) setFavourites(songIds);
     } else {
       createPlaylist({
         name,
         description,
-        songIds
+        songIds,
       });
     }
 
