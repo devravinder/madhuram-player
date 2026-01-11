@@ -13,8 +13,7 @@ import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
 import { Music, Play } from "lucide-react";
 
-import { FAVOURITE_PLAYLIST_ID } from "@/context/PlaylistContext";
-import db from "@/services/db";
+import db, { FAVOURITE_PLAYLIST_ID } from "@/services/db";
 import { createFileRoute } from "@tanstack/react-router";
 import NoItems from "./playlists/-components/NoItems";
 
@@ -23,7 +22,7 @@ import NoItems from "./playlists/-components/NoItems";
 export const Route = createFileRoute("/favourites")({
   component: RouteComponent,
   loader: async () => {
-    console.log("/ loader");
+    console.log("/favourites loader");
     
     const favs = await db.playlists.get(FAVOURITE_PLAYLIST_ID);
     if (!favs) return [];

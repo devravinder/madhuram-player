@@ -1,11 +1,11 @@
-import { usePlaylists } from "@/context/PlaylistContext";
 import { staticSongs } from "@/data/songs";
+import { addSongToPlaylist, createPlaylist, deletePlaylist, removeSongFromPlaylist, updatePlaylist } from "@/services/playlistService";
 import type { Playlist } from "@/types/music";
+import { useNavigate } from "@tanstack/react-router";
 import { Check, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
 import { Input } from "./Elements";
-import { useNavigate } from "@tanstack/react-router";
+import Modal from "./Modal";
 
 interface PlaylistModalProps {
   title: string;
@@ -20,13 +20,6 @@ export function PlaylistModal({
 }: PlaylistModalProps) {
   const navigate = useNavigate();
 
-  const {
-    deletePlaylist,
-    createPlaylist,
-    updatePlaylist,
-    addSongToPlaylist,
-    removeSongFromPlaylist,
-  } = usePlaylists();
   const isEditing = playlist.id;
   const [name, setName] = useState(playlist.name);
   const [description, setDescription] = useState(playlist.description || "");

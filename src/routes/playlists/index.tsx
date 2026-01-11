@@ -10,23 +10,24 @@ import {
   PageMainSection,
 } from "@/components/Elements";
 import { PlaylistModal } from "@/components/PlaylistModal";
-import { usePlaylists } from "@/context/PlaylistContext";
+import { usePlayer } from "@/context/PlayerContext";
+import db from "@/services/db";
 import type { Playlist } from "@/types/music";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ListMusic, Plus } from "lucide-react";
 import { useState } from "react";
 import NoItems from "./-components/NoItems";
 import PlayListCard from "./-components/PlayListCard";
-import { usePlayer } from "@/context/PlayerContext";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,
+  loader: () => db.playlists.toArray(),
 });
 
 function PlayList() {
   const navigate = useNavigate();
+  const playlists = Route.useLoaderData();
   const { recentlyPlayed } = usePlayer();
-  const { playlists } = usePlaylists();
   const [showModal, setShowModal] = useState(false);
 
   const newPlaylist = (): Omit<Playlist, "createdAt" | "updatedAt"> => ({
@@ -73,11 +74,13 @@ function PlayList() {
         <PageMainContainer>
           <PageMainSection>
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {recentlyPlayed.length ? <PlayListCard
-                onClick={() => navigate({ to: "/playlists/recent" })}
-                name={"Recently PLayed"}
-                noOfSongs={recentlyPlayed.length}
-              />:undefined}
+              {recentlyPlayed.length ? (
+                <PlayListCard
+                  onClick={() => navigate({ to: "/playlists/recent" })}
+                  name={"Recently PLayed"}
+                  noOfSongs={recentlyPlayed.length}
+                />
+              ) : undefined}
               {playlists.length
                 ? playlists.map((ele) => (
                     <PlayListCard
