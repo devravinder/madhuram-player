@@ -34,6 +34,9 @@
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "@vite-pwa/assets-generator": "^1.0.2",
+    "workbox-core": "^7.3.0",
+    "workbox-window": "^7.4.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -51,5 +54,9 @@
     "overrides": {
       "vite": "npm:rolldown-vite@7.2.5"
     }
+  },
+  "resolutions": {
+    "sharp": "^0.33.5",
+    "sharp-ico": "^0.1.5"
   }
 }
