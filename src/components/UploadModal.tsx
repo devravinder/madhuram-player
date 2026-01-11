@@ -8,6 +8,14 @@ import { useNavigate } from "@tanstack/react-router";
 export const UNKNOWN = "Unknown";
 export const DEFAULT_SONG_IMAGE = "/default-song.jpeg";
 
+const allowedTypes = [
+  "audio/mpeg", // mp3
+  "audio/wav",
+  "audio/mp4", // m4a
+  "audio/aac",
+  "audio/ogg",
+];
+
 export function UploadModal() {
   const navigate = useNavigate();
   const [isDragging, setIsDragging] = useState(false);
@@ -81,7 +89,7 @@ export function UploadModal() {
 
     const files = e.dataTransfer.files;
     const invalidFiles = Array.from(files).filter(
-      (file) => !file.type.startsWith("audio/")
+      (file) => !allowedTypes.includes(file.type)
     );
 
     if (invalidFiles.length > 0) {
@@ -130,7 +138,7 @@ export function UploadModal() {
             <input
               ref={fileInputRef}
               type="file"
-              accept="audio/*"
+              accept=".mp3,.wav,.m4a,audio/*"
               className="hidden"
               multiple={true}
               onChange={(e) => {

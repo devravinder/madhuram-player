@@ -268,17 +268,16 @@
 - [x] Audio playing even after logout
 - [x] Audio Issue in Prod
 
-### 🚀 In Progress
-
 #### 012 | Pwa
 
 - Title: Pwa
-- Status: 🚀 In Progress
+- Status: ✅ Done
 - Priority: 🟢 Low
 - createdDate: 2026-01-11 06:25:26:464
-- lastModifiedDate: 2026-01-11 06:25:14:245
+- lastModifiedDate: 2026-01-11 11:35:39:987
 - dueDate: 2026-01-11 05:30:00:000
 - Id: 012
+- completedDate: 2026-01-11 11:35:39:987
 
 ##### Tags
 
@@ -287,6 +286,25 @@
 
 ##### Subtasks
 
+
+### 🚀 In Progress
+
+#### 013 | Bugs-3
+
+- Title: Bugs-3
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-11 11:36:04:938
+- lastModifiedDate: 2026-01-11 11:35:41:311
+- dueDate: 2026-01-11 05:30:00:000
+- Id: 013
+
+##### Tags
+
+
+##### Subtasks
+
+- [ ] loader is executing many times - use memo
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
