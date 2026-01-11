@@ -1,6 +1,5 @@
 // db.js
 
-import { staticSongs } from "@/data/songs";
 import type { AudioFile, Playlist, Song } from "@/types/music";
 import { Dexie, type EntityTable } from "dexie";
 
@@ -13,7 +12,7 @@ export const db = new Dexie("madhuram") as Dexie & {
   audioFiles: EntityTable<AudioFile, "songId">;
 };
 
-db.version(1).stores({
+db.version(2).stores({
   songs: "id, title, addedAt", // Primary key and indexed props
   // ++ auto increment works only for numbers ( so avoid ++id)
   playlists: "id, name, createdAt",
