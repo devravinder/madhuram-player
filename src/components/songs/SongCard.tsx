@@ -9,7 +9,7 @@ interface SongCardProps {
   song: Song;
   queue: Song[];
   index: number;
-  playListId?: string;
+  playListId: string;
 }
 
 export default function SongCard({

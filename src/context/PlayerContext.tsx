@@ -24,7 +24,7 @@ interface PlayerContextType {
   sleepTimer: SleepTimer;
 
   // Actions
-  playSong: (queue: Song[], songIndex: number, playListId?: string) => void;
+  playSong: (queue: Song[], songIndex: number, playListId: string) => void;
   togglePlay: () => void;
   pause: () => void;
   resume: () => void;

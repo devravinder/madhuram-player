@@ -11,7 +11,7 @@ import {
 } from "@/components/Elements";
 import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
-import db from "@/services/db";
+import db, { DEFAULT_PLAYLIST } from "@/services/db";
 import { createFileRoute } from "@tanstack/react-router";
 import { Music, Play } from "lucide-react";
 
@@ -38,7 +38,7 @@ function RouteComponent() {
             </div>
           </div>
           <div className="flex flex-row gap-4">
-            <Button.Primary onClick={() => playSong(songs, 0)}>
+            <Button.Primary onClick={() => playSong(songs, 0,DEFAULT_PLAYLIST)}>
               <Play size={18} />
               <span className="hidden sm:block">Play</span>
             </Button.Primary>
@@ -48,7 +48,7 @@ function RouteComponent() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            <SongsList songs={songs} />
+            <SongsList songs={songs} playListId={DEFAULT_PLAYLIST} />
           </PageMainSection>
         </PageMainContainer>
       </PageMain>

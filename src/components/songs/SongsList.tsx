@@ -4,7 +4,8 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import { ArrowUpDown, Search } from "lucide-react";
 import { Button, Input } from "../Elements";
 
-export default function SongsList({ songs, showSearchBar=true, playListId }: { songs: Song[], showSearchBar?:boolean, playListId?: string }) {
+export default function SongsList({ songs, showSearchBar=true, playListId }: 
+  { songs: Song[], showSearchBar?:boolean, playListId: string }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("date-desc");
   const [showSortMenu, setShowSortMenu] = useState(false);
