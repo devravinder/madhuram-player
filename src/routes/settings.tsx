@@ -14,6 +14,7 @@ import { LogOut, Pencil } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { createFileRoute } from "@tanstack/react-router";
 import ThemeToggle from "@/components/ThemeToggle";
+import { usePlayer } from "@/context/PlayerContext";
 
 export const Route = createFileRoute("/settings")({
   component: RouteComponent,
@@ -21,6 +22,11 @@ export const Route = createFileRoute("/settings")({
 
 function RouteComponent() {
   const { user, logout } = useAuth();
+  const { pause } = usePlayer();
+  const handleLogout = () => {
+    pause();
+    logout();
+  };
   return (
     <PageLayout>
       <PageHeader>
@@ -44,7 +50,7 @@ function RouteComponent() {
               <Pencil size={18} />
               <span className="hidden sm:block"> Edit</span>
             </Button.Secondary>
-            <Button.Primary onClick={logout}>
+            <Button.Primary onClick={handleLogout}>
               <LogOut size={18} />
               <span className="hidden sm:block">Logout</span>
             </Button.Primary>
