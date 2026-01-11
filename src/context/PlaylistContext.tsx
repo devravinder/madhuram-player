@@ -1,19 +1,20 @@
 import React, { createContext, useContext, useCallback } from "react";
 import { type Playlist } from "@/types/music";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-
+import db from "@/services/db";
+import { useLiveQuery } from "dexie-react-hooks";
 interface PlaylistContextType {
   playlists: Playlist[];
   createPlaylist: (
     playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">
-  ) => Playlist;
+  ) => Promise<Playlist>;
   updatePlaylist: (
     id: string,
     updates: Partial<Omit<Playlist, "id" | "createdAt">>
-  ) => void;
-  deletePlaylist: (id: string) => void;
-  addSongToPlaylist: (playlistId: string, songId: string) => void;
-  removeSongFromPlaylist: (playlistId: string, songId: string) => void;
+  ) => Promise<void>;
+  deletePlaylist: (id: string) => Promise<void>;
+  addSongToPlaylist: (playlistId: string, songId: string) => Promise<void>;
+  removeSongFromPlaylist: (playlistId: string, songId: string) => Promise<void>;
   getPlaylist: (id: string) => Playlist | undefined;
   toggleLike: (songId: string) => void;
   favourites: string[];
@@ -28,10 +29,11 @@ export function PlaylistProvider({ children }: { children: React.ReactNode }) {
     "favourites",
     []
   ); // songIds
-  const [playlists, setPlaylists] = useLocalStorage<Playlist[]>(
-    "playlists",
-    []
-  );
+
+  const playlists = useLiveQuery(async () => {
+    const res = await db.playlists.toArray();
+    return res;
+  })!;
 
   const toggleLike = (songId: string) => {
     const index = favourites.findIndex((id) => id === songId);
@@ -39,72 +41,71 @@ export function PlaylistProvider({ children }: { children: React.ReactNode }) {
     else setFavourities([songId, ...favourites]);
   };
   const createPlaylist = useCallback(
-    (playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">): Playlist => {
-      const newPlaylist: Playlist = {
+    async (
+      playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">
+    ): Promise<Playlist> => {
+      const newPlaylist: Omit<Playlist, "id"> = {
         ...playlist,
-        id: `playlist-${Date.now()}`,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      setPlaylists((prev) => [...prev, newPlaylist]);
-      return newPlaylist;
+      const res = await db.playlists.add(newPlaylist);
+
+      return { ...newPlaylist, id: res };
     },
-    [setPlaylists]
+    []
   );
 
   const updatePlaylist = useCallback(
-    (id: string, updates: Partial<Omit<Playlist, "id" | "createdAt">>) => {
-      setPlaylists((prev) =>
-        prev.map((playlist) =>
-          playlist.id === id
-            ? { ...playlist, ...updates, updatedAt: new Date() }
-            : playlist
-        )
-      );
+    async (
+      id: string,
+      updates: Partial<Omit<Playlist, "id" | "createdAt">>
+    ) => {
+      const res = await db.playlists.update(id, {
+        ...updates,
+        updatedAt: new Date(),
+      });
+
+      console.log({ res });
     },
-    [setPlaylists]
+    []
   );
 
-  const deletePlaylist = useCallback(
-    (id: string) => {
-      setPlaylists((prev) => prev.filter((playlist) => playlist.id !== id));
-    },
-    [setPlaylists]
-  );
+  const deletePlaylist = useCallback(async (id: string) => {
+    await db.playlists.delete(id);
+  }, []);
 
   const addSongToPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
-      setPlaylists((prev) =>
-        prev.map((playlist) =>
-          playlist.id === playlistId && !playlist.songIds.includes(songId)
-            ? {
-                ...playlist,
-                songIds: [...playlist.songIds, songId],
-                updatedAt: new Date(),
-              }
-            : playlist
-        )
-      );
+    async (playlistId: string, songId: string) => {
+      const playlist = playlists.find((item) => item.id === playlistId)!;
+
+      if (!playlist.songIds.includes(songId)) playlist.songIds.push(songId);
+
+      const res = await db.playlists.update(playlistId, {
+        songIds: playlist.songIds,
+        updatedAt: new Date(),
+      });
+
+      console.log({ res });
     },
-    [setPlaylists]
+    [playlists]
   );
 
   const removeSongFromPlaylist = useCallback(
-    (playlistId: string, songId: string) => {
-      setPlaylists((prev) =>
-        prev.map((playlist) =>
-          playlist.id === playlistId
-            ? {
-                ...playlist,
-                songIds: playlist.songIds.filter((id) => id !== songId),
-                updatedAt: new Date(),
-              }
-            : playlist
-        )
-      );
+    async (playlistId: string, songId: string) => {
+      const playlist = playlists.find((item) => item.id === playlistId)!;
+
+      playlist.songIds = playlist.songIds.filter((id) => id !== songId);
+
+      const res = await db.playlists.update(playlistId, {
+        songIds: playlist.songIds,
+        updatedAt: new Date(),
+      });
+
+      console.log({ res });
     },
-    [setPlaylists]
+    [playlists]
   );
 
   const getPlaylist = useCallback(

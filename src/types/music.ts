@@ -9,6 +9,11 @@ export interface Song {
   addedAt: Date;
 }
 
+export interface AudioFile {
+  songId: string,
+  blob: Blob
+}
+
 export interface Playlist {
   id: string;
   name: string;

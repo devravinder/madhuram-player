@@ -12,16 +12,21 @@ import {
 import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
 import { staticSongs } from "@/data/songs";
+import db from "@/services/db";
 import { createFileRoute } from "@tanstack/react-router";
 import { Music, Play } from "lucide-react";
 
 export const Route = createFileRoute("/library")({
   component: RouteComponent,
+  loader:async()=>{
+    const res = await db.songs.toArray()
+    return res.length ? res : staticSongs
+  }
 });
 
 function RouteComponent() {
   const { playSong } = usePlayer();
-  const songs = staticSongs;
+  const songs = Route.useLoaderData();
   return (
     <PageLayout>
       <PageHeader>
