@@ -25,5 +25,6 @@ declare module "@tanstack/react-router" {
 export type RoutePath = keyof typeof router.routesByPath;
 
 export default function AppRouter() {
-  return <RouterProvider router={router} />;
+  //  basepath="/" Important for subdomain
+  return <RouterProvider basepath="/" router={router} />;
 }

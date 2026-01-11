@@ -26,7 +26,8 @@ const pwaOptions:Partial<VitePWAOptions> = {
       globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
       cleanupOutdatedCaches: true,
       clientsClaim: true,
-      navigateFallback: 'index.html',
+      // navigateFallback: 'index.html',
+      navigateFallback: null, // Important for subdomain
       // navigateFallbackDenylist: [/^\/src/],
     },
 
@@ -40,6 +41,7 @@ const pwaOptions:Partial<VitePWAOptions> = {
 
 // https://vite.dev/config/
 export default defineConfig({
+  base:"/",// Important for subdomain
   plugins: [
     tanstackRouter({
       target: "react",
