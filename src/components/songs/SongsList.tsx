@@ -4,7 +4,7 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import { ArrowUpDown, Search } from "lucide-react";
 import { Button, Input } from "../Elements";
 
-export default function SongsList({ songs }: { songs: Song[] }) {
+export default function SongsList({ songs, showSearchBar=true }: { songs: Song[], showSearchBar?:boolean }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("date-desc");
   const [showSortMenu, setShowSortMenu] = useState(false);
@@ -51,7 +51,7 @@ export default function SongsList({ songs }: { songs: Song[] }) {
   return (
     <>
       <div className="grow flex flex-col gap-2">
-        <div className="flex flex-row p-3 rounded-xl items-center gap-3">
+        {showSearchBar && <div className="flex flex-row p-3 rounded-xl items-center gap-3">
           <div className="relative flex-1 sm:w-64">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
@@ -97,7 +97,7 @@ export default function SongsList({ songs }: { songs: Song[] }) {
               </>
             )}
           </div>
-        </div>
+        </div>}
         {filteredAndSortedSongs.map((song, index) => (
           <SongCard
             key={song.id}

@@ -138,9 +138,7 @@
 
 ##### Tags
 
-
 ##### Subtasks
-
 
 #### 006 | Edit/Delete Audio
 
@@ -154,6 +152,24 @@
 
 ##### Tags
 
+##### Subtasks
+
+#### 011 | Make Layout like FullScreen Player
+
+- Title: Make Layout like FullScreen Player
+- Status: 📝 To Do
+- Priority: 🟢 Low
+- createdDate: 2026-01-11 05:46:52:725
+- lastModifiedDate: 2026-01-11 05:46:29:273
+- Category: Frontend
+- AssignedTo: Ravinder
+- dueDate: 2026-01-11 05:30:00:000
+- Id: 011
+
+##### Tags
+
+- #ui
+- #refactor
 
 ##### Subtasks
 
@@ -211,9 +227,7 @@
 
 ##### Tags
 
-
 ##### Subtasks
-
 
 #### 008 | Bugs
 
@@ -252,9 +266,7 @@
 
 ##### Tags
 
-
 ##### Subtasks
-
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)

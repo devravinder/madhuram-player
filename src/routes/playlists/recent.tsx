@@ -48,7 +48,7 @@ function RouteComponent() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            <SongsList songs={recentlyPlayed} />
+            <SongsList showSearchBar={false} songs={recentlyPlayed} />
           </PageMainSection>
         </PageMainContainer>
       </PageMain>
