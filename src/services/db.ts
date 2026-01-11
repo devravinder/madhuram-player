@@ -26,8 +26,8 @@ const createSampleSongs = async () => {
   await db.songs.bulkAdd(staticSongs);
 };
 
-export const RECENT_PLAYLIST_ID = "recentPlaylist";
-export const FAVOURITE_PLAYLIST_ID = "favouritePlaylist";
+export const RECENT_PLAYLIST_ID = "recent";
+export const FAVOURITE_PLAYLIST_ID = "favourites";
 
 const recentPlaylistDefault: Playlist = {
   id: RECENT_PLAYLIST_ID,

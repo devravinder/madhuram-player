@@ -10,14 +10,14 @@ import {
   PageMainSection,
 } from "@/components/Elements";
 import { PlaylistModal } from "@/components/PlaylistModal";
-import { usePlayer } from "@/context/PlayerContext";
-import db from "@/services/db";
+import db, { FAVOURITE_PLAYLIST_ID } from "@/services/db";
 import type { Playlist } from "@/types/music";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ListMusic, Plus } from "lucide-react";
 import { useState } from "react";
 import NoItems from "./-components/NoItems";
 import PlayListCard from "./-components/PlayListCard";
+import { usePlaylists } from "@/context/PlaylistContext";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/playlists/")({
 function PlayList() {
   const navigate = useNavigate();
   const playlists = Route.useLoaderData();
-  const { recentlyPlayed } = usePlayer();
+  const {favourites}= usePlaylists()
   const [showModal, setShowModal] = useState(false);
 
   const newPlaylist = (): Omit<Playlist, "createdAt" | "updatedAt"> => ({
@@ -46,7 +46,7 @@ function PlayList() {
       />
     );
 
-  const noItems = !(recentlyPlayed.length || playlists.length);
+  const noItems = !(playlists.length);
 
   return (
     <PageLayout>
@@ -74,13 +74,6 @@ function PlayList() {
         <PageMainContainer>
           <PageMainSection>
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-              {recentlyPlayed.length ? (
-                <PlayListCard
-                  onClick={() => navigate({ to: "/playlists/recent" })}
-                  name={"Recently PLayed"}
-                  noOfSongs={recentlyPlayed.length}
-                />
-              ) : undefined}
               {playlists.length
                 ? playlists.map((ele) => (
                     <PlayListCard
@@ -92,7 +85,7 @@ function PlayList() {
                       }
                       key={ele.id}
                       name={ele.name}
-                      noOfSongs={ele.songIds.length}
+                      noOfSongs={ FAVOURITE_PLAYLIST_ID === ele.id ? favourites.length : ele.songIds.length}
                     />
                   ))
                 : undefined}

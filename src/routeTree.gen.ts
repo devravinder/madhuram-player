@@ -12,11 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as ImportRouteImport } from './routes/import'
-import { Route as FavouritesRouteImport } from './routes/favourites'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlaylistsIndexRouteImport } from './routes/playlists/index'
 import { Route as PlaylistsRootRouteImport } from './routes/playlists/root'
-import { Route as PlaylistsRecentRouteImport } from './routes/playlists/recent'
 import { Route as PlaylistsIdRouteImport } from './routes/playlists/$id'
 
 const SettingsRoute = SettingsRouteImport.update({
@@ -34,11 +32,6 @@ const ImportRoute = ImportRouteImport.update({
   path: '/import',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FavouritesRoute = FavouritesRouteImport.update({
-  id: '/favourites',
-  path: '/favourites',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -54,11 +47,6 @@ const PlaylistsRootRoute = PlaylistsRootRouteImport.update({
   path: '/playlists/root',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlaylistsRecentRoute = PlaylistsRecentRouteImport.update({
-  id: '/playlists/recent',
-  path: '/playlists/recent',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PlaylistsIdRoute = PlaylistsIdRouteImport.update({
   id: '/playlists/$id',
   path: '/playlists/$id',
@@ -67,35 +55,29 @@ const PlaylistsIdRoute = PlaylistsIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/favourites': typeof FavouritesRoute
   '/import': typeof ImportRoute
   '/library': typeof LibraryRoute
   '/settings': typeof SettingsRoute
   '/playlists/$id': typeof PlaylistsIdRoute
-  '/playlists/recent': typeof PlaylistsRecentRoute
   '/playlists/root': typeof PlaylistsRootRoute
   '/playlists': typeof PlaylistsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/favourites': typeof FavouritesRoute
   '/import': typeof ImportRoute
   '/library': typeof LibraryRoute
   '/settings': typeof SettingsRoute
   '/playlists/$id': typeof PlaylistsIdRoute
-  '/playlists/recent': typeof PlaylistsRecentRoute
   '/playlists/root': typeof PlaylistsRootRoute
   '/playlists': typeof PlaylistsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/favourites': typeof FavouritesRoute
   '/import': typeof ImportRoute
   '/library': typeof LibraryRoute
   '/settings': typeof SettingsRoute
   '/playlists/$id': typeof PlaylistsIdRoute
-  '/playlists/recent': typeof PlaylistsRecentRoute
   '/playlists/root': typeof PlaylistsRootRoute
   '/playlists/': typeof PlaylistsIndexRoute
 }
@@ -103,46 +85,38 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/favourites'
     | '/import'
     | '/library'
     | '/settings'
     | '/playlists/$id'
-    | '/playlists/recent'
     | '/playlists/root'
     | '/playlists'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/favourites'
     | '/import'
     | '/library'
     | '/settings'
     | '/playlists/$id'
-    | '/playlists/recent'
     | '/playlists/root'
     | '/playlists'
   id:
     | '__root__'
     | '/'
-    | '/favourites'
     | '/import'
     | '/library'
     | '/settings'
     | '/playlists/$id'
-    | '/playlists/recent'
     | '/playlists/root'
     | '/playlists/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  FavouritesRoute: typeof FavouritesRoute
   ImportRoute: typeof ImportRoute
   LibraryRoute: typeof LibraryRoute
   SettingsRoute: typeof SettingsRoute
   PlaylistsIdRoute: typeof PlaylistsIdRoute
-  PlaylistsRecentRoute: typeof PlaylistsRecentRoute
   PlaylistsRootRoute: typeof PlaylistsRootRoute
   PlaylistsIndexRoute: typeof PlaylistsIndexRoute
 }
@@ -170,13 +144,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ImportRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/favourites': {
-      id: '/favourites'
-      path: '/favourites'
-      fullPath: '/favourites'
-      preLoaderRoute: typeof FavouritesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -198,13 +165,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlaylistsRootRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/playlists/recent': {
-      id: '/playlists/recent'
-      path: '/playlists/recent'
-      fullPath: '/playlists/recent'
-      preLoaderRoute: typeof PlaylistsRecentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/playlists/$id': {
       id: '/playlists/$id'
       path: '/playlists/$id'
@@ -217,12 +177,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  FavouritesRoute: FavouritesRoute,
   ImportRoute: ImportRoute,
   LibraryRoute: LibraryRoute,
   SettingsRoute: SettingsRoute,
   PlaylistsIdRoute: PlaylistsIdRoute,
-  PlaylistsRecentRoute: PlaylistsRecentRoute,
   PlaylistsRootRoute: PlaylistsRootRoute,
   PlaylistsIndexRoute: PlaylistsIndexRoute,
 }

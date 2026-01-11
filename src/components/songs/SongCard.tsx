@@ -8,10 +8,16 @@ import { SongItem } from "../Elements";
 interface SongCardProps {
   song: Song;
   queue: Song[];
-  index?: number;
+  index: number;
+  playListId?: string;
 }
 
-export default function SongCard({ song, queue, index }: SongCardProps) {
+export default function SongCard({
+  song,
+  queue,
+  index,
+  playListId,
+}: SongCardProps) {
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
   const isCurrentSong = currentSong?.id === song.id;
 
@@ -19,7 +25,7 @@ export default function SongCard({ song, queue, index }: SongCardProps) {
     if (isCurrentSong) {
       togglePlay();
     } else {
-      playSong(queue, index);
+      playSong(queue, index, playListId);
     }
   };
 

@@ -38,7 +38,7 @@ function RouteComponent() {
             </div>
           </div>
           <div className="flex flex-row gap-4">
-            <Button.Primary onClick={() => playSong(songs)}>
+            <Button.Primary onClick={() => playSong(songs, 0)}>
               <Play size={18} />
               <span className="hidden sm:block">Play</span>
             </Button.Primary>

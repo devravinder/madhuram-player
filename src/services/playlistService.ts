@@ -33,12 +33,10 @@ export const addSongToPlaylist = async (playlistId: string, songId: string) => {
   if (!playlist) return;
 
   if (!playlist.songIds.includes(songId)) playlist.songIds.push(songId);
-  const res = await db.playlists.update(playlistId, {
+  await db.playlists.update(playlistId, {
     songIds: playlist.songIds,
     updatedAt: new Date(),
   });
-
-  console.log({ res });
 };
 
 export const removeSongFromPlaylist = async (

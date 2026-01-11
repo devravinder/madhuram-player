@@ -25,6 +25,8 @@ export const Route = createFileRoute("/playlists/$id")({
     if (!playlist) return { playlist, songs: [] };
     const allSongs = await db.songs.toArray();
 
+    console.log("===== /playlists/$id in loader")
+
     const songs = allSongs.filter((song) => playlist.songIds.includes(song.id));
 
     return { playlist, songs };
@@ -63,7 +65,7 @@ function PlaylistDetails() {
             </div>
           </div>
           <div className="flex flex-row gap-4">
-            <Button.Primary onClick={() => playSong(songs)}>
+            <Button.Primary onClick={() => playSong(songs, 0, playlist.id)}>
               <Play size={18} />
               <span className="hidden sm:block">Play</span>
             </Button.Primary>
@@ -78,7 +80,7 @@ function PlaylistDetails() {
         <PageMainContainer>
           <PageMainSection>
             {playlist.songIds?.length ? (
-              <SongsList songs={songs} />
+              <SongsList songs={songs} playListId={playlist.id} />
             ) : (
               <NoItems />
             )}

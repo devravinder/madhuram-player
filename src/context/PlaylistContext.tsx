@@ -1,15 +1,10 @@
 import { FAVOURITE_PLAYLIST_ID, RECENT_PLAYLIST_ID } from "@/services/db";
-import { addSongToPlaylist, getPlaylist, updatePlaylist } from "@/services/playlistService";
-import { getPlayListSongs } from "@/services/songsService";
-import { type Playlist, type Song } from "@/types/music";
-import { useLiveQuery } from "dexie-react-hooks";
-import React, { createContext, useContext } from "react";
+import { getPlaylist, updatePlaylist } from "@/services/playlistService";
+import React, { createContext, useCallback, useContext, useState } from "react";
 interface PlaylistContextType {
-  recentPlaylist: Playlist;
-  favouritePlaylist: Playlist;
-  recentlyPlayed: Song[];
-  addToRecentlyPlayed: (songId: string) => Promise<void>
+  addToRecentlyPlayed: (songId: string, playListId?: string) => Promise<void>;
   toggleLike: (songId: string) => void;
+  favourites: string[]
 }
 
 const PlaylistContext = createContext<PlaylistContextType | undefined>(
@@ -17,39 +12,49 @@ const PlaylistContext = createContext<PlaylistContextType | undefined>(
 );
 
 export function PlaylistProvider({ children }: { children: React.ReactNode }) {
-  const recentPlaylist = useLiveQuery(async () => {
-    const playList = await getPlaylist(RECENT_PLAYLIST_ID);
-    return playList;
-  })!;
+  const [favourites, setFavourites] = useState<string[]>([]);
 
-  const favouritePlaylist = useLiveQuery(async () => {
-    const playList = await getPlaylist(FAVOURITE_PLAYLIST_ID);
-    return playList;
-  })!;
+  const addToRecentlyPlayed = async (songId: string, playListId?: string) => {
+    const isRecent = playListId === RECENT_PLAYLIST_ID;
 
-  const recentlyPlayed = useLiveQuery(async () =>
-    getPlayListSongs(favouritePlaylist)
-  )!;
+    console.log({ playListId, isRecent });
+    if (isRecent) return;
 
-  const addToRecentlyPlayed=async(songId: string)=>{
-    await addSongToPlaylist(RECENT_PLAYLIST_ID, songId)
-  }
+    const recentPlaylist = await getPlaylist(RECENT_PLAYLIST_ID);
 
-  const toggleLike = async (songId: string) => {
-    const favourites = favouritePlaylist.songIds;
-    const songIds = favourites.includes(songId)
-      ? favourites.filter((id) => id !== songId)
-      : [songId, ...favourites];
+    const isExists = recentPlaylist?.songIds.find((ele) => ele === songId);
+    let songIds = recentPlaylist?.songIds || [];
 
-    await updatePlaylist(FAVOURITE_PLAYLIST_ID, { songIds });
+    if (isExists) {
+      songIds = songIds?.filter((ele) => ele === songId);
+      songIds = [songId, ...songIds];
+    } else {
+      songIds = [...songIds, songId];
+    }
+
+    await updatePlaylist(RECENT_PLAYLIST_ID, {
+      songIds,
+    });
   };
 
+  const toggleLike = useCallback(
+    async (songId: string) => {
+      const favouritePlaylist = await getPlaylist(FAVOURITE_PLAYLIST_ID);
+      const favourites = favouritePlaylist?.songIds || [];
+      const songIds = favourites.includes(songId)
+        ? favourites.filter((id) => id !== songId)
+        : [songId, ...favourites];
+
+      setFavourites(songIds);
+
+      await updatePlaylist(FAVOURITE_PLAYLIST_ID, { songIds });
+    },
+    [setFavourites]
+  );
   return (
     <PlaylistContext.Provider
       value={{
-        recentPlaylist,
-        favouritePlaylist,
-        recentlyPlayed,
+        favourites,
         addToRecentlyPlayed,
         toggleLike,
       }}
