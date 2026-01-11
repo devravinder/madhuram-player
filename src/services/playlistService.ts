@@ -7,7 +7,7 @@ export const createPlaylist = async (
 ): Promise<Playlist> => {
   const newPlaylist: Playlist = {
     ...playlist,
-    id: id || `${"---"}`,
+    id: id || `${crypto.randomUUID().slice(0,4)}`,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -28,27 +28,3 @@ export const updatePlaylist = async (
 
 export const deletePlaylist = (id: string) => db.playlists.delete(id);
 
-export const addSongToPlaylist = async (playlistId: string, songId: string) => {
-  const playlist = await getPlaylist(playlistId);
-  if (!playlist) return;
-
-  if (!playlist.songIds.includes(songId)) playlist.songIds.push(songId);
-  await db.playlists.update(playlistId, {
-    songIds: playlist.songIds,
-    updatedAt: new Date(),
-  });
-};
-
-export const removeSongFromPlaylist = async (
-  playlistId: string,
-  songId: string
-) => {
-  const playlist = await getPlaylist(playlistId);
-  if (!playlist) return;
-  playlist.songIds = playlist.songIds.filter((id) => id !== songId);
-
-  await db.playlists.update(playlistId, {
-    songIds: playlist.songIds,
-    updatedAt: new Date(),
-  });
-};

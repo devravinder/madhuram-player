@@ -9,15 +9,12 @@ import {
   PageMainContainer,
   PageMainSection,
 } from "@/components/Elements";
-import { PlaylistModal } from "@/components/PlaylistModal";
+import { usePlaylists } from "@/context/PlaylistContext";
 import db, { FAVOURITE_PLAYLIST_ID } from "@/services/db";
-import type { Playlist } from "@/types/music";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ListMusic, Plus } from "lucide-react";
-import { useState } from "react";
 import NoItems from "./-components/NoItems";
 import PlayListCard from "./-components/PlayListCard";
-import { usePlaylists } from "@/context/PlaylistContext";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,
@@ -28,23 +25,6 @@ function PlayList() {
   const navigate = useNavigate();
   const playlists = Route.useLoaderData();
   const { favourites } = usePlaylists();
-  const [showModal, setShowModal] = useState(false);
-
-  const newPlaylist = (): Omit<Playlist, "createdAt" | "updatedAt"> => ({
-    id: "",
-    name: "",
-    description: "",
-    songIds: [],
-  });
-
-  if (showModal)
-    return (
-      <PlaylistModal
-        title="Create Plalist"
-        onClose={() => setShowModal(false)}
-        playlist={newPlaylist()}
-      />
-    );
 
   const noItems = !playlists.length;
 
@@ -63,7 +43,7 @@ function PlayList() {
             </div>
           </div>
           <div className="">
-            <Button.Primary onClick={() => setShowModal(true)}>
+            <Button.Primary onClick={() => navigate({to:"/playlists/create"})}>
               <Plus size={18} />
               <span className="hidden sm:block">Create</span>
             </Button.Primary>

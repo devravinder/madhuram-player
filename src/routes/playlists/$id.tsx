@@ -9,25 +9,20 @@ import {
   PageMainContainer,
   PageMainSection,
 } from "@/components/Elements";
-import { PlaylistModal } from "@/components/PlaylistModal";
 import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
-import db from "@/services/db";
-import { createFileRoute } from "@tanstack/react-router";
+import db, { RECENT_PLAYLIST_ID } from "@/services/db";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Play } from "lucide-react";
-import { useState } from "react";
 import NoItems from "./-components/NoItems";
 import PlayListIcon from "./-components/PlayListIcon";
 
 export const Route = createFileRoute("/playlists/$id")({
   component: PlaylistDetails,
   loader: async ({ params: { id } }) => {
-    const playlist = await db.playlists.get(id); // working with only number ids
+    const playlist = await db.playlists.get(id);
     if (!playlist) return { playlist, songs: [] };
     const allSongs = await db.songs.toArray();
-
-    console.log("===== /playlists/$id in loader");
-
     const songs = allSongs.filter((song) => playlist.songIds.includes(song.id));
 
     return { playlist, songs };
@@ -35,23 +30,14 @@ export const Route = createFileRoute("/playlists/$id")({
 });
 
 function PlaylistDetails() {
-  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const { playSong } = usePlayer();
   const { playlist, songs } = Route.useLoaderData();
 
   if (!playlist) return undefined;
 
-  if (showModal)
-    return (
-      <PlaylistModal
-        title="Edit Plalist"
-        onClose={() => setShowModal(false)}
-        playlist={playlist}
-      />
-    );
-
-
+  const editable = playlist.id !== RECENT_PLAYLIST_ID
 
   return (
     <PageLayout>
@@ -72,10 +58,17 @@ function PlaylistDetails() {
               <Play size={18} />
               <span className="hidden sm:block">Play</span>
             </Button.Primary>
-            <Button.Secondary onClick={() => setShowModal(true)}>
+            {editable && <Button.Secondary
+              onClick={() =>
+                navigate({
+                  to: "/playlists/edit/$id",
+                  params: { id: playlist.id },
+                })
+              }
+            >
               <Pencil size={18} />
               <span className="hidden sm:block"> Edit</span>
-            </Button.Secondary>
+            </Button.Secondary>}
           </div>
         </div>
       </PageHeader>

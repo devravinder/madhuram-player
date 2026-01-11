@@ -1,12 +1,17 @@
-import { usePlaylists } from "@/context/PlaylistContext";
-import { staticSongs } from "@/data/songs";
+import {
+  createPlaylist,
+  deletePlaylist,
+  updatePlaylist
+} from "@/services/playlistService";
 import type { Playlist } from "@/types/music";
+import { useNavigate } from "@tanstack/react-router";
 import { Check, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import Modal from "./Modal";
 import { Input } from "./Elements";
-import { useNavigate } from "@tanstack/react-router";
-import { addSongToPlaylist, createPlaylist, removeSongFromPlaylist, updatePlaylist } from "@/services/playlistService";
+import Modal from "./Modal";
+
+import db from "@/services/db";
+import { useLiveQuery } from "dexie-react-hooks";
 
 interface PlaylistModalProps {
   title: string;
@@ -19,6 +24,8 @@ export function PlaylistModal({
   playlist,
   onClose,
 }: PlaylistModalProps) {
+  const allSongs = useLiveQuery(() => db.songs.toArray());
+
   const navigate = useNavigate();
 
   const isEditing = playlist.id;
@@ -36,29 +43,19 @@ export function PlaylistModal({
   }, [playlist]);
 
   const handleSave = () => {
+    const songIds= [...selectedSongs]
     if (playlist.id) {
       updatePlaylist(playlist.id, {
         name,
         description: description || undefined,
+        songIds
       });
 
-      // Handle song additions and removals
-      const currentSongs = new Set(playlist.songIds);
-      selectedSongs.forEach((songId) => {
-        if (!currentSongs.has(songId)) {
-          addSongToPlaylist(playlist.id!, songId);
-        }
-      });
-      currentSongs.forEach((songId) => {
-        if (!selectedSongs.has(songId)) {
-          removeSongFromPlaylist(playlist.id!, songId);
-        }
-      });
     } else {
       createPlaylist({
         name,
         description,
-        songIds: [...selectedSongs],
+        songIds
       });
     }
 
@@ -134,7 +131,7 @@ export function PlaylistModal({
                 Select Songs
               </label>
               <div className="space-y-2 max-h-48 overflow-y-auto border border-border rounded-xl p-2">
-                {staticSongs.map((song) => (
+                {(allSongs || []).map((song) => (
                   <button
                     key={song.id}
                     onClick={() => toggleSong(song.id)}
