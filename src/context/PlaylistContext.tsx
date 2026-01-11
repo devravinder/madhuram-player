@@ -1,10 +1,20 @@
-import { FAVOURITE_PLAYLIST_ID, RECENT_PLAYLIST_ID } from "@/services/db";
+import {
+  DEFAULT_PLAYLIST,
+  FAVOURITE_PLAYLIST_ID,
+  RECENT_PLAYLIST_ID,
+} from "@/services/db";
 import { getPlaylist, updatePlaylist } from "@/services/playlistService";
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 interface PlaylistContextType {
   addToRecentlyPlayed: (songId: string, playListId?: string) => Promise<void>;
   toggleLike: (songId: string) => void;
-  favourites: string[]
+  favourites: string[];
 }
 
 const PlaylistContext = createContext<PlaylistContextType | undefined>(
@@ -13,24 +23,27 @@ const PlaylistContext = createContext<PlaylistContextType | undefined>(
 
 export function PlaylistProvider({ children }: { children: React.ReactNode }) {
   const [favourites, setFavourites] = useState<string[]>([]);
+  const currentPlaylistId = useRef(DEFAULT_PLAYLIST);
 
-  const addToRecentlyPlayed = async (songId: string, playListId?: string) => {
-    const isRecent = playListId === RECENT_PLAYLIST_ID;
+  const addToRecentlyPlayed = async (
+    songId: string,
+    songPlayListId?: string
+  ) => {
+    const playlistId = songPlayListId || currentPlaylistId.current;
+    currentPlaylistId.current = playlistId;
 
-    console.log({ playListId, isRecent });
+    //=====
+
+    const isRecent = playlistId === RECENT_PLAYLIST_ID;
+
     if (isRecent) return;
 
     const recentPlaylist = await getPlaylist(RECENT_PLAYLIST_ID);
 
-    const isExists = recentPlaylist?.songIds.find((ele) => ele === songId);
-    let songIds = recentPlaylist?.songIds || [];
+    const previous =
+      recentPlaylist?.songIds.filter((ele) => ele !== songId) || [];
 
-    if (isExists) {
-      songIds = songIds?.filter((ele) => ele === songId);
-      songIds = [songId, ...songIds];
-    } else {
-      songIds = [...songIds, songId];
-    }
+    const songIds = [songId, ...previous];
 
     await updatePlaylist(RECENT_PLAYLIST_ID, {
       songIds,
