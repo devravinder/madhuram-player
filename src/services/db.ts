@@ -18,7 +18,7 @@ db.version(1).stores({
   audioFiles: "songId",
 });
 
-/* db.version(2).stores({
+db.version(2).stores({
    songs: "id, title, addedAt",
   // ++ auto increment works only for numbers ( so avoid ++id)
   playlists: "id, name, createdAt",
@@ -27,7 +27,8 @@ db.version(1).stores({
   console.log("Upgrading to v2 → clearing old data");
   await tx.table("songs").clear();
   await tx.table("playlists").clear()
-}); */
+});
+
 //====
 const createSampleSongs = async () => {
   console.log("createSampleSongs");
