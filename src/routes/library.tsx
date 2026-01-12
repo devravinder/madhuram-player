@@ -7,17 +7,19 @@ import {
   PageLayout,
   PageMain,
   PageMainContainer,
-  PageMainSection
+  PageMainSection,
 } from "@/components/Elements";
 import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
-import db, { DEFAULT_PLAYLIST } from "@/services/db";
+import db from "@/services/db";
+import { DEFAULT_PLAYLIST } from "@/constants";
+
 import { createFileRoute } from "@tanstack/react-router";
 import { Music, Play } from "lucide-react";
 
 export const Route = createFileRoute("/library")({
   component: RouteComponent,
-  loader:()=>db.songs.toArray()
+  loader: () => db.songs.toArray(),
 });
 
 function RouteComponent() {
@@ -38,7 +40,9 @@ function RouteComponent() {
             </div>
           </div>
           <div className="flex flex-row gap-4">
-            <Button.Primary onClick={() => playSong(songs, 0,DEFAULT_PLAYLIST)}>
+            <Button.Primary
+              onClick={() => playSong(songs, 0, DEFAULT_PLAYLIST)}
+            >
               <Play size={18} />
               <span className="hidden sm:block">Play</span>
             </Button.Primary>

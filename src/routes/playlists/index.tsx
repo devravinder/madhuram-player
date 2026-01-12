@@ -10,11 +10,12 @@ import {
   PageMainSection,
 } from "@/components/Elements";
 import { usePlaylists } from "@/context/PlaylistContext";
-import db, { FAVOURITE_PLAYLIST_ID } from "@/services/db";
+import db from "@/services/db";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ListMusic, Plus } from "lucide-react";
 import NoItems from "./-components/NoItems";
 import PlayListCard from "./-components/PlayListCard";
+import { FAVOURITE_PLAYLIST_ID } from "@/constants";
 
 export const Route = createFileRoute("/playlists/")({
   component: PlayList,

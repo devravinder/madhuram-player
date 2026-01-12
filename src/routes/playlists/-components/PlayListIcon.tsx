@@ -1,4 +1,4 @@
-import { FAVOURITE_PLAYLIST_ID, RECENT_PLAYLIST_ID } from "@/services/db";
+import { FAVOURITE_PLAYLIST_ID, RECENT_PLAYLIST_ID } from "@/constants";
 import { Clock, Heart, ListMusic } from "lucide-react";
 
 export default function PlayListIcon({ id }: { id: string }) {

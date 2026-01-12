@@ -38,7 +38,6 @@ interface PlayerContextType {
   cancelSleepTimer: () => void;
 }
 
-export const RECENTLY_PLAYED_LIMIT = 10;
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 export function PlayerProvider({ children }: { children: React.ReactNode }) {

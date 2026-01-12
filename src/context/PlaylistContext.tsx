@@ -2,7 +2,8 @@ import {
   DEFAULT_PLAYLIST,
   FAVOURITE_PLAYLIST_ID,
   RECENT_PLAYLIST_ID,
-} from "@/services/db";
+  RECENT_PLAYLIST_LIMIT,
+} from "@/constants";
 import { getPlaylist, updatePlaylist } from "@/services/playlistService";
 import React, {
   createContext,
@@ -45,7 +46,7 @@ export function PlaylistProvider({ children }: { children: React.ReactNode }) {
     const previous =
       recentPlaylist?.songIds.filter((ele) => ele !== songId) || [];
 
-    const songIds = [songId, ...previous];
+    const songIds = [songId, ...previous].slice(0, RECENT_PLAYLIST_LIMIT);
 
     await updatePlaylist(RECENT_PLAYLIST_ID, {
       songIds,

@@ -11,7 +11,9 @@ import {
 } from "@/components/Elements";
 import SongsList from "@/components/songs/SongsList";
 import { usePlayer } from "@/context/PlayerContext";
-import db, { RECENT_PLAYLIST_ID } from "@/services/db";
+import db from "@/services/db";
+import { RECENT_PLAYLIST_ID } from "@/constants";
+
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Pencil, Play } from "lucide-react";
 import NoItems from "./-components/NoItems";

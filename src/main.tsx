@@ -1,10 +1,10 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { initializeDb } from "./services/db.ts";
+import { onAppStart } from "./services/initializer.ts";
 
 const intialize = async () => {
-  await initializeDb();
+  await onAppStart();
 };
 
 const startApp = async () => {

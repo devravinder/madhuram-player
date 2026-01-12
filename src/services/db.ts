@@ -1,79 +1,60 @@
-// db.js
-
-import type { AudioFile, Playlist, Song } from "@/types/music";
 import { Dexie, type EntityTable } from "dexie";
+import type { AudioFile, Playlist, Song } from "@/types/music";
 
-export const db = new Dexie("madhuram") as Dexie & {
-  songs: EntityTable<
-    Song,
-    "id" // primary key "id" (for the typings only)
-  >;
-  playlists: EntityTable<Playlist, "id">;
-  audioFiles: EntityTable<AudioFile, "songId">;
-};
+class AppDB extends Dexie {
+  songs!: EntityTable<Song, "id">;
+  playlists!: EntityTable<Playlist, "id">;
+  audioFiles!: EntityTable<AudioFile, "songId">;
 
-db.version(1).stores({
-  songs: "id, title, addedAt", // Primary key and indexed props
-  playlists: "id, name, createdAt",
-  audioFiles: "songId",
-});
+  constructor() {
+    super("madhuram");
 
-db.version(2).stores({
-   songs: "id, title, addedAt",
-  // ++ auto increment works only for numbers ( so avoid ++id)
-  playlists: "id, name, createdAt",
-  audioFiles: "songId",
-}).upgrade(async tx => {
-  console.log("Upgrading to v2 → clearing old data");
-  await tx.table("songs").clear();
-  await tx.table("playlists").clear()
-});
+    this.version(1).stores({
+      songs: "id,title,addedAt",
+      playlists: "id,name,createdAt",
+      audioFiles: "songId",
+    });
 
-//====
-const createSampleSongs = async () => {
-  console.log("createSampleSongs");
-  // await db.songs.bulkAdd(staticSongs);
-};
+    this.version(2)
+      .stores({
+        songs: "id,title,addedAt",
+        playlists: "id,name,createdAt",
+        audioFiles: "songId",
+      })
+      .upgrade(async tx => {
+        console.log("Upgrading to v2 → clearing old data");
 
-export const RECENT_PLAYLIST_ID = "recent";
-export const FAVOURITE_PLAYLIST_ID = "favourites";
-export const DEFAULT_PLAYLIST = "library";
-
-const recentPlaylistDefault: Playlist = {
-  id: RECENT_PLAYLIST_ID,
-  name: "Recently Played",
-  description: "recently played songs",
-  songIds: [],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-const favouritePlaylistDefault: Playlist = {
-  id: FAVOURITE_PLAYLIST_ID,
-  name: "Favourites",
-  description: "Favourite songs",
-  songIds: [],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
-const createInitialPlayLists = async () => {
-  console.log("createInitialPlayLists");
-  await db.playlists.add(recentPlaylistDefault);
-  await db.playlists.add(favouritePlaylistDefault);
-};
-
-export const initializeDb = async () => {
-  console.log("initializeDb");
-  const data = await db.playlists.get(FAVOURITE_PLAYLIST_ID);
-
-  if (data) {
-    console.log("Data exists");
-    return;
+        await Promise.all([
+          tx.table("songs").clear(),
+          tx.table("playlists").clear(),
+          tx.table("audioFiles").clear()
+        ]);
+      });
   }
+}
 
-  await createSampleSongs();
-  await createInitialPlayLists();
-};
+const db = new AppDB();
+
+//=====
+export async function initDB() {
+  try {
+    await db.open();
+  } catch (error: any) {
+    console.error("DB upgrade failed:", error);
+
+    if (error?.name === "UpgradeError") {
+      const reset = window.confirm(
+        "Database upgrade failed.\n" +
+        "Old data is incompatible.\n\n" +
+        "Do you want to reset database?"
+      );
+
+      if (reset) {
+        await Dexie.delete("madhuram");
+        window.location.reload(); // recreate with latest version
+      }
+    }
+  }
+}
 
 export default db;

@@ -9,8 +9,9 @@ import { Check, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "./Elements";
 import Modal from "./Modal";
+import db from "@/services/db";
+import { FAVOURITE_PLAYLIST_ID } from "@/constants";
 
-import db, { FAVOURITE_PLAYLIST_ID } from "@/services/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { usePlaylists } from "@/context/PlaylistContext";
 
