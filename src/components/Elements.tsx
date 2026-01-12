@@ -21,11 +21,12 @@ export const PageMainSection = tw.div`flex-1`;
 // Elements
 
 export const IconButton = tw.button`h-10 w-10 relative cursor-pointer bg-accent flex flex-row justify-center items-center rounded-lg`;
-export const HeaderIcon = tw(IconButton)`p-2 sm:p-4 h-12 w-12 sm:h-14 sm:w-14 rounded-xl cursor-default`
+export const HeaderIcon = tw(
+  IconButton
+)`p-2 sm:p-4 h-12 w-12 sm:h-14 sm:w-14 rounded-xl cursor-default`;
 
-export const HeaderTitle = tw.div`text-xl sm:text-2xl font-bold line-clamp-1`
-export const HeaderSubTitle = tw.div`text-xs sm:text-md text-muted-foreground`
-
+export const HeaderTitle = tw.div`text-xl sm:text-2xl font-bold line-clamp-1`;
+export const HeaderSubTitle = tw.div`text-xs sm:text-md text-muted-foreground`;
 
 export const AvatarContainer = tw.div`text-foreground rounded-lg relative inline-flex items-center justify-center overflow-hidden select-none h-10 w-10`;
 export const Img = tw.img`h-full w-full object-contain object-center`;
@@ -33,7 +34,11 @@ export const Uppercase = tw.span`font-semibold uppercase`;
 
 export const Card = tw.div`bg-card text-card-foreground shadow rounded-md p-4`;
 
-export const SongItem = tw.div<{$active:boolean}>`group flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-200  ${p=> p.$active ? "bg-primary/10" : "hover:bg-secondary/50"}`
+export const SongItem = tw.div<{
+  $active: boolean;
+}>`group flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-200  ${(
+  p
+) => (p.$active ? "bg-primary/10" : "hover:bg-secondary/50")}`;
 
 export const Nav = tw.nav`flex items-center justify-around py-2 w-full max-w-5xl`;
 
@@ -48,12 +53,13 @@ export const Like = tw(Heart)<{ $liked?: boolean }>`${(p) =>
     ? "fill-red-500 text-red-500"
     : "text-foreground"} w-5 h-5 transition-all`;
 
-const Secondary  = tw.button`cursor-pointer p-2 sm:px-6  sm:py-3 text-xl flex flex-row justify-center items-center gap-2 rounded-lg bg-accent hover:bg-accent/80`     
-const Primary = tw(Secondary)`bg-primary hover:bg-primary/90 text-secondary`
+export const Clickable = tw.div<{ $clickable: boolean }>`${(p) =>
+  p.$clickable ? "cursor-pointer" : ""} `;
+
+const Secondary = tw.button`cursor-pointer p-2 sm:px-6  sm:py-3 text-xl flex flex-row justify-center items-center gap-2 rounded-lg bg-accent hover:bg-accent/80`;
+const Primary = tw(Secondary)`bg-primary hover:bg-primary/90 text-secondary`;
 // eslint-disable-next-line react-refresh/only-export-components
 export const Button = {
-
   Primary,
-  Secondary
-
-}
+  Secondary,
+};

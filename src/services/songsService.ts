@@ -18,3 +18,6 @@ export const addSong = async (song: Omit<Song, "id">, id?: string) => {
   await db.songs.add(newSong);
   return newSong;
 };
+
+
+export const getSongsCount = ()=>db.songs.count()

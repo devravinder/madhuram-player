@@ -2,7 +2,7 @@ import { IconButton } from "@/components/Elements";
 import PlayListIcon from "./PlayListIcon";
 
 type PlayListCardProps = {
-  id: string;
+  id?: string;
   name: string;
   noOfSongs: number;
   onClick: VoidFunction;

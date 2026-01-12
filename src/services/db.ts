@@ -30,6 +30,16 @@ class AppDB extends Dexie {
           tx.table("audioFiles").clear()
         ]);
       });
+
+      this.version(3)
+      .stores({
+        songs: "id,title,addedAt",
+        playlists: "id,name,createdAt, *songIds",
+        audioFiles: "songId",
+      })
+      .upgrade(async () => {
+        console.log("Upgrading to v3 ");
+      });
   }
 }
 
