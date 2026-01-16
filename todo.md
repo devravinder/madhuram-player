@@ -294,7 +294,7 @@
 - Status: 🚀 In Progress
 - Priority: 🟢 Low
 - createdDate: 2026-01-11 11:36:04:938
-- lastModifiedDate: 2026-01-12 01:26:06:051
+- lastModifiedDate: 2026-01-16 04:00:49:709
 - dueDate: 2026-01-11 05:30:00:000
 - Id: 013
 
@@ -304,7 +304,26 @@
 ##### Subtasks
 
 - [ ] loader is executing many times - use memo
-- [ ] Handle song metadata image
+- [x] Handle song metadata image
+
+#### 014 | Authentication
+
+- Title: Authentication
+- Status: 🚀 In Progress
+- Description: Authentication
+- Priority: 🟢 Low
+- createdDate: 2026-01-16 04:01:17:031
+- lastModifiedDate: 2026-01-16 04:00:57:895
+- dueDate: 2026-01-16 05:30:00:000
+- Id: 014
+
+##### Tags
+
+- #ui
+- #feature
+
+##### Subtasks
+
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)

@@ -10,7 +10,7 @@ import {
   PageMainContainer,
   PageMainSection,
 } from "@/components/Elements";
-import { LogOut, Pencil, Trash2 } from "lucide-react";
+import { CloudSync, LogOut, Pencil, Trash2 } from "lucide-react";
 
 import ThemeToggle from "@/components/ThemeToggle";
 import { useAuth } from "@/context/AuthContext";
@@ -62,14 +62,22 @@ function RouteComponent() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+            <div className="flex flex-col gap-2">
+              <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
               <span>Change Theme</span> <ThemeToggle />
             </div>
             <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
               <span>Clear Data</span> 
-               <IconButton onClick={async() => await clearData("Di you want to clear the data")}>
+               <IconButton onClick={async() => await clearData("Do you want to clear the data")}>
                 <Trash2 className="h-5 w-5"/>
               </IconButton>
+            </div>
+            <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+              <span>Sync Data</span> 
+               <IconButton onClick={async() => await clearData("Do you want to clear the data")}>
+                <CloudSync className="h-5 w-5"/>
+              </IconButton>
+            </div>
             </div>
           </PageMainSection>
         </PageMainContainer>
