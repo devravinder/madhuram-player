@@ -20,17 +20,17 @@ class AppDB extends Dexie {
         songs: "id,title,addedAt",
         playlists: "id,name,createdAt",
       })
-      .upgrade(async tx => {
+      .upgrade(async (tx) => {
         console.log("Upgrading to v2 → clearing old data");
 
         await Promise.all([
           tx.table("songs").clear(),
           tx.table("playlists").clear(),
-          tx.table("audioFiles").clear()
+          tx.table("audioFiles").clear(),
         ]);
       });
 
-      this.version(3)
+    this.version(3)
       .stores({
         songs: "id,title,addedAt",
         playlists: "id,name,createdAt, *songIds",
@@ -43,6 +43,15 @@ class AppDB extends Dexie {
 
 const db = new AppDB();
 
+export const clearData = async (message: string, reload: boolean = true) => {
+  const reset = window.confirm(message);
+
+  if (reset) {
+    await Dexie.delete(DB_NAME);
+    if (reload) window.location.reload(); // recreate with latest version
+  }
+};
+
 //=====
 export async function initDB() {
   try {
@@ -51,16 +60,11 @@ export async function initDB() {
     console.error("DB upgrade failed:", error);
 
     if (error?.name === "UpgradeError") {
-      const reset = window.confirm(
+      await clearData(
         "Database upgrade failed.\n" +
-        "Old data is incompatible.\n\n" +
-        "Do you want to reset database?"
+          "Old data is incompatible.\n\n" +
+          "Do you want to reset database?"
       );
-
-      if (reset) {
-        await Dexie.delete(DB_NAME);
-        window.location.reload(); // recreate with latest version
-      }
     }
   }
 }
