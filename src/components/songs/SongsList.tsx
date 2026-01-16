@@ -14,7 +14,7 @@ export default function SongsList({
   playListId: string;
 }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOption, setSortOption] = useState<SortOption>("date-desc");
+  const [sortOption, setSortOption] = useState<SortOption>("none");
   const [showSortMenu, setShowSortMenu] = useState(false);
 
   const filteredAndSortedSongs = useMemo(() => {
@@ -41,8 +41,8 @@ export default function SongsList({
         case "date-asc":
           return new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime();
         case "date-desc":
-        default:
-          return new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime();
+        default: // none
+          return 0
       }
     });
 
@@ -50,6 +50,7 @@ export default function SongsList({
   }, [songs, searchQuery, sortOption]);
 
   const sortOptions: { value: SortOption; label: string }[] = [
+    { value: "none", label: "Default" },
     { value: "name-asc", label: "Name (A-Z)" },
     { value: "name-desc", label: "Name (Z-A)" },
     { value: "date-desc", label: "Recently Added" },

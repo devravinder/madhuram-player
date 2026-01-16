@@ -4,7 +4,7 @@ import {
   signInWithPopup,
   signInWithRedirect,
   type User,
-  type UserCredential
+  type UserCredential,
 } from "firebase/auth";
 import {
   createContext,
@@ -15,7 +15,8 @@ import {
 } from "react";
 import LoginPage from "@/components/auth/LoginPage";
 import { auth, provider } from "@/services/firebaseUtil";
-
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { clearData } from "@/services/db";
 
 type AuthenticationContextType = {
   user: User;
@@ -29,19 +30,14 @@ const AuthenticationContext = createContext<
   AuthenticationContextType | undefined
 >(undefined);
 
-export const AuthProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [userEmail, setUserEmail] = useLocalStorage<string>("user-email", "");
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState("");
 
-  const handleAuthResult = (result: UserCredential) => {
+  const handleAuthResult = async (result: UserCredential) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     setToken(credential?.accessToken || "");
-
-    console.log("=====",result.user)
     setUser(result.user);
   };
 
@@ -59,13 +55,29 @@ export const AuthProvider = ({
 
   const handleRedirectSignIn = async () => {
     const result = await getRedirectResult(auth);
-    if (result) handleAuthResult(result);
+    if (result) await handleAuthResult(result);
   };
 
   useEffect(() => {
     handleRedirectSignIn();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const clearOldData = async () => {
+      if (user) {
+        if (userEmail && userEmail !== user.email) {
+          setUserEmail(user.email!);
+          // clear previous user data
+          await clearData();
+        } else {
+          setUserEmail(user.email!);
+        }
+      }
+    };
+
+    clearOldData();
+  }, [user]);
 
   const loginWithRedirect = async () => {
     await signInWithRedirect(auth, provider);
@@ -73,7 +85,7 @@ export const AuthProvider = ({
 
   const loginWithPopup = async () => {
     const result = await signInWithPopup(auth, provider);
-    handleAuthResult(result);
+    await handleAuthResult(result);
   };
 
   const logout = () => {

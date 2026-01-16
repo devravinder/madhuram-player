@@ -9,10 +9,6 @@ export interface Song {
   addedAt: Date;
 }
 
-export interface AudioFile {
-  songId: string,
-  blob: Blob
-}
 
 export interface Playlist {
   id: string;
@@ -44,4 +40,4 @@ export interface SleepTimer {
   duration: number; // in minutes
 }
 
-export type SortOption = 'name-asc' | 'name-desc' | 'date-asc' | 'date-desc';
+export type SortOption = 'name-asc' | 'name-desc' | 'date-asc' | 'date-desc' | 'none';

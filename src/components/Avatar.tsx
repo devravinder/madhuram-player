@@ -9,20 +9,27 @@ const getInitials = (name?: string) => {
     : parts[0][0] + parts[parts.length - 1][0];
 };
 
-export default function Avatar({ src, name }: { src?: string; name?: string }) {
-  const [error, setError] = useState(false);
+export const Image=({src, alt}:{src: string, alt: string})=>{
+    const [error, setError] = useState(false);
 
-  return (
-    <AvatarContainer aria-label={name ?? "User avatar"} role="img">
-      {src && !error ? (
+  return <>
+  {src && !error ? (
         <Img
           src={src}
-          alt={name ?? "User avatar"}
+          alt={alt ?? "User avatar"}
           onError={() => setError(true)}
         />
       ) : (
-        <Uppercase>{getInitials(name)}</Uppercase>
+        <Uppercase>{getInitials(alt)}</Uppercase>
       )}
+  </>
+}
+
+
+export default function Avatar({ src, name }: { src: string; name: string }) {
+  return (
+    <AvatarContainer aria-label={name ?? "User avatar"} role="img">
+      <Image src={src} alt={name}/>
     </AvatarContainer>
   );
 }

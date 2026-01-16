@@ -1,11 +1,10 @@
 import { Dexie, type EntityTable } from "dexie";
-import type { AudioFile, Playlist, Song } from "@/types/music";
+import type { Playlist, Song } from "@/types/music";
 import { DB_NAME } from "@/constants";
 
 class AppDB extends Dexie {
   songs!: EntityTable<Song, "id">;
   playlists!: EntityTable<Playlist, "id">;
-  audioFiles!: EntityTable<AudioFile, "songId">;
 
   constructor() {
     super(DB_NAME);
@@ -43,12 +42,16 @@ class AppDB extends Dexie {
 
 const db = new AppDB();
 
-export const clearData = async (message: string, reload: boolean = true) => {
+export const clearData = async (reload: boolean = true) => {
+  await Dexie.delete(DB_NAME);
+  if (reload) window.location.reload(); // recreate with latest version
+};
+
+export const clearDataWithPrompt = async (message: string) => {
   const reset = window.confirm(message);
 
   if (reset) {
-    await Dexie.delete(DB_NAME);
-    if (reload) window.location.reload(); // recreate with latest version
+    await clearData();
   }
 };
 
@@ -60,7 +63,7 @@ export async function initDB() {
     console.error("DB upgrade failed:", error);
 
     if (error?.name === "UpgradeError") {
-      await clearData(
+      await clearDataWithPrompt(
         "Database upgrade failed.\n" +
           "Old data is incompatible.\n\n" +
           "Do you want to reset database?"

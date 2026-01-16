@@ -4,19 +4,19 @@ import {
   HeaderSubTitle,
   HeaderTitle,
   IconButton,
-  Img,
   PageHeader,
   PageLayout,
   PageMain,
   PageMainContainer,
-  PageMainSection,
+  PageMainSection
 } from "@/components/Elements";
 import { CloudSync, LogOut, Pencil, Trash2 } from "lucide-react";
 
+import { Image } from "@/components/Avatar";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useAuth } from "@/context/AuthContext";
 import { usePlayer } from "@/context/PlayerContext";
-import { clearData } from "@/services/db";
+import { clearDataWithPrompt } from "@/services/db";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/settings")({
@@ -36,7 +36,7 @@ function RouteComponent() {
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row gap-4 items-center">
             <HeaderIcon>
-              <Img src={user?.photoURL!} alt={user?.email!} className="rounded-lg" />
+              <Image src={user?.photoURL!} alt={user?.displayName!} />
             </HeaderIcon>
 
             <div className="">
@@ -67,7 +67,7 @@ function RouteComponent() {
                 <span>Clear Data</span>
                 <IconButton
                   onClick={async () =>
-                    await clearData("Do you want to clear the data")
+                    await clearDataWithPrompt("Do you want to clear the data")
                   }
                 >
                   <Trash2 className="h-5 w-5" />
@@ -77,7 +77,7 @@ function RouteComponent() {
                 <span>Sync Data</span>
                 <IconButton
                   onClick={async () =>
-                    await clearData("Do you want to clear the data")
+                    await clearDataWithPrompt("Do you want to clear the data")
                   }
                 >
                   <CloudSync className="h-5 w-5" />
