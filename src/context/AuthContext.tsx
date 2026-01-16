@@ -1,78 +1,107 @@
-import React, {
+import {
+  getRedirectResult,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  type User,
+  type UserCredential
+} from "firebase/auth";
+import {
   createContext,
   useContext,
-  useCallback,
+  useEffect,
+  useState,
   type ReactNode,
 } from "react";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { LoginPage } from "@/components/auth/LoginPage";
+import LoginPage from "@/components/auth/LoginPage";
+import { auth, provider } from "@/services/firebaseUtil";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatar?: string;
-}
 
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<boolean>;
+type AuthenticationContextType = {
+  user: User;
+  token: string;
+  loginWithRedirect: () => Promise<void>;
+  loginWithPopup: () => Promise<void>;
   logout: () => void;
-}
+};
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthenticationContext = createContext<
+  AuthenticationContextType | undefined
+>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useLocalStorage<User | null>("user", null);
+export const AuthProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState("");
 
-  const login = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async (email: string, _password: string): Promise<boolean> => {
-      // Dummy login - always succeeds
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate network delay
+  const handleAuthResult = (result: UserCredential) => {
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    setToken(credential?.accessToken || "");
 
-      const dummyUser: User = {
-        id: "1",
-        name: email.split("@")[0],
-        email: email,
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
-      };
+    console.log("=====",result.user)
+    setUser(result.user);
+  };
 
-      setUser(dummyUser);
-      return true;
-    },
-    [setUser]
-  );
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        console.log("onAuthStateChanged currentUser present");
+        setUser(currentUser);
+      } else {
+        console.log("onAuthStateChanged currentUser not present");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
-  const logout = useCallback(() => {
+  const handleRedirectSignIn = async () => {
+    const result = await getRedirectResult(auth);
+    if (result) handleAuthResult(result);
+  };
+
+  useEffect(() => {
+    handleRedirectSignIn();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const loginWithRedirect = async () => {
+    await signInWithRedirect(auth, provider);
+  };
+
+  const loginWithPopup = async () => {
+    const result = await signInWithPopup(auth, provider);
+    handleAuthResult(result);
+  };
+
+  const logout = () => {
+    auth.signOut();
     setUser(null);
-  }, [setUser]);
-
+  };
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated: !!user,
-        login,
-        logout,
-      }}
+    <AuthenticationContext.Provider
+      value={{ user: user!, token, loginWithRedirect, loginWithPopup, logout }}
     >
       {children}
-    </AuthContext.Provider>
+    </AuthenticationContext.Provider>
   );
-}
+};
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function useAuth() {
-  const context = useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthenticationContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error(
+      "useAuthentication must be used within an AuthenticationContextProvider"
+    );
   }
   return context;
-}
+};
 
 export const SecureComponent = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <LoginPage />;
+  const { user } = useAuth();
+
+  return user ? children : <LoginPage />;
 };

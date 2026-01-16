@@ -4,6 +4,7 @@ import {
   HeaderSubTitle,
   HeaderTitle,
   IconButton,
+  Img,
   PageHeader,
   PageLayout,
   PageMain,
@@ -35,15 +36,11 @@ function RouteComponent() {
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-row gap-4 items-center">
             <HeaderIcon>
-              <img
-                src={user?.avatar}
-                alt={user?.name}
-                className="w-full h-full rounded-lg object-cover"
-              />
+              <Img src={user?.photoURL!} alt={user?.email!} className="rounded-lg" />
             </HeaderIcon>
 
             <div className="">
-              <HeaderTitle>{user?.name}</HeaderTitle>
+              <HeaderTitle>{user?.displayName}</HeaderTitle>
               <HeaderSubTitle>{user?.email}</HeaderSubTitle>
             </div>
           </div>
@@ -64,20 +61,28 @@ function RouteComponent() {
           <PageMainSection>
             <div className="flex flex-col gap-2">
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
-              <span>Change Theme</span> <ThemeToggle />
-            </div>
-            <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
-              <span>Clear Data</span> 
-               <IconButton onClick={async() => await clearData("Do you want to clear the data")}>
-                <Trash2 className="h-5 w-5"/>
-              </IconButton>
-            </div>
-            <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
-              <span>Sync Data</span> 
-               <IconButton onClick={async() => await clearData("Do you want to clear the data")}>
-                <CloudSync className="h-5 w-5"/>
-              </IconButton>
-            </div>
+                <span>Change Theme</span> <ThemeToggle />
+              </div>
+              <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+                <span>Clear Data</span>
+                <IconButton
+                  onClick={async () =>
+                    await clearData("Do you want to clear the data")
+                  }
+                >
+                  <Trash2 className="h-5 w-5" />
+                </IconButton>
+              </div>
+              <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+                <span>Sync Data</span>
+                <IconButton
+                  onClick={async () =>
+                    await clearData("Do you want to clear the data")
+                  }
+                >
+                  <CloudSync className="h-5 w-5" />
+                </IconButton>
+              </div>
             </div>
           </PageMainSection>
         </PageMainContainer>

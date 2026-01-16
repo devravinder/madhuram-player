@@ -1,26 +1,20 @@
 import { useAuth } from "@/context/AuthContext";
 import React, { useState } from "react";
-import { AvatarContainer, Img, Input } from "../Elements";
+import { AvatarContainer, Img } from "../Elements";
+import { Google } from "../icons/Google";
 
 export function LoginPage() {
-  const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { loginWithPopup: login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Please fill in all fields");
-      return;
-    }
-
     setIsLoading(true);
     try {
-      await login(email, password);
+      await login();
     } catch (err) {
       setError("Login failed. Please try again.");
       console.log(err);
@@ -31,72 +25,34 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-linear-to-br from-background via-background to-primary/5">
-      <div className="w-full max-w-md flex flex-col gap-8">
+      <div className="w-full py-20 max-w-sm flex flex-col gap-8 bg-card rounded-2xl border border-border hover:border-border/80 transition-all duration-300 p-6 shadow-xl">
         {/* Logo */}
         <div className="flex flex-col gap-2 items-center justify-center">
           <AvatarContainer className="w-20 h-20 p-1 shadow-lg">
             <Img src="/favicon.svg" alt="Logo" />
           </AvatarContainer>
           <h1 className="text-3xl font-bold">Madhuram</h1>
-          <p className="text-muted-foreground">
-            Your offline music player
-          </p>
+          <p className="text-muted-foreground">Only Music • No Ads</p>
         </div>
 
         {/* Login Form */}
-        <div className="bg-card rounded-2xl border border-border hover:border-border/80 transition-all duration-300 p-6 shadow-xl">
-          <h2 className="text-xl font-semibold mb-6">Welcome back</h2>
+        {error && <p className="text-sm text-destructive">{error}</p>}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">Email</label>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setEmail(e.target.value)
-                }
-                placeholder="you@example.com"
-                className="input-field"
-                autoComplete="email"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2">Password</label>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setPassword(e.target.value)
-                }
-                placeholder="••••••••"
-                className="input-field"
-                autoComplete="current-password"
-              />
-            </div>
-
-            {error && <p className="text-sm text-destructive">{error}</p>}
-
-            <button
-              type="submit"
-              className="bg-accent cursor-pointer rounded-lg p-2 w-full"
-              disabled={isLoading}
-            >
-              {isLoading ? "Signing in..." : "Sign In"}
-            </button>
-          </form>
-
-          <p className="text-center text-sm text-muted-foreground mt-6">
-            Demo: Enter any email and password
-          </p>
-        </div>
+        <button
+           onClick={handleLogin}
+          className="bg-accent cursor-pointer rounded-lg p-2 w-full flex flex-row gap-2 items-center justify-center"
+          disabled={isLoading}
+        >
+          <Google className="h-5 w-5" /> {isLoading ? <span>Loggin in with google</span> : <span>Loginin with google</span>}
+        </button>
 
         {/* Footer */}
         <p className="text-center text-xs text-muted-foreground">
-          Offline music player • No account required
+          Enjoy uninterrupted music
         </p>
       </div>
     </div>
   );
 }
+
+export default LoginPage;
