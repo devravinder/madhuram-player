@@ -4,8 +4,8 @@ import tw from "tailwind-styled-components";
 
 // Note:- don't change these layout elements (carefull)
 export const Layout = tw.div`h-screen w-full overflow-hidden bg-background text-foreground`;
-export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-14 sm:h-16 flex items-center justify-center px-4 z-10`;
-export const Main = tw.main`absolute pb-14 sm:pb-16 inset-0 overflow-y-auto`; // p=14
+export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-16 flex items-center justify-center px-4 z-10`;
+export const Main = tw.main`absolute pb-16 inset-0 overflow-y-auto`; // p=16
 
 export const MainContainer = tw.section`h-full flex flex-col relative`;
 
