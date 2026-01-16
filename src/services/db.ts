@@ -1,5 +1,6 @@
 import { Dexie, type EntityTable } from "dexie";
 import type { AudioFile, Playlist, Song } from "@/types/music";
+import { DB_NAME } from "@/constants";
 
 class AppDB extends Dexie {
   songs!: EntityTable<Song, "id">;
@@ -7,7 +8,7 @@ class AppDB extends Dexie {
   audioFiles!: EntityTable<AudioFile, "songId">;
 
   constructor() {
-    super("madhuram");
+    super(DB_NAME);
 
     this.version(1).stores({
       songs: "id,title,addedAt",
@@ -57,7 +58,7 @@ export async function initDB() {
       );
 
       if (reset) {
-        await Dexie.delete("madhuram");
+        await Dexie.delete(DB_NAME);
         window.location.reload(); // recreate with latest version
       }
     }
