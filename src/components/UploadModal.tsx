@@ -2,11 +2,19 @@ import { addSong } from "@/services/songsService";
 import type { Song } from "@/types/music";
 import { Import } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { parseBlob } from "music-metadata";
+import { parseBlob, type IPicture } from "music-metadata";
 import { useNavigate } from "@tanstack/react-router";
 
 export const UNKNOWN = "Unknown";
 export const DEFAULT_SONG_IMAGE = "/default-song.jpeg";
+
+const imageUrl = (imagedata: IPicture) => {
+  const blob = new Blob([imagedata.data as unknown as ArrayBuffer], {
+    type: imagedata.format,
+  });
+
+  return URL.createObjectURL(blob);
+};
 
 const allowedTypes = [
   "audio/mpeg", // mp3
@@ -45,7 +53,7 @@ export function UploadModal() {
 
     const artist = metadata.common.artist || UNKNOWN;
     const album = metadata.common.album || UNKNOWN;
-    const picture = metadata.common.picture?.[0] || DEFAULT_SONG_IMAGE;
+    const picture = metadata.common.picture?.[0] ? imageUrl(metadata.common.picture[0]) : DEFAULT_SONG_IMAGE;
 
     const duration = Math.floor(metadata.format.duration || 0);
 
@@ -150,7 +158,7 @@ export function UploadModal() {
           </button>
         </div>
         <p className="text-xs text-center text-muted-foreground">
-          Note: This is a demo feature. Files won't actually be uploaded.
+          Note: upload only audio files
         </p>
       </div>
     </div>

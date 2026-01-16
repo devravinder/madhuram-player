@@ -286,7 +286,6 @@
 
 ##### Subtasks
 
-
 ### 🚀 In Progress
 
 #### 013 | Bugs-3
@@ -295,7 +294,7 @@
 - Status: 🚀 In Progress
 - Priority: 🟢 Low
 - createdDate: 2026-01-11 11:36:04:938
-- lastModifiedDate: 2026-01-11 11:35:41:311
+- lastModifiedDate: 2026-01-12 01:26:06:051
 - dueDate: 2026-01-11 05:30:00:000
 - Id: 013
 
@@ -305,6 +304,7 @@
 ##### Subtasks
 
 - [ ] loader is executing many times - use memo
+- [ ] Handle song metadata image
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
