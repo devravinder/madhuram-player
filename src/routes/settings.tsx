@@ -3,18 +3,20 @@ import {
   HeaderIcon,
   HeaderSubTitle,
   HeaderTitle,
+  IconButton,
   PageHeader,
   PageLayout,
   PageMain,
   PageMainContainer,
   PageMainSection,
 } from "@/components/Elements";
-import { LogOut, Pencil } from "lucide-react";
+import { LogOut, Pencil, Trash2 } from "lucide-react";
 
-import { useAuth } from "@/context/AuthContext";
-import { createFileRoute } from "@tanstack/react-router";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useAuth } from "@/context/AuthContext";
 import { usePlayer } from "@/context/PlayerContext";
+import { clearData } from "@/services/db";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/settings")({
   component: RouteComponent,
@@ -62,6 +64,12 @@ function RouteComponent() {
           <PageMainSection>
             <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
               <span>Change Theme</span> <ThemeToggle />
+            </div>
+            <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+              <span>Clear Data</span> 
+               <IconButton onClick={async() => await clearData("Di you want to clear the data")}>
+                <Trash2 className="h-5 w-5"/>
+              </IconButton>
             </div>
           </PageMainSection>
         </PageMainContainer>
