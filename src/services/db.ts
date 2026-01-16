@@ -12,14 +12,12 @@ class AppDB extends Dexie {
     this.version(1).stores({
       songs: "id,title,addedAt",
       playlists: "id,name,createdAt",
-      audioFiles: "songId",
     });
 
     this.version(2)
       .stores({
         songs: "id,title,addedAt",
         playlists: "id,name,createdAt",
-        audioFiles: "songId",
       })
       .upgrade(async tx => {
         console.log("Upgrading to v2 → clearing old data");
@@ -35,7 +33,6 @@ class AppDB extends Dexie {
       .stores({
         songs: "id,title,addedAt",
         playlists: "id,name,createdAt, *songIds",
-        audioFiles: "songId",
       })
       .upgrade(async () => {
         console.log("Upgrading to v3 ");
