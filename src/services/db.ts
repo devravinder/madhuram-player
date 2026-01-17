@@ -1,10 +1,11 @@
 import { Dexie, type EntityTable } from "dexie";
-import type { Playlist, Song } from "@/types/music";
+import type { AppFile, Playlist, Song } from "@/types/music";
 import { DB_NAME } from "@/constants";
 
 class AppDB extends Dexie {
   songs!: EntityTable<Song, "id">;
   playlists!: EntityTable<Playlist, "id">;
+  files!: EntityTable<AppFile, "id">;
 
   constructor() {
     super(DB_NAME);
@@ -33,6 +34,14 @@ class AppDB extends Dexie {
       .stores({
         songs: "id,title,addedAt",
         playlists: "id,name,createdAt, *songIds",
+      })
+      .upgrade(async () => {
+        console.log("Upgrading to v3 ");
+      });
+
+      this.version(4)
+      .stores({
+        files: "id"
       })
       .upgrade(async () => {
         console.log("Upgrading to v3 ");

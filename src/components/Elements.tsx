@@ -30,6 +30,7 @@ export const HeaderSubTitle = tw.div`text-xs sm:text-md text-muted-foreground`;
 
 export const AvatarContainer = tw.div`text-foreground rounded-lg relative inline-flex items-center justify-center overflow-hidden select-none h-10 w-10`;
 export const Img = tw.img`h-full w-full object-contain object-center`;
+export const CoverImg = tw.img`h-full w-full rounded-lg object-cover`
 export const Uppercase = tw.span`font-semibold uppercase`;
 
 export const Card = tw.div`bg-card text-card-foreground shadow rounded-md p-4`;

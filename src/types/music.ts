@@ -4,9 +4,9 @@ export interface Song {
   artist: string;
   album: string;
   duration: number; // in seconds
-  coverUrl: string;
-  audioUrl: string;
   addedAt: Date;
+  audioId: string
+  coverImageId?: string
 }
 
 
@@ -41,3 +41,13 @@ export interface SleepTimer {
 }
 
 export type SortOption = 'name-asc' | 'name-desc' | 'date-asc' | 'date-desc' | 'none';
+
+
+export type AppFile = {
+  id: string;
+  data: Blob;
+  name?: string
+  size?: number;
+  type: string;
+  createdAt: Date;
+}

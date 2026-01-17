@@ -4,6 +4,7 @@ import { formatTime } from "@/services/timeUtil";
 import { Pause, Play } from "lucide-react";
 import Waves from "../Waves";
 import { SongItem } from "../Elements";
+import AudioImage from "../AudioImage";
 
 interface SongCardProps {
   song: Song;
@@ -36,11 +37,7 @@ export default function SongCard({
       </span>
 
       <div className="w-12 h-12 relative">
-        <img
-          src={song.coverUrl}
-          alt={song.title}
-          className="w-full h-full rounded-lg object-cover"
-        />
+        <AudioImage id={song.coverImageId} alt={song.title} />
         <div className="absolute border p-2 rounded-lg inset-0 flex justify-center items-center group-hover:hidden">
           {isCurrentSong && <Waves start={isPlaying} />}
         </div>

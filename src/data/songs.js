@@ -1,7 +1,5 @@
-import type { Song } from "@/types/music";
-
 // Using royalty-free audio samples
-export const staticSongs: Song[] = [
+export const staticSongs = [
   {
     id: "1",
     title: "Midnight Dreams",

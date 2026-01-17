@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 import { usePlaylists } from "./PlaylistContext";
+import { getFile } from "@/services/filesService";
 
 interface PlayerContextType {
   // State
@@ -75,14 +76,23 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       if (!audioRef.current) return;
 
       setCurrentSong(song);
-      audioRef.current.src = song.audioUrl;
-      audioRef.current
+      getFile(song.audioId)
+      .then(audioFile=>{
+        if (!audioRef.current || !audioFile) return;
+
+        if(audioRef.current.src) // clear previous
+        URL.revokeObjectURL(audioRef.current.src);
+
+        audioRef.current.src = URL.createObjectURL(audioFile.data);
+        audioRef.current
         .play()
         .then(() => {
           setIsPlaying(true);
           addToRecentlyPlayed(song.id, playListId);
         })
         .catch((err) => console.error("Error playing audio:", err));
+      })
+
     },
     [addToRecentlyPlayed]
   );

@@ -4,17 +4,24 @@ import { Import } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { parseBlob, type IPicture } from "music-metadata";
 import { useNavigate } from "@tanstack/react-router";
+import { saveFile } from "@/services/filesService";
+import { UNKNOWN } from "@/constants";
 
-export const UNKNOWN = "Unknown";
-export const DEFAULT_SONG_IMAGE = "/default-song.jpeg";
 
-const imageUrl = (imagedata: IPicture) => {
-  const blob = new Blob([imagedata.data as unknown as ArrayBuffer], {
-    type: imagedata.format,
+
+function pictureToFile(picture: IPicture) {
+  const blob = new Blob([picture.data as unknown as ArrayBuffer], {
+    type: picture.format
   });
 
-  return URL.createObjectURL(blob);
-};
+  const ext = picture.format.split("/")[1]; // jpeg / png
+  const fileName = `cover.${ext}`;
+
+  return new File([blob], fileName, {
+    type: picture.format
+  });
+}
+
 
 const allowedTypes = [
   "audio/mpeg", // mp3
@@ -44,7 +51,8 @@ export function UploadModal() {
   }, []);
 
   const uploadFile = async (file: File) => {
-    const blobUrl = URL.createObjectURL(file!);
+
+    const audioFile = await saveFile(file)
 
     const metadata = await parseBlob(file);
 
@@ -53,7 +61,14 @@ export function UploadModal() {
 
     const artist = metadata.common.artist || UNKNOWN;
     const album = metadata.common.album || UNKNOWN;
-    const picture = metadata.common.picture?.[0] ? imageUrl(metadata.common.picture[0]) : DEFAULT_SONG_IMAGE;
+
+    let coverImageId = undefined;
+
+    if(metadata.common.picture?.[0]){
+      const converPic = pictureToFile(metadata.common.picture[0])
+      const imageFile = await saveFile(converPic)
+      coverImageId = imageFile.id
+    }
 
     const duration = Math.floor(metadata.format.duration || 0);
 
@@ -62,8 +77,8 @@ export function UploadModal() {
       artist,
       album,
       duration, // in seconds
-      coverUrl: picture as string,
-      audioUrl: blobUrl,
+      audioId: audioFile.id,
+      coverImageId,
       addedAt: new Date(),
     };
 

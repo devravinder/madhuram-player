@@ -14,6 +14,7 @@ import { FAVOURITE_PLAYLIST_ID } from "@/constants";
 
 import { useLiveQuery } from "dexie-react-hooks";
 import { usePlaylists } from "@/context/PlaylistContext";
+import AudioImage from "./AudioImage";
 
 interface PlaylistModalProps {
   title: string;
@@ -144,11 +145,7 @@ export function PlaylistModal({
                         : "hover:bg-secondary"
                     }`}
                   >
-                    <img
-                      src={song.coverUrl}
-                      alt={song.title}
-                      className="w-10 h-10 rounded object-cover"
-                    />
+                    <AudioImage id={song.coverImageId} alt={song.title} className="w-10 h-10 rounded"/>
                     <div className="flex-1 text-left min-w-0">
                       <p className="text-sm font-medium truncate">
                         {song.title}
