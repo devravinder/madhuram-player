@@ -2,6 +2,9 @@ import { executeOneTask } from "../backgroundTaskService";
 
 let worker: Worker | null = null;
 
+const AUTO_SYNC = import.meta.env.VITE_APP_AUTO_SYNC === "TRUE";
+const AUTO_SYNC_MS = parseInt(import.meta.env.VITE_APP_AUTO_SYNC_MS || `30000`);
+
 export const createTaskWorker = () => {
   if (worker) return;
 
@@ -10,24 +13,24 @@ export const createTaskWorker = () => {
   });
 
   worker.onmessage = async (e) => {
-    if (e.data.type === "EXECUTE_TASK") {
-      await executeOneTask();
+    const { type, interval = 0 } = e.data;
+    if (type === "EXECUTE_TASK") {
+      setTimeout(async () => {
+        await executeOneTask();
+      }, interval);
     }
   };
 
-  worker.postMessage({
-    type: "START",
-    interval: 30 * 1000,
-  });
+  if (AUTO_SYNC) worker.postMessage({ type: "START", interval: AUTO_SYNC_MS });
 };
 
 /**
  * 🔥 Manual trigger from anywhere
  */
-export const runTaskNow = () => {
+export const runTaskNow = (delay=1*1000) => {
   if (!worker) return;
 
-  worker.postMessage({ type: "RUN_NOW" });
+  worker.postMessage({ type: "RUN_NOW", interval: delay });
 };
 
 export const stopTaskWorker = () => {

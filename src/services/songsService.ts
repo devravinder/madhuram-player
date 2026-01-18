@@ -17,7 +17,7 @@ export const getPlayListSongs = async (playlist?: Playlist) => {
 export const addSong = async (song: Omit<Song, "id">, id?: string) => {
   const newSong: Song = {
     ...song,
-    id: id || `${crypto.randomUUID().slice(0, 4)}`,
+    id: id || `${crypto.randomUUID().slice(0, 8)}`,
     addedAt: new Date(),
   };
   await db.songs.add(newSong);

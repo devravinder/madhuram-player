@@ -13,7 +13,7 @@ self.onmessage = (e) => {
       break;
 
     case "RUN_NOW": // 👈 manual trigger
-      runOnce();
+      runOnce(interval);
       break;
   }
 };
@@ -24,10 +24,10 @@ function start(interval: number = 30 * 1000) {
   timer = setInterval(runOnce, interval);
 }
 
-function runOnce() {
+function runOnce(interval: number) {
   if (!navigator.onLine) return;
 
-  self.postMessage({ type: "EXECUTE_TASK" });
+  self.postMessage({ type: "EXECUTE_TASK", interval });
 }
 
 function stop() {

@@ -9,7 +9,7 @@ export const createPlaylist = async (
 ): Promise<Playlist> => {
   const newPlaylist: Playlist = {
     ...playlist,
-    id: id || `${crypto.randomUUID().slice(0, 4)}`,
+    id: id || `${crypto.randomUUID().slice(0, 8)}`,
     createdAt: new Date(),
     updatedAt: new Date(),
   };

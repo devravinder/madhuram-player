@@ -46,9 +46,10 @@ const deleteOne = async <T>(collectionName: string, id: string) => {
 //====
 
 const getSyncType = (
-  local: Date,
-  cloud: Date | undefined
+  local: Date | string,
+  cloud: Date | string | undefined
 ): Direction | undefined => {
+  console.log({ local, cloud });
   if (dayjs(local).isSame(cloud, "minute"))
     // ignore seconds
     return;
@@ -151,9 +152,7 @@ export const fileUp = async (id: string) => {
   form.append("file", appFile.data);
 
   await withAccessToken(({ headers }) =>
-    fetch(`${API_ENDPOINT}/files/upload/${appFile.id}`, {
-      method: "POST",
-      body: form,
+    axios.post(`${API_ENDPOINT}/files/upload/${appFile.id}`, form, {
       headers,
     })
   );
@@ -191,6 +190,7 @@ export const sync = async () => {
     COLLECTIONS.UPDATE_INFO_COLLECTION
   );
 
+  console.log({ localUpdatesInfo, cloudUpdatesInfo });
   const cloud: Record<string, UpdateInfo> = {};
 
   cloudUpdatesInfo.reduce((pre, cur) => {
@@ -201,7 +201,7 @@ export const sync = async () => {
   for (let localInfo of localUpdatesInfo) {
     const type = getSyncType(
       localInfo.updatedAt,
-      cloud[localInfo.collectionName].updatedAt
+      cloud[localInfo.collectionName]?.updatedAt
     );
     if (!type) break;
 

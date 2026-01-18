@@ -95,5 +95,6 @@ export const executeOneTask = async () => {
 
   if (!task) return;
 
+  console.log("executing task ", task)
   await executeTask(task);
 };

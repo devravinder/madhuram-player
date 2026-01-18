@@ -7,6 +7,7 @@ export const updateInfo = async (collectionName: CollectionValue) =>
 export const getAllUpdatesInfo = async () => db.updateInfo.toArray();
 
 export const resetUpdateInfo=async(updates:UpdateInfo[])=>{
+
   await db[COLLECTIONS.UPDATE_INFO_COLLECTION].clear()
 
   await db[COLLECTIONS.UPDATE_INFO_COLLECTION].bulkAdd(updates)
