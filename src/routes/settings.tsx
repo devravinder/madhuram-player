@@ -16,6 +16,7 @@ import { Image } from "@/components/Avatar";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useAuth } from "@/context/AuthContext";
 import { usePlayer } from "@/context/PlayerContext";
+import { addBackgroundTask } from "@/services/backgroundTaskService";
 import { clearDataWithPrompt } from "@/services/db";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -74,10 +75,10 @@ function RouteComponent() {
                 </IconButton>
               </div>
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
-                <span>Sync Data</span>
+                <span>Sync</span>
                 <IconButton
                   onClick={async () =>
-                    await clearDataWithPrompt("Do you want to clear the data")
+                    await addBackgroundTask({id:"SYNC", type:"SYNC", status:"PENDING", retries:0})
                   }
                 >
                   <CloudSync className="h-5 w-5" />

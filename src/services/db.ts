@@ -1,50 +1,77 @@
 import { Dexie, type EntityTable } from "dexie";
-import type { AppFile, Playlist, Song } from "@/types/music";
+import type {
+  AppFile,
+  BackgroundTask,
+  Playlist,
+  Song,
+  UpdateInfo,
+} from "@/types/music";
 import { DB_NAME } from "@/constants";
 
+export const COLLECTIONS = {
+  PLAYLIST_COLLECTION: "playlists",
+  SONGS_COLLECTION: "songs",
+  UPDATE_INFO_COLLECTION: "updateInfo",
+  FILES_COLLECTION: "files",
+  BACKGROUND_TASKS_COLLECTION: "backgroundTasks",
+} as const;
+
 class AppDB extends Dexie {
-  songs!: EntityTable<Song, "id">;
-  playlists!: EntityTable<Playlist, "id">;
-  files!: EntityTable<AppFile, "id">;
+  [COLLECTIONS.SONGS_COLLECTION]!: EntityTable<Song, "id">;
+  [COLLECTIONS.PLAYLIST_COLLECTION]!: EntityTable<Playlist, "id">;
+  [COLLECTIONS.FILES_COLLECTION]!: EntityTable<AppFile, "id">;
+  [COLLECTIONS.UPDATE_INFO_COLLECTION]!: EntityTable<
+    UpdateInfo,
+    "collectionName"
+  >;
+  [COLLECTIONS.BACKGROUND_TASKS_COLLECTION]!: EntityTable<BackgroundTask, "id">;
 
   constructor() {
     super(DB_NAME);
 
     this.version(1).stores({
-      songs: "id,title,addedAt",
-      playlists: "id,name,createdAt",
+      [COLLECTIONS.SONGS_COLLECTION]: "id,title,addedAt",
+      [COLLECTIONS.PLAYLIST_COLLECTION]: "id,name,createdAt",
     });
 
     this.version(2)
       .stores({
-        songs: "id,title,addedAt",
-        playlists: "id,name,createdAt",
+        [COLLECTIONS.SONGS_COLLECTION]: "id,title,addedAt",
+        [COLLECTIONS.PLAYLIST_COLLECTION]: "id,name,createdAt",
       })
       .upgrade(async (tx) => {
         console.log("Upgrading to v2 → clearing old data");
 
         await Promise.all([
-          tx.table("songs").clear(),
-          tx.table("playlists").clear(),
-          tx.table("audioFiles").clear(),
+          tx.table(COLLECTIONS.SONGS_COLLECTION).clear(),
+          tx.table(COLLECTIONS.PLAYLIST_COLLECTION).clear(),
+          tx.table(COLLECTIONS.FILES_COLLECTION).clear(),
         ]);
       });
 
     this.version(3)
       .stores({
-        songs: "id,title,addedAt",
-        playlists: "id,name,createdAt, *songIds",
+        [COLLECTIONS.SONGS_COLLECTION]: "id,title,addedAt",
+        [COLLECTIONS.PLAYLIST_COLLECTION]: "id,name,createdAt, *songIds",
       })
       .upgrade(async () => {
         console.log("Upgrading to v3 ");
       });
 
-      this.version(4)
+    this.version(4)
       .stores({
-        files: "id"
+        [COLLECTIONS.FILES_COLLECTION]: "id",
       })
       .upgrade(async () => {
-        console.log("Upgrading to v3 ");
+        console.log("Upgrading to v4 ");
+      });
+    this.version(5)
+      .stores({
+        [COLLECTIONS.UPDATE_INFO_COLLECTION]: "collectionName",
+        [COLLECTIONS.BACKGROUND_TASKS_COLLECTION]: "id",
+      })
+      .upgrade(async () => {
+        console.log("Upgrading to v5 ");
       });
   }
 }
@@ -66,6 +93,7 @@ export const clearDataWithPrompt = async (message: string) => {
 
 //=====
 export async function initDB() {
+  console.log("initializeDb");
   try {
     await db.open();
   } catch (error: any) {

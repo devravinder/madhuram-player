@@ -1,3 +1,5 @@
+import type { COLLECTIONS } from "@/services/db";
+
 export interface Song {
   id: string;
   title: string;
@@ -5,10 +7,9 @@ export interface Song {
   album: string;
   duration: number; // in seconds
   addedAt: Date;
-  audioId: string
-  coverImageId?: string
+  audioId: string;
+  coverImageId?: string;
 }
-
 
 export interface Playlist {
   id: string;
@@ -20,7 +21,7 @@ export interface Playlist {
   updatedAt: Date;
 }
 
-export type RepeatMode = 'off' | 'one' | 'all';
+export type RepeatMode = "off" | "one" | "all";
 
 export interface PlayerState {
   currentSong: Song | null;
@@ -40,14 +41,31 @@ export interface SleepTimer {
   duration: number; // in minutes
 }
 
-export type SortOption = 'name-asc' | 'name-desc' | 'date-asc' | 'date-desc' | 'none';
-
+export type SortOption =
+  | "name-asc"
+  | "name-desc"
+  | "date-asc"
+  | "date-desc"
+  | "none";
 
 export type AppFile = {
   id: string;
-  data: Blob;
-  name?: string
-  size?: number;
-  type: string;
+  data: File;
   createdAt: Date;
-}
+};
+
+export type CollectionValue = (typeof COLLECTIONS)[keyof typeof COLLECTIONS];
+export type UpdateInfo = {
+  collectionName: CollectionValue;
+  updatedAt: Date;
+};
+
+export type Direction = "UP" | "DOWN";
+
+export type TaskType = `${CollectionValue}_${Direction}` | "SYNC" | "song_UP" | "playlist_UP" | "playlist_DELETE";
+export type BackgroundTask = {
+  type: TaskType;
+  id: string;
+  retries: number;
+  status: "PENDING" | "RUNNING" | "DONE" | "FAILED";
+};

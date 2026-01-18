@@ -17,6 +17,8 @@ export const app = initializeApp(firebaseConfig);
 getAnalytics(app);
 export const auth = getAuth(app);
 
+export const isAuthenticated = () => Boolean(auth.currentUser)
+
 export const provider = new GoogleAuthProvider();
 
 type WithAccessTokenCallback<T> = (options: {

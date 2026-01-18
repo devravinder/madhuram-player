@@ -1,6 +1,7 @@
 import type { Playlist } from "@/types/music";
 import db, { initDB } from "./db";
 import { FAVOURITE_PLAYLIST_ID, RECENT_PLAYLIST_ID } from "../constants";
+import { createTaskWorker } from "./task/taskExecutor";
 
 //====
 export const createSampleSongs = async () => {
@@ -33,14 +34,14 @@ export const createInitialPlayLists = async () => {
 };
 
 export const onAppStart = async () => {
-  console.log("initializeDb");
-
   await initDB();
+
+  createTaskWorker();
 
   const data = await db.playlists.get(FAVOURITE_PLAYLIST_ID);
 
   if (data) {
-    console.log("Data exists");
+    console.log("Data already exists");
     return;
   }
 
