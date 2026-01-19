@@ -17,10 +17,12 @@ import LoginPage from "@/components/auth/LoginPage";
 import { auth, provider } from "@/services/firebaseUtil";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { clearData } from "@/services/db";
+import LoadingPage from "@/components/LoadingPage";
 
 type AuthenticationContextType = {
   user: User;
   token: string;
+  isLoading: boolean;
   loginWithRedirect: () => Promise<void>;
   loginWithPopup: () => Promise<void>;
   logout: () => void;
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userEmail, setUserEmail] = useLocalStorage<string>("user-email", "");
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState("");
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleAuthResult = async (result: UserCredential) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -49,6 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         console.log("onAuthStateChanged currentUser not present");
       }
+      setIsLoading(false)
     });
     return () => unsubscribe();
   }, []);
@@ -92,9 +96,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     auth.signOut();
     setUser(null);
   };
+
   return (
     <AuthenticationContext.Provider
-      value={{ user: user!, token, loginWithRedirect, loginWithPopup, logout }}
+      value={{ user: user!, token, loginWithRedirect, loginWithPopup, logout, isLoading }}
     >
       {children}
     </AuthenticationContext.Provider>
@@ -113,7 +118,9 @@ export const useAuth = () => {
 };
 
 export const SecureComponent = ({ children }: { children: ReactNode }) => {
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
+  if(isLoading)
+     return <LoadingPage/>
   return user ? children : <LoginPage />;
 };

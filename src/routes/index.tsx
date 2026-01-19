@@ -48,8 +48,8 @@ function RouteComponent() {
             </HeaderIcon>
 
             <div className="">
-              <HeaderTitle>Home Page</HeaderTitle>
-              <HeaderSubTitle>Offline Songs</HeaderSubTitle>
+              <HeaderTitle>Madhuram</HeaderTitle>
+              <HeaderSubTitle>Only Music • No Ads</HeaderSubTitle>
             </div>
           </div>
         </div>
