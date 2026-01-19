@@ -56,6 +56,15 @@ const deleteAll = async (collectionName: string) => {
   );
   return res.data;
 };
+
+export const deleteFile = async (id: string) => {
+  const res = await withAccessToken(({ headers }) =>
+    axios.delete(`${API_ENDPOINT}/files/${id}`, {
+      headers,
+    })
+  );
+  return res.data;
+};
 //====
 
 export const songsUp = async () => {
@@ -156,7 +165,6 @@ export const filedown = async (id: string) => {
 };
 
 export const syncUp = async () => {
-  
   await addBackgroundTask({
     id: "playlists_UP",
     type: "playlists_UP",

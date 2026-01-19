@@ -350,11 +350,9 @@
 
 - Title: Bugs
 - Status: 🚀 In Progress
-- Notes: small icon - on iphone background run
-
 - Priority: 🟢 Low
 - createdDate: 2026-01-19 12:14:23:214
-- lastModifiedDate: 2026-01-19 12:14:04:041
+- lastModifiedDate: 2026-01-19 02:24:14:275
 - dueDate: 2026-01-19 05:30:00:000
 - Id: 016
 
@@ -363,6 +361,8 @@
 
 ##### Subtasks
 
+- [ ] small icon - on iphone background run
+- [ ] on refresh, showing login screen
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
