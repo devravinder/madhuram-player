@@ -102,41 +102,13 @@
 - Status: 📝 To Do
 - Priority: 🟢 Low
 - createdDate: 2026-01-10 11:46:12:356
-- lastModifiedDate: 2026-01-10 11:45:48:919
+- lastModifiedDate: 2026-01-19 05:41:17:944
 - dueDate: 2026-01-10 05:30:00:000
 - Id: 002
 
 ##### Tags
 
 - #ui
-
-##### Subtasks
-
-#### 003 | Upload Audio Feature
-
-- Title: Upload Audio Feature
-- Status: 📝 To Do
-- Priority: 🟢 Low
-- createdDate: 2026-01-10 11:46:27:425
-- lastModifiedDate: 2026-01-10 11:46:14:000
-- dueDate: 2026-01-10 05:30:00:000
-- Id: 003
-
-##### Tags
-
-##### Subtasks
-
-#### 005 | Integrate with Cloud Store
-
-- Title: Integrate with Cloud Store
-- Status: 📝 To Do
-- Priority: 🟢 Low
-- createdDate: 2026-01-10 12:13:51:670
-- lastModifiedDate: 2026-01-10 12:13:38:743
-- dueDate: 2026-01-10 05:30:00:000
-- Id: 005
-
-##### Tags
 
 ##### Subtasks
 
@@ -159,42 +131,37 @@
 
 ##### Subtasks
 
-### 🚀 In Progress
-
-#### 006 | Edit/Delete Audio
-
-- Title: Edit/Delete Audio
-- Status: 🚀 In Progress
-- Priority: 🟢 Low
-- createdDate: 2026-01-10 12:14:24:832
-- lastModifiedDate: 2026-01-19 05:14:55:275
-- dueDate: 2026-01-10 05:30:00:000
-- Id: 006
-- startedDate: 2026-01-19 05:14:55:275
-
-##### Tags
-
-##### Subtasks
-
-#### 013 | Bugs-3
-
-- Title: Bugs-3
-- Status: 🚀 In Progress
-- Priority: 🟢 Low
-- createdDate: 2026-01-11 11:36:04:938
-- lastModifiedDate: 2026-01-16 04:00:49:709
-- dueDate: 2026-01-11 05:30:00:000
-- Id: 013
-
-##### Tags
-
-
-##### Subtasks
-
-- [ ] loader is executing many times - use memo
-- [x] Handle song metadata image
-
 ### ✅ Done
+
+#### 003 | Upload Audio Feature
+
+- Title: Upload Audio Feature
+- Status: ✅ Done
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 11:46:27:425
+- lastModifiedDate: 2026-01-19 05:41:14:404
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 003
+- completedDate: 2026-01-19 05:41:14:404
+
+##### Tags
+
+##### Subtasks
+
+#### 005 | Integrate with Cloud Store
+
+- Title: Integrate with Cloud Store
+- Status: ✅ Done
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 12:13:51:670
+- lastModifiedDate: 2026-01-19 05:41:10:763
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 005
+- completedDate: 2026-01-19 05:41:10:762
+
+##### Tags
+
+##### Subtasks
 
 #### 004 | Integrate with Indexdb
 
@@ -307,6 +274,25 @@
 
 ##### Subtasks
 
+#### 013 | Bugs-3
+
+- Title: Bugs-3
+- Status: ✅ Done
+- Priority: 🟢 Low
+- createdDate: 2026-01-11 11:36:04:938
+- lastModifiedDate: 2026-01-19 05:41:53:450
+- dueDate: 2026-01-11 05:30:00:000
+- Id: 013
+- completedDate: 2026-01-19 05:41:53:450
+
+##### Tags
+
+
+##### Subtasks
+
+- [x] loader is executing many times - use memo
+- [x] Handle song metadata image
+
 #### 014 | Authentication
 
 - Title: Authentication
@@ -323,6 +309,57 @@
 
 - #ui
 - #feature
+
+##### Subtasks
+
+
+### 🚀 In Progress
+
+#### 006 | Edit/Delete Audio
+
+- Title: Edit/Delete Audio
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 12:14:24:832
+- lastModifiedDate: 2026-01-19 05:14:55:275
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 006
+- startedDate: 2026-01-19 05:14:55:275
+
+##### Tags
+
+##### Subtasks
+
+#### 015 | Play via Bluetooth
+
+- Title: Play via Bluetooth
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-19 05:41:40:342
+- lastModifiedDate: 2026-01-19 05:41:26:865
+- dueDate: 2026-01-19 05:30:00:000
+- Id: 015
+
+##### Tags
+
+
+##### Subtasks
+
+
+#### 016 | Bugs
+
+- Title: Bugs
+- Status: 🚀 In Progress
+- Notes: small icon - on iphone background run
+
+- Priority: 🟢 Low
+- createdDate: 2026-01-19 12:14:23:214
+- lastModifiedDate: 2026-01-19 12:14:04:041
+- dueDate: 2026-01-19 05:30:00:000
+- Id: 016
+
+##### Tags
+
 
 ##### Subtasks
 

@@ -1,7 +1,5 @@
-import type { BackgroundTask, Playlist, Song } from "@/types/music";
-import { addBackgroundTask } from "./backgroundTaskService";
+import type { Playlist, Song } from "@/types/music";
 import db, { COLLECTIONS } from "./db";
-import { updateInfo } from "./updateInfoService";
 
 export const getSongs = () => db.songs.toArray();
 
@@ -21,22 +19,11 @@ export const addSong = async (song: Omit<Song, "id">, id?: string) => {
     addedAt: new Date(),
   };
   await db.songs.add(newSong);
-  await updateInfo(COLLECTIONS.SONGS_COLLECTION);
-
-  const task: BackgroundTask = {
-    id: newSong.id,
-    type: "song_UP",
-    retries: 0,
-    status: "PENDING",
-  };
-
-  await addBackgroundTask(task);
 
   return newSong;
 };
 export const deleteSongs = async () => {
   await db.songs.clear();
-  await updateInfo(COLLECTIONS.SONGS_COLLECTION);
 };
 
 export const resetSongs = async (songs: Song[]) => {

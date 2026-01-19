@@ -1,7 +1,5 @@
-import type { BackgroundTask, Playlist } from "@/types/music";
+import type { Playlist } from "@/types/music";
 import db, { COLLECTIONS } from "./db";
-import { updateInfo } from "./updateInfoService";
-import { addBackgroundTask } from "./backgroundTaskService";
 
 export const createPlaylist = async (
   playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">,
@@ -14,17 +12,6 @@ export const createPlaylist = async (
     updatedAt: new Date(),
   };
   await db.playlists.add(newPlaylist);
-  await updateInfo(COLLECTIONS.PLAYLIST_COLLECTION);
-
-  const task: BackgroundTask = {
-    id: newPlaylist.id,
-    type: "playlist_UP",
-    retries: 0,
-    status: "PENDING",
-  };
-
-  await addBackgroundTask(task);
-
   return newPlaylist;
 };
 export const getPlaylist = (id: string) => db.playlists.get(id);
@@ -38,22 +25,10 @@ export const updatePlaylist = async (
     ...updates,
     updatedAt: new Date(),
   });
-
-  await updateInfo(COLLECTIONS.PLAYLIST_COLLECTION);
 };
 
 export const deletePlaylist = async (id: string) => {
   await db.playlists.delete(id);
-  await updateInfo(COLLECTIONS.PLAYLIST_COLLECTION);
-
-  const task: BackgroundTask = {
-    id: id,
-    type: "playlist_DELETE",
-    retries: 0,
-    status: "PENDING",
-  };
-
-  await addBackgroundTask(task);
 };
 
 export const resetPlaylists = async (playlists: Playlist[]) => {
