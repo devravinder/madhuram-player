@@ -7,13 +7,12 @@ import {
   playlistsDown,
   playlistsUp,
   songsDown,
-  songsUp
+  songsUp,
 } from "./syncService";
-import { runTaskNow } from "./task/taskExecutor";
 
 export const addBackgroundTask = async (task: BackgroundTask) => {
+  console.log("adding task:- ", task);
   await db[COLLECTIONS.BACKGROUND_TASKS_COLLECTION].put(task);
-  runTaskNow();
 };
 
 export const deleteBackgroundTask = (id: string) =>
@@ -26,7 +25,6 @@ const executeTask = async (task: BackgroundTask) => {
     });
 
     switch (task.type) {
-
       case "files_DOWN":
         await filedown(task.id);
         break;
@@ -76,6 +74,6 @@ export const executeOneTask = async () => {
 
   if (!task) return;
 
-  console.log("executing task ", task)
+  console.log("executing task:- ", task);
   await executeTask(task);
 };

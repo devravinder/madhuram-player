@@ -1,4 +1,6 @@
 
+export const DELAY = 3 * 1000 // 3s
+
 export const DB_NAME="madhuram"
 export const RECENT_PLAYLIST_ID = "recent";
 export const FAVOURITE_PLAYLIST_ID = "favourites";

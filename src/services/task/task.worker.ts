@@ -1,11 +1,13 @@
+import { DELAY } from "@/constants";
+
 let timer: number | undefined;
 
 self.onmessage = (e) => {
-  const { type, interval } = e.data;
+  const { type } = e.data;
 
   switch (type) {
     case "START":
-      start(interval);
+      start();
       break;
 
     case "STOP":
@@ -13,21 +15,21 @@ self.onmessage = (e) => {
       break;
 
     case "RUN_NOW": // 👈 manual trigger
-      runOnce(interval);
+      runOnce();
       break;
   }
 };
 
-function start(interval: number = 30 * 1000) {
+function start() {
   if (timer) return;
 
-  timer = setInterval(runOnce, interval);
+  timer = setInterval(runOnce, DELAY);
 }
 
-function runOnce(interval: number) {
+function runOnce() {
   if (!navigator.onLine) return;
 
-  self.postMessage({ type: "EXECUTE_TASK", interval });
+  self.postMessage({ type: "EXECUTE_TASK" });
 }
 
 function stop() {
