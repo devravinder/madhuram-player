@@ -69,7 +69,17 @@ export const deleteFile = async (id: string) => {
 
 export const songsUp = async () => {
   const data = await getSongs();
+
+  const cloudSongs = await getAll<Song>(COLLECTIONS.SONGS_COLLECTION);
+
   await deleteAll(COLLECTIONS.SONGS_COLLECTION);
+
+  // delete old files
+  for (const song of cloudSongs) {
+    await deleteFile(song.audioId);
+    if (song.coverImageId) await deleteFile(song.coverImageId);
+  }
+
   await addAll(COLLECTIONS.SONGS_COLLECTION, data);
 
   for (const song of data) {
