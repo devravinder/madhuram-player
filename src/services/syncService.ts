@@ -156,6 +156,7 @@ export const filedown = async (id: string) => {
 };
 
 export const syncUp = async () => {
+  
   await addBackgroundTask({
     id: "playlists_UP",
     type: "playlists_UP",

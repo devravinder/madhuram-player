@@ -8,9 +8,17 @@ import {
   PageLayout,
   PageMain,
   PageMainContainer,
-  PageMainSection
+  PageMainSection,
 } from "@/components/Elements";
-import { CloudDownload, CloudUpload, LogOut, Pencil, Trash2 } from "lucide-react";
+import {
+  CloudDownload,
+  CloudUpload,
+  LogOut,
+  Pencil,
+  RefreshCcw,
+  Trash2,
+} from "lucide-react";
+import { toast } from "sonner";
 
 import { Image } from "@/components/Avatar";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -74,13 +82,14 @@ function RouteComponent() {
                   <Trash2 className="h-5 w-5" />
                 </IconButton>
               </div>
-             
+
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
                 <span>Sync Up</span>
                 <IconButton
-                  onClick={async () =>
-                    await syncUp()
-                  }
+                  onClick={async () => {
+                    await syncUp();
+                    toast("Syncing up in backgrdound");
+                  }}
                 >
                   <CloudUpload className="h-5 w-5" />
                 </IconButton>
@@ -88,11 +97,23 @@ function RouteComponent() {
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
                 <span>Sync Down</span>
                 <IconButton
-                  onClick={async () =>
-                     await syncDown()
-                  }
+                  onClick={async () => {
+                    await syncDown();
+                    toast("Syncing down in backgrdound");
+                  }}
                 >
                   <CloudDownload className="h-5 w-5" />
+                </IconButton>
+              </div>
+              <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+                <span>Refresh</span>
+                <IconButton
+                  onClick={() => {
+                    toast("Refreshing...");
+                    window.location.reload();
+                  }}
+                >
+                  <RefreshCcw className="h-5 w-5" />
                 </IconButton>
               </div>
             </div>
