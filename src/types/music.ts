@@ -62,7 +62,7 @@ export type UpdateInfo = {
 
 export type Direction = "UP" | "DOWN";
 
-export type TaskType = `${CollectionValue}_${Direction}` | "SYNC" | "song_UP" | "playlist_UP" | "playlist_DELETE";
+export type TaskType = `${CollectionValue}_${Direction}`
 export type BackgroundTask = {
   type: TaskType;
   id: string;

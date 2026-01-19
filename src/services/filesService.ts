@@ -1,5 +1,5 @@
 import type { AppFile } from "@/types/music";
-import db from "./db";
+import db, { COLLECTIONS } from "./db";
 
 const getFileExtension = (file: File): string => {
   return file.name.split(".").pop()?.toLowerCase() || "";
@@ -20,3 +20,5 @@ export const saveFile = async (file: File, fileId?: string) => {
 };
 
 export const getFile = (id: string) => db.files.get(id);
+
+export const deleteAllFiles = ()=> db[COLLECTIONS.FILES_COLLECTION].clear()

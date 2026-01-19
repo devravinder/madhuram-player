@@ -1,18 +1,14 @@
 import type { BackgroundTask } from "@/types/music";
 import db, { COLLECTIONS } from "./db";
-import {
-  songsUp,
-  sync,
-  filedown,
-  songsDown,
-  playlistsUp,
-  playlistsDown,
-  fileUp,
-  songUp,
-  playlistUp,
-  playlistDeleteUp,
-} from "./syncService";
 import { isAuthenticated } from "./firebaseUtil";
+import {
+  filedown,
+  fileUp,
+  playlistsDown,
+  playlistsUp,
+  songsDown,
+  songsUp
+} from "./syncService";
 import { runTaskNow } from "./task/taskExecutor";
 
 export const addBackgroundTask = async (task: BackgroundTask) => {
@@ -30,9 +26,6 @@ const executeTask = async (task: BackgroundTask) => {
     });
 
     switch (task.type) {
-      case "SYNC":
-        await sync();
-        break;
 
       case "files_DOWN":
         await filedown(task.id);
@@ -46,10 +39,6 @@ const executeTask = async (task: BackgroundTask) => {
         await songsUp();
         break;
 
-      case "song_UP":
-        await songUp(task.id);
-        break;
-
       case "songs_DOWN":
         await songsDown();
         break;
@@ -60,14 +49,6 @@ const executeTask = async (task: BackgroundTask) => {
 
       case "playlists_DOWN":
         await playlistsDown();
-        break;
-
-      case "playlist_UP":
-        await playlistUp(task.id);
-        break;
-
-      case "playlist_DELETE":
-        await playlistDeleteUp(task.id);
         break;
     }
 

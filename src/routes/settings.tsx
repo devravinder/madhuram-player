@@ -10,14 +10,14 @@ import {
   PageMainContainer,
   PageMainSection
 } from "@/components/Elements";
-import { CloudSync, LogOut, Pencil, Trash2 } from "lucide-react";
+import { CloudDownload, CloudUpload, LogOut, Pencil, Trash2 } from "lucide-react";
 
 import { Image } from "@/components/Avatar";
 import ThemeToggle from "@/components/ThemeToggle";
 import { useAuth } from "@/context/AuthContext";
 import { usePlayer } from "@/context/PlayerContext";
-import { addBackgroundTask } from "@/services/backgroundTaskService";
 import { clearDataWithPrompt } from "@/services/db";
+import { syncDown, syncUp } from "@/services/syncService";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/settings")({
@@ -74,14 +74,25 @@ function RouteComponent() {
                   <Trash2 className="h-5 w-5" />
                 </IconButton>
               </div>
+             
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
-                <span>Sync</span>
+                <span>Sync Up</span>
                 <IconButton
                   onClick={async () =>
-                    await addBackgroundTask({id:"SYNC", type:"SYNC", status:"PENDING", retries:0})
+                    await syncUp()
                   }
                 >
-                  <CloudSync className="h-5 w-5" />
+                  <CloudUpload className="h-5 w-5" />
+                </IconButton>
+              </div>
+              <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+                <span>Sync Down</span>
+                <IconButton
+                  onClick={async () =>
+                     await syncDown()
+                  }
+                >
+                  <CloudDownload className="h-5 w-5" />
                 </IconButton>
               </div>
             </div>
