@@ -54,7 +54,10 @@ function PWABadge() {
         <div className="mt-4 flex justify-center gap-3">
           {needRefresh && (
             <button
-              onClick={() => updateServiceWorker(true)}
+              onClick={() => {
+                updateServiceWorker(true)
+                close()
+              }}
               className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition"
             >
               Reload
