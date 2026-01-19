@@ -46,17 +46,19 @@ const deleteOne = async <T>(collectionName: string, id: string) => {
 //====
 
 const getSyncType = (
-  local: Date | string,
+  local: Date | string | undefined,
   cloud: Date | string | undefined
 ): Direction | undefined => {
-  console.log({ local, cloud });
   if (dayjs(local).isSame(cloud, "minute"))
     // ignore seconds
     return;
 
-  if (dayjs(local).isAfter(cloud, "minute")) {
-    return "UP";
-  } else return "DOWN";
+  if (!local) return "DOWN";
+  if (!cloud) return "UP";
+
+  if (dayjs(local).isBefore(cloud, "minute")) {
+    return "DOWN";
+  } else return "UP";
 };
 
 export const songUp = async (id: string) => {
@@ -160,7 +162,7 @@ export const fileUp = async (id: string) => {
 
 export const filedown = async (id: string) => {
   const response = await withAccessToken(({ headers }) =>
-    axios.post(`${API_ENDPOINT}/files/download/${id}`, {
+    axios.get(`${API_ENDPOINT}/files/download/${id}`, {
       headers,
       responseType: "blob", // IMPORTANT
     })
@@ -190,22 +192,29 @@ export const sync = async () => {
     COLLECTIONS.UPDATE_INFO_COLLECTION
   );
 
-  console.log({ localUpdatesInfo, cloudUpdatesInfo });
   const cloud: Record<string, UpdateInfo> = {};
+  const local: Record<string, UpdateInfo> = {};
 
   cloudUpdatesInfo.reduce((pre, cur) => {
     pre[cur.collectionName] = cur;
     return pre;
   }, cloud);
 
-  for (let localInfo of localUpdatesInfo) {
+  localUpdatesInfo.reduce((pre, cur) => {
+    pre[cur.collectionName] = cur;
+    return pre;
+  }, local);
+
+  for (let updateInfo of localUpdatesInfo.length > cloudUpdatesInfo.length
+    ? localUpdatesInfo
+    : cloudUpdatesInfo) {
     const type = getSyncType(
-      localInfo.updatedAt,
-      cloud[localInfo.collectionName]?.updatedAt
+      local[updateInfo.collectionName]?.updatedAt,
+      cloud[updateInfo.collectionName]?.updatedAt
     );
     if (!type) break;
 
-    const taskType: TaskType = `${localInfo.collectionName}_${type}`;
+    const taskType: TaskType = `${updateInfo.collectionName}_${type}`;
 
     const task: BackgroundTask = {
       id: taskType,

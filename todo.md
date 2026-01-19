@@ -140,20 +140,6 @@
 
 ##### Subtasks
 
-#### 006 | Edit/Delete Audio
-
-- Title: Edit/Delete Audio
-- Status: 📝 To Do
-- Priority: 🟢 Low
-- createdDate: 2026-01-10 12:14:24:832
-- lastModifiedDate: 2026-01-10 12:14:10:326
-- dueDate: 2026-01-10 05:30:00:000
-- Id: 006
-
-##### Tags
-
-##### Subtasks
-
 #### 011 | Make Layout like FullScreen Player
 
 - Title: Make Layout like FullScreen Player
@@ -172,6 +158,41 @@
 - #refactor
 
 ##### Subtasks
+
+### 🚀 In Progress
+
+#### 006 | Edit/Delete Audio
+
+- Title: Edit/Delete Audio
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-10 12:14:24:832
+- lastModifiedDate: 2026-01-19 05:14:55:275
+- dueDate: 2026-01-10 05:30:00:000
+- Id: 006
+- startedDate: 2026-01-19 05:14:55:275
+
+##### Tags
+
+##### Subtasks
+
+#### 013 | Bugs-3
+
+- Title: Bugs-3
+- Status: 🚀 In Progress
+- Priority: 🟢 Low
+- createdDate: 2026-01-11 11:36:04:938
+- lastModifiedDate: 2026-01-16 04:00:49:709
+- dueDate: 2026-01-11 05:30:00:000
+- Id: 013
+
+##### Tags
+
+
+##### Subtasks
+
+- [ ] loader is executing many times - use memo
+- [x] Handle song metadata image
 
 ### ✅ Done
 
@@ -286,36 +307,17 @@
 
 ##### Subtasks
 
-### 🚀 In Progress
-
-#### 013 | Bugs-3
-
-- Title: Bugs-3
-- Status: 🚀 In Progress
-- Priority: 🟢 Low
-- createdDate: 2026-01-11 11:36:04:938
-- lastModifiedDate: 2026-01-16 04:00:49:709
-- dueDate: 2026-01-11 05:30:00:000
-- Id: 013
-
-##### Tags
-
-
-##### Subtasks
-
-- [ ] loader is executing many times - use memo
-- [x] Handle song metadata image
-
 #### 014 | Authentication
 
 - Title: Authentication
-- Status: 🚀 In Progress
+- Status: ✅ Done
 - Description: Authentication
 - Priority: 🟢 Low
 - createdDate: 2026-01-16 04:01:17:031
-- lastModifiedDate: 2026-01-16 04:00:57:895
+- lastModifiedDate: 2026-01-19 05:14:41:196
 - dueDate: 2026-01-16 05:30:00:000
 - Id: 014
+- completedDate: 2026-01-19 05:14:41:195
 
 ##### Tags
 
