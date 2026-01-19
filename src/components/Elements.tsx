@@ -2,6 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 import tw from "tailwind-styled-components";
 
+
+export const MobileLayout = tw.div`h-screen w-full flex items-center justify-center p-4 bg-linear-to-br from-background via-background to-primary/5`
+export const MobileContainer = tw.div`w-full h-full max-w-sm p-6 py-20 flex flex-col justify-center items-center gap-8 bg-card rounded-2xl border border-border hover:border-border/80 transition-all duration-300 shadow-xl`
+
+
 // Note:- don't change these layout elements (carefull)
 export const Layout = tw.div`h-screen w-full overflow-hidden bg-background text-foreground`;
 export const Footer = tw.footer`glass fixed bottom-0 left-0 right-0 h-16 flex items-center justify-center px-4 z-10`;
