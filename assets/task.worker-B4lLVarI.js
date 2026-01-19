@@ -1,1 +1,0 @@
-(function(){let e;self.onmessage=e=>{let{type:i,interval:a}=e.data;switch(i){case`START`:t(a);break;case`STOP`:r();break;case`RUN_NOW`:n(a);break}};function t(t=30*1e3){e||=setInterval(n,t)}function n(e){navigator.onLine&&self.postMessage({type:`EXECUTE_TASK`,interval:e})}function r(){e&&clearInterval(e),e=void 0}})();
