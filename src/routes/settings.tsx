@@ -16,13 +16,13 @@ import {
   LogOut,
   Pencil,
   RefreshCcw,
-  Trash2
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Image } from "@/components/Avatar";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth, useSecureAction } from "@/context/AuthContext";
 import { usePlayer } from "@/context/PlayerContext";
 import { clearDataWithPrompt } from "@/services/db";
 import { syncDown, syncUp } from "@/services/syncService";
@@ -34,6 +34,7 @@ export const Route = createFileRoute("/settings")({
 
 function RouteComponent() {
   const { user, logout } = useAuth();
+  const { triggerSecureAction } = useSecureAction();
   const { pause } = usePlayer();
   const handleLogout = () => {
     pause();
@@ -86,9 +87,11 @@ function RouteComponent() {
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
                 <span>Sync Up</span>
                 <IconButton
-                  onClick={async () => {
-                    await syncUp();
-                    toast("Syncing up in backgrdound");
+                  onClick={() => {
+                    triggerSecureAction(async () => {
+                      await syncUp();
+                      toast("Syncing up in backgrdound");
+                    });
                   }}
                 >
                   <CloudUpload className="h-5 w-5" />
@@ -97,9 +100,11 @@ function RouteComponent() {
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
                 <span>Sync Down</span>
                 <IconButton
-                  onClick={async () => {
-                    await syncDown();
-                    toast("Syncing down in backgrdound");
+                  onClick={() => {
+                    triggerSecureAction(async () => {
+                      await syncDown();
+                      toast("Syncing down in backgrdound");
+                    });
                   }}
                 >
                   <CloudDownload className="h-5 w-5" />

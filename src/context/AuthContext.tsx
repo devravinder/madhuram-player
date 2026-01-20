@@ -3,7 +3,7 @@ import LoadingPage from "@/components/LoadingPage";
 import { DEFAULT_PROFILE_IMAGE } from "@/constants";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { clearData } from "@/services/db";
-import { auth, provider } from "@/services/firebaseUtil";
+import { auth, isAuthenticated, provider } from "@/services/firebaseUtil";
 import {
   getRedirectResult,
   GoogleAuthProvider,
@@ -16,6 +16,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -143,4 +144,18 @@ export const SecureComponent = ({ children }: { children: ReactNode }) => {
 
   if (isLoading) return <LoadingPage />;
   return user ? children : <LoginPage />;
+};
+
+export const useSecureAction = () => {
+  const { loginWithPopup } = useAuth();
+  const isLoggedIn = useRef( isAuthenticated());
+
+  console.log({isLoggedIn})
+
+  const triggerSecureAction = (cb: VoidFunction) => {
+    if (isLoggedIn.current) cb();
+    else loginWithPopup();
+  };
+
+  return { triggerSecureAction };
 };
