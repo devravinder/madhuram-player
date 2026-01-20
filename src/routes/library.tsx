@@ -9,14 +9,13 @@ import {
   PageMainContainer,
   PageMainSection,
 } from "@/components/Elements";
-import SongsList from "@/components/songs/SongsList";
+import { DEFAULT_PLAYLIST } from "@/constants";
 import { usePlayer } from "@/context/PlayerContext";
 import db from "@/services/db";
-import { DEFAULT_PLAYLIST } from "@/constants";
 
+import { SongListProvider } from "@/components/songs/SongListContext";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Music, Play } from "lucide-react";
-import { SongListProvider } from "@/components/songs/SongListContext";
 
 export const Route = createFileRoute("/library")({
   component: RouteComponent,
