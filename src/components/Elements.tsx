@@ -50,7 +50,7 @@ export const Nav = tw.nav`flex items-center justify-around py-2 w-full max-w-5xl
 
 export const NavLink = tw(
   Link
-)`text-muted-foreground flex flex-col items-center gap-1 px-4 py-2 rounded-lg transition-colors`;
+)`text-muted-foreground flex flex-col items-center gap-1 px-2 py-1 sm:px-4 sm:py-2 rounded-lg transition-colors`;
 
 export const Input = tw.input`w-full bg-secondary/50 border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-200`;
 
