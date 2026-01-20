@@ -149,9 +149,7 @@ export const SecureComponent = ({ children }: { children: ReactNode }) => {
 export const useSecureAction = () => {
   const { loginWithPopup } = useAuth();
   const isLoggedIn = useRef( isAuthenticated());
-
-  console.log({isLoggedIn})
-
+  
   const triggerSecureAction = (cb: VoidFunction) => {
     if (isLoggedIn.current) cb();
     else loginWithPopup();
