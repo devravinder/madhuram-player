@@ -131,6 +131,22 @@
 
 ##### Subtasks
 
+#### 017 | Local Share
+
+- Title: Local Share
+- Status: 📝 To Do
+- Priority: 🟢 Low
+- createdDate: 2026-01-20 06:31:24:499
+- lastModifiedDate: 2026-01-20 06:31:10:967
+- dueDate: 2026-01-20 05:30:00:000
+- Id: 017
+
+##### Tags
+
+
+##### Subtasks
+
+
 ### ✅ Done
 
 #### 003 | Upload Audio Feature
@@ -285,13 +301,12 @@
 - Id: 013
 - completedDate: 2026-01-19 05:41:53:450
 
-##### Tags
-
-
 ##### Subtasks
 
 - [x] loader is executing many times - use memo
 - [x] Handle song metadata image
+
+##### Tags
 
 #### 014 | Authentication
 
@@ -311,7 +326,6 @@
 - #feature
 
 ##### Subtasks
-
 
 ### 🚀 In Progress
 
@@ -342,9 +356,7 @@
 
 ##### Tags
 
-
 ##### Subtasks
-
 
 #### 016 | Bugs
 
@@ -356,13 +368,12 @@
 - dueDate: 2026-01-19 05:30:00:000
 - Id: 016
 
-##### Tags
-
-
 ##### Subtasks
 
 - [ ] small icon - on iphone background run
 - [x] on refresh, showing login screen
+
+##### Tags
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)

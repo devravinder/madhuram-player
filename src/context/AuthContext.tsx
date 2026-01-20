@@ -18,6 +18,7 @@ import { auth, provider } from "@/services/firebaseUtil";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { clearData } from "@/services/db";
 import LoadingPage from "@/components/LoadingPage";
+import { DEFAULT_PROFILE_IMAGE, DEFAULT_SONG_IMAGE } from "@/constants";
 
 type AuthenticationContextType = {
   user: User;
@@ -25,6 +26,7 @@ type AuthenticationContextType = {
   isLoading: boolean;
   loginWithRedirect: () => Promise<void>;
   loginWithPopup: () => Promise<void>;
+  demoLogin: () => void;
   logout: () => void;
 };
 
@@ -32,12 +34,23 @@ const AuthenticationContext = createContext<
   AuthenticationContextType | undefined
 >(undefined);
 
+const demoUser: User = {
+  displayName: "Music Lover",
+  email: "music.lover@madhuram.com",
+  photoURL: DEFAULT_PROFILE_IMAGE,
+  emailVerified: false,
+  isAnonymous: true,
+} as User;
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [userEmail, setUserEmail] = useLocalStorage<string>("user-email", "");
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState("");
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
+  const demoLogin = () => {
+    setUser(demoUser);
+  };
   const handleAuthResult = async (result: UserCredential) => {
     const credential = GoogleAuthProvider.credentialFromResult(result);
     setToken(credential?.accessToken || "");
@@ -52,7 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         console.log("onAuthStateChanged currentUser not present");
       }
-      setIsLoading(false)
+      setIsLoading(false);
     });
     return () => unsubscribe();
   }, []);
@@ -99,7 +112,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthenticationContext.Provider
-      value={{ user: user!, token, loginWithRedirect, loginWithPopup, logout, isLoading }}
+      value={{
+        user: user!,
+        token,
+        loginWithRedirect,
+        loginWithPopup,
+        logout,
+        demoLogin,
+        isLoading,
+      }}
     >
       {children}
     </AuthenticationContext.Provider>
@@ -111,7 +132,7 @@ export const useAuth = () => {
   const context = useContext(AuthenticationContext);
   if (context === undefined) {
     throw new Error(
-      "useAuthentication must be used within an AuthenticationContextProvider"
+      "useAuthentication must be used within an AuthenticationContextProvider",
     );
   }
   return context;
@@ -120,7 +141,6 @@ export const useAuth = () => {
 export const SecureComponent = ({ children }: { children: ReactNode }) => {
   const { user, isLoading } = useAuth();
 
-  if(isLoading)
-     return <LoadingPage/>
+  if (isLoading) return <LoadingPage />;
   return user ? children : <LoginPage />;
 };

@@ -9,3 +9,4 @@ export const RECENT_PLAYLIST_LIMIT = 10
 
 export const UNKNOWN = "Unknown";
 export const DEFAULT_SONG_IMAGE = "/default-song.jpeg";
+export const DEFAULT_PROFILE_IMAGE ="/boy.png"
