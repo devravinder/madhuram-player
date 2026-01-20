@@ -1,3 +1,9 @@
+import LoginPage from "@/components/auth/LoginPage";
+import LoadingPage from "@/components/LoadingPage";
+import { DEFAULT_PROFILE_IMAGE } from "@/constants";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { clearData } from "@/services/db";
+import { auth, provider } from "@/services/firebaseUtil";
 import {
   getRedirectResult,
   GoogleAuthProvider,
@@ -13,12 +19,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import LoginPage from "@/components/auth/LoginPage";
-import { auth, provider } from "@/services/firebaseUtil";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { clearData } from "@/services/db";
-import LoadingPage from "@/components/LoadingPage";
-import { DEFAULT_PROFILE_IMAGE, DEFAULT_SONG_IMAGE } from "@/constants";
 
 type AuthenticationContextType = {
   user: User;
