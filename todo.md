@@ -143,9 +143,7 @@
 
 ##### Tags
 
-
 ##### Subtasks
-
 
 ### ✅ Done
 
@@ -368,13 +366,30 @@
 - dueDate: 2026-01-19 05:30:00:000
 - Id: 016
 
+##### Subtasks
+
+- [ ] small icon - on iphone background run
+- [x] on refresh, showing login screen
+
+##### Tags
+
+#### 018 | Dev Tools
+
+- Title: Dev Tools
+- Status: 🚀 In Progress
+- Description: - To edit indexed DB
+- to trigger files sync
+- Priority: 🟢 Low
+- createdDate: 2026-01-20 11:51:57:868
+- lastModifiedDate: 2026-01-20 11:51:28:924
+- dueDate: 2026-01-20 05:30:00:000
+- Id: 018
+
 ##### Tags
 
 
 ##### Subtasks
 
-- [ ] small icon - on iphone background run
-- [x] on refresh, showing login screen
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)
