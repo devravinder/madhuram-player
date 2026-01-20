@@ -28,13 +28,13 @@ export const PageMainSection = tw.div`flex-1`;
 export const IconButton = tw.button`h-10 w-10 relative cursor-pointer bg-accent flex flex-row justify-center items-center rounded-lg`;
 export const HeaderIcon = tw(
   IconButton
-)`p-2 sm:p-4 h-12 w-12 sm:h-14 sm:w-14 rounded-xl cursor-default`;
+)`p-2 h-12 w-12 sm:h-14 sm:w-14 rounded-xl cursor-default`;
 
 export const HeaderTitle = tw.div`text-xl sm:text-2xl font-bold line-clamp-1`;
 export const HeaderSubTitle = tw.div`text-xs sm:text-md text-muted-foreground`;
 
 export const AvatarContainer = tw.div`text-foreground rounded-lg relative inline-flex items-center justify-center overflow-hidden select-none h-10 w-10`;
-export const Img = tw.img`h-full w-full object-contain object-center`;
+export const Img = tw.img`h-full w-full rounded-2xl object-contain object-center`;
 export const CoverImg = tw.img`h-full w-full rounded-lg object-cover`
 export const Uppercase = tw.span`font-semibold uppercase`;
 
