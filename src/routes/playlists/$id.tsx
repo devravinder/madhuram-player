@@ -14,7 +14,7 @@ import { usePlayer } from "@/context/PlayerContext";
 import db from "@/services/db";
 import { RECENT_PLAYLIST_ID } from "@/constants";
 
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { Pencil, Play } from "lucide-react";
 import NoItems from "./-components/NoItems";
 import PlayListIcon from "./-components/PlayListIcon";
@@ -32,6 +32,10 @@ export const Route = createFileRoute("/playlists/$id")({
 });
 
 function PlaylistDetails() {
+  const router = useRouter();
+  const refetch = () => {
+    router.invalidate();
+  };
   const navigate = useNavigate();
 
   const { playSong } = usePlayer();
@@ -39,7 +43,7 @@ function PlaylistDetails() {
 
   if (!playlist) return undefined;
 
-  const editable = playlist.id !== RECENT_PLAYLIST_ID
+  const editable = playlist.id !== RECENT_PLAYLIST_ID;
 
   return (
     <PageLayout>
@@ -60,17 +64,19 @@ function PlaylistDetails() {
               <Play size={18} />
               <span className="hidden sm:block">Play</span>
             </Button.Primary>
-            {editable && <Button.Secondary
-              onClick={() =>
-                navigate({
-                  to: "/playlists/edit/$id",
-                  params: { id: playlist.id },
-                })
-              }
-            >
-              <Pencil size={18} />
-              <span className="hidden sm:block"> Edit</span>
-            </Button.Secondary>}
+            {editable && (
+              <Button.Secondary
+                onClick={() =>
+                  navigate({
+                    to: "/playlists/edit/$id",
+                    params: { id: playlist.id },
+                  })
+                }
+              >
+                <Pencil size={18} />
+                <span className="hidden sm:block"> Edit</span>
+              </Button.Secondary>
+            )}
           </div>
         </div>
       </PageHeader>
@@ -78,7 +84,11 @@ function PlaylistDetails() {
         <PageMainContainer>
           <PageMainSection>
             {playlist.songIds?.length ? (
-              <SongsList songs={songs} playListId={playlist.id} />
+              <SongsList
+                refetch={refetch}
+                songs={songs}
+                playListId={playlist.id}
+              />
             ) : (
               <NoItems />
             )}

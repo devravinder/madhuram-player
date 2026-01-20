@@ -8,10 +8,12 @@ export default function SongsList({
   songs,
   showSearchBar = true,
   playListId,
+  refetch
 }: {
   songs: Song[];
   showSearchBar?: boolean;
   playListId: string;
+  refetch: VoidFunction
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("none");
@@ -121,6 +123,7 @@ export default function SongsList({
             queue={filteredAndSortedSongs}
             index={index}
             playListId={playListId}
+            refetch={refetch}
           />
         ))}
       </div>

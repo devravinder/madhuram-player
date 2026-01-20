@@ -17,7 +17,7 @@ interface PlaylistContextType {
   addToRecentlyPlayed: (songId: string, playListId?: string) => Promise<void>;
   toggleLike: (songId: string) => void;
   favourites: string[];
-  setFavourites: (ids: string[]) => void;
+  setFavourites: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const PlaylistContext = createContext<PlaylistContextType | undefined>(

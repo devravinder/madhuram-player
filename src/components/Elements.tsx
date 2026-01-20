@@ -42,7 +42,7 @@ export const Card = tw.div`bg-card text-card-foreground shadow rounded-md p-4`;
 
 export const SongItem = tw.div<{
   $active: boolean;
-}>`group flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-200  ${(
+}>`relative group flex items-center gap-4 p-3 rounded-xl cursor-pointer transition-all duration-200  ${(
   p
 ) => (p.$active ? "bg-primary/10" : "hover:bg-secondary/50")}`;
 

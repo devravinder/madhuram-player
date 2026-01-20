@@ -1,16 +1,18 @@
 import { usePlayer } from "@/context/PlayerContext";
-import type { Song } from "@/types/music";
 import { formatTime } from "@/services/timeUtil";
+import type { Song } from "@/types/music";
 import { Pause, Play } from "lucide-react";
-import Waves from "../Waves";
-import { SongItem } from "../Elements";
 import AudioImage from "../AudioImage";
+import { SongItem } from "../Elements";
+import Waves from "../Waves";
+import SongActions from "./SongActions";
 
 interface SongCardProps {
   song: Song;
   queue: Song[];
   index: number;
   playListId: string;
+  refetch: VoidFunction
 }
 
 export default function SongCard({
@@ -18,6 +20,7 @@ export default function SongCard({
   queue,
   index,
   playListId,
+  refetch
 }: SongCardProps) {
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
   const isCurrentSong = currentSong?.id === song.id;
@@ -66,6 +69,9 @@ export default function SongCard({
       <span className="text-sm text-muted-foreground w-12 text-right">
         {formatTime(song.duration)}
       </span>
+      <div className="grop absolute right-10 bg-muted py-2 px-1 rounded-lg justify-center items-center invisible group-hover:visible">
+       <SongActions refetch={refetch} allowDelete={!isCurrentSong} id={song.id}/>
+      </div>
     </SongItem>
   );
 }

@@ -19,6 +19,8 @@ export const saveFile = async (file: File, fileId?: string) => {
   return newFile;
 };
 
+export const deleteFile=(id: string)=> db[COLLECTIONS.FILES_COLLECTION].delete(id)
+
 export const getFile = (id: string) => db.files.get(id);
 
 export const deleteAllFiles = ()=> db[COLLECTIONS.FILES_COLLECTION].clear()

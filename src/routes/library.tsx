@@ -14,7 +14,7 @@ import { usePlayer } from "@/context/PlayerContext";
 import db from "@/services/db";
 import { DEFAULT_PLAYLIST } from "@/constants";
 
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Music, Play } from "lucide-react";
 
 export const Route = createFileRoute("/library")({
@@ -23,8 +23,15 @@ export const Route = createFileRoute("/library")({
 });
 
 function RouteComponent() {
+  const router = useRouter()
+  const refetch=()=>{
+    router.invalidate()
+  }
   const { playSong } = usePlayer();
   const songs = Route.useLoaderData();
+
+
+
   return (
     <PageLayout>
       <PageHeader>
@@ -52,7 +59,7 @@ function RouteComponent() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            <SongsList songs={songs} playListId={DEFAULT_PLAYLIST} />
+            <SongsList refetch={refetch} songs={songs} playListId={DEFAULT_PLAYLIST} />
           </PageMainSection>
         </PageMainContainer>
       </PageMain>
