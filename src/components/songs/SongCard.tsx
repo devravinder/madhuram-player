@@ -6,22 +6,16 @@ import AudioImage from "../AudioImage";
 import { SongItem } from "../Elements";
 import Waves from "../Waves";
 import SongActions from "./SongActions";
+import { useSongsList } from "./SongListContext";
 
 interface SongCardProps {
   song: Song;
   queue: Song[];
   index: number;
-  playListId: string;
-  refetch: VoidFunction
 }
 
-export default function SongCard({
-  song,
-  queue,
-  index,
-  playListId,
-  refetch
-}: SongCardProps) {
+export default function SongCard({ song, queue, index }: SongCardProps) {
+  const { playListId } = useSongsList();
   const { currentSong, isPlaying, playSong, togglePlay } = usePlayer();
   const isCurrentSong = currentSong?.id === song.id;
 
@@ -70,7 +64,7 @@ export default function SongCard({
         {formatTime(song.duration)}
       </span>
       <div className="grop absolute right-10 bg-muted py-2 px-1 rounded-lg justify-center items-center invisible group-hover:visible">
-       <SongActions refetch={refetch} allowDelete={!isCurrentSong} id={song.id}/>
+        <SongActions allowDelete={!isCurrentSong} id={song.id} />
       </div>
     </SongItem>
   );

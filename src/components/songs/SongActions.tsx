@@ -6,16 +6,16 @@ import type { Playlist } from "@/types/music";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Check, ListMusic, ListPlus, MoreVertical, Trash } from "lucide-react";
 import { useEffect, useState, type MouseEventHandler } from "react";
+import { useSongsList } from "./SongListContext";
 
 const SongActions = ({
   id,
   allowDelete,
-  refetch
 }: {
   id: string;
   allowDelete: boolean;
-  refetch: VoidFunction
 }) => {
+  const { refetch } = useSongsList();
   const { setFavourites } = usePlaylists();
   const handleDelete: MouseEventHandler<HTMLDivElement> = async (e) => {
     e.stopPropagation();
@@ -27,7 +27,7 @@ const SongActions = ({
     if (yes) {
       await deleteSong(id);
       setFavourites((pre) => pre.filter((i) => i !== id));
-      refetch()
+      refetch();
     }
   };
 

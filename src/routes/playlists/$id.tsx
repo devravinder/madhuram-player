@@ -9,11 +9,11 @@ import {
   PageMainContainer,
   PageMainSection,
 } from "@/components/Elements";
-import SongsList from "@/components/songs/SongsList";
+import { RECENT_PLAYLIST_ID } from "@/constants";
 import { usePlayer } from "@/context/PlayerContext";
 import db from "@/services/db";
-import { RECENT_PLAYLIST_ID } from "@/constants";
 
+import { SongListProvider } from "@/components/songs/SongListContext";
 import { createFileRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { Pencil, Play } from "lucide-react";
 import NoItems from "./-components/NoItems";
@@ -84,7 +84,7 @@ function PlaylistDetails() {
         <PageMainContainer>
           <PageMainSection>
             {playlist.songIds?.length ? (
-              <SongsList
+              <SongListProvider
                 refetch={refetch}
                 songs={songs}
                 playListId={playlist.id}

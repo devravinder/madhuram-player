@@ -16,6 +16,7 @@ import { DEFAULT_PLAYLIST } from "@/constants";
 
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Music, Play } from "lucide-react";
+import { SongListProvider } from "@/components/songs/SongListContext";
 
 export const Route = createFileRoute("/library")({
   component: RouteComponent,
@@ -59,7 +60,7 @@ function RouteComponent() {
       <PageMain>
         <PageMainContainer>
           <PageMainSection>
-            <SongsList refetch={refetch} songs={songs} playListId={DEFAULT_PLAYLIST} />
+            <SongListProvider refetch={refetch} songs={songs} playListId={DEFAULT_PLAYLIST} />
           </PageMainSection>
         </PageMainContainer>
       </PageMain>

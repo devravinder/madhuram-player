@@ -1,20 +1,12 @@
-import type { Song, SortOption } from "@/types/music";
-import SongCard from "./SongCard";
-import { useMemo, useState, type ChangeEvent } from "react";
+import type { SortOption } from "@/types/music";
 import { ArrowUpDown, Search } from "lucide-react";
+import { useMemo, useState, type ChangeEvent } from "react";
 import { Button, Input } from "../Elements";
+import SongCard from "./SongCard";
+import { useSongsList } from "./SongListContext";
 
-export default function SongsList({
-  songs,
-  showSearchBar = true,
-  playListId,
-  refetch
-}: {
-  songs: Song[];
-  showSearchBar?: boolean;
-  playListId: string;
-  refetch: VoidFunction
-}) {
+export default function SongsList() {
+  const { songs, showSearchBar = true } = useSongsList();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("none");
   const [showSortMenu, setShowSortMenu] = useState(false);
@@ -29,7 +21,7 @@ export default function SongsList({
         (song) =>
           song.title.toLowerCase().includes(query) ||
           song.artist.toLowerCase().includes(query) ||
-          song.album.toLowerCase().includes(query)
+          song.album.toLowerCase().includes(query),
       );
     }
 
@@ -44,7 +36,7 @@ export default function SongsList({
           return new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime();
         case "date-desc":
         default: // none
-          return 0
+          return 0;
       }
     });
 
@@ -122,8 +114,6 @@ export default function SongsList({
             song={song}
             queue={filteredAndSortedSongs}
             index={index}
-            playListId={playListId}
-            refetch={refetch}
           />
         ))}
       </div>
