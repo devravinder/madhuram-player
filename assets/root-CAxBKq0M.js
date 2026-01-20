@@ -1,1 +1,0 @@
-import{$ as e,Z as t,tt as n}from"./index-BC1ldwy9.js";var r=n(),i=e();function a(){let e=(0,r.c)(1),n;return e[0]===Symbol.for(`react.memo_cache_sentinel`)?(n=(0,i.jsx)(t,{}),e[0]=n):n=e[0],n}export{a as component};
