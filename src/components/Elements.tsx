@@ -25,7 +25,7 @@ export const PageMainSection = tw.div`flex-1`;
 
 // Elements
 
-export const IconButton = tw.button`h-10 w-10 relative cursor-pointer bg-accent flex flex-row justify-center items-center rounded-lg`;
+export const IconButton = tw.button`h-10 w-10 relative cursor-pointer bg-accent disabled:cursor-not-allowed flex flex-row justify-center items-center rounded-lg`;
 export const HeaderIcon = tw(
   IconButton
 )`p-2 h-12 w-12 sm:h-14 sm:w-14 rounded-xl cursor-default`;
