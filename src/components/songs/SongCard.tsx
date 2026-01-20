@@ -63,7 +63,7 @@ export default function SongCard({ song, queue, index }: SongCardProps) {
       <span className="text-sm text-muted-foreground w-12 text-right">
         {formatTime(song.duration)}
       </span>
-      <div className="grop absolute right-10 bg-muted py-2 px-1 rounded-lg justify-center items-center invisible group-hover:visible">
+      <div className="grop py-2 px-1 cursor-pointer text-muted-foreground rounded-lg justify-center items-center">
         <SongActions allowDelete={!isCurrentSong} id={song.id} />
       </div>
     </SongItem>

@@ -50,7 +50,12 @@ const SongActions = ({
           >
             <Trash size={20} /> Delete
           </DropdownMenu.Item>
-          <PlaylistMenu id={id} />
+          <DropdownMenu.Item
+            className="outline-none "
+            onClick={(e) => e.stopPropagation()}
+          >
+            <PlaylistMenu id={id} />
+          </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
@@ -93,12 +98,11 @@ const PlaylistMenu = ({ id }: { id: string }) => {
       )}
 
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="glass flex flex-col gap-2 px-4 py-2  mt-4 rounded-lg w-52">
+        <DropdownMenu.Content className="glass flex flex-col gap-2 px-4 py-2 mr-8  mt-4 rounded-lg w-52 z-50">
           {playlists.map((p, i) => (
             <DropdownMenu.Item
               key={p.id}
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 toggleSong(p, i);
               }}
               className="outline-none text-muted-foreground flex flex-row items-center justify-between gap-2 px-4 py-2 rounded-md hover:bg-secondary/50 cursor-pointer transition-all duration-200 "
