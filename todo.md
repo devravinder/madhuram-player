@@ -325,22 +325,23 @@
 
 ##### Subtasks
 
-### 🚀 In Progress
-
 #### 006 | Edit/Delete Audio
 
 - Title: Edit/Delete Audio
-- Status: 🚀 In Progress
+- Status: ✅ Done
 - Priority: 🟢 Low
 - createdDate: 2026-01-10 12:14:24:832
-- lastModifiedDate: 2026-01-19 05:14:55:275
+- lastModifiedDate: 2026-01-22 10:15:29:396
 - dueDate: 2026-01-10 05:30:00:000
 - Id: 006
 - startedDate: 2026-01-19 05:14:55:275
+- completedDate: 2026-01-22 10:15:29:396
 
 ##### Tags
 
 ##### Subtasks
+
+### 🚀 In Progress
 
 #### 015 | Play via Bluetooth
 
@@ -362,22 +363,37 @@
 - Status: 🚀 In Progress
 - Priority: 🟢 Low
 - createdDate: 2026-01-19 12:14:23:214
-- lastModifiedDate: 2026-01-20 09:58:11:797
+- lastModifiedDate: 2026-01-22 10:15:22:909
 - dueDate: 2026-01-19 05:30:00:000
 - Id: 016
 
 ##### Subtasks
 
-- [ ] small icon - on iphone background run
+- [x] small icon - on iphone background run
 - [x] on refresh, showing login screen
+- [ ] On Mobile Audio is not coming after sync down
 
 ##### Tags
 
-#### 018 | Dev Tools
+#### 019 | Store every action as Events
 
-- Title: Dev Tools
+- Title: Store every action as Events
 - Status: 🚀 In Progress
-- Description: - To edit indexed DB
+- Priority: 🟢 Low
+- createdDate: 2026-01-22 10:15:58:076
+- lastModifiedDate: 2026-01-24 08:32:02:796
+- dueDate: 2026-01-22 05:30:00:000
+- Id: 019
+- startedDate: 2026-01-24 08:32:02:796
+
+##### Tags
+
+##### Subtasks
+
+### undefined
+
+#### 018 | undefined
+
 - to trigger files sync
 - Priority: 🟢 Low
 - createdDate: 2026-01-20 11:51:57:868
@@ -387,9 +403,7 @@
 
 ##### Tags
 
-
 ##### Subtasks
-
 
 ---
 To view this file in Kanban dashboard open this file(file parent folder) with [Task Manager](https://todo.paravartech.com/)

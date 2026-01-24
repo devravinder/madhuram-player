@@ -6,20 +6,18 @@ How to use:
 
 paste the below code in dev console
 - then call
-  updateRecord({ retries:0 })
+  updateRecord("backgroundTasks","060ea377.mp3",{ retries:0, status:"PENDING" })
 
-- Note: chage STORE_NAME, ID & VERSION as needed
+- Note: chage STORE_NAME,VERSION as needed
 
 Future Goal: Implement Devtools
 
 */
 
-const DB_NAME = "madhuram";
-let STORE_NAME = "backgroundTasks";
-let ID = "50c5c65b.mp3";
-let VERSION = 50; // see from dev tools ( DB version )
+var DB_NAME = "madhuram";
+var VERSION = 50; // see from dev tools ( DB version )
 
-function updateRecord(updatedData) {
+function updateRecord(COLLECTION_NAME, ID, updatedData) {
   const request = indexedDB.open(DB_NAME, VERSION);
 
   request.onerror = () => {
@@ -29,8 +27,8 @@ function updateRecord(updatedData) {
   request.onsuccess = () => {
     const db = request.result;
 
-    const tx = db.transaction(STORE_NAME, "readwrite");
-    const store = tx.objectStore(STORE_NAME);
+    const tx = db.transaction(COLLECTION_NAME, "readwrite");
+    const store = tx.objectStore(COLLECTION_NAME);
 
     // Get existing record
     const getReq = store.get(ID);
@@ -63,3 +61,11 @@ function updateRecord(updatedData) {
     };
   };
 }
+
+
+/* 
+updateRecord("backgroundTasks","060ea377.mp3",{ retries:0, status:"PENDING" })
+
+
+
+*/
