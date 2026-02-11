@@ -11,6 +11,7 @@ import {
   PageMainSection,
 } from "@/components/Elements";
 import {
+  BugPlay,
   CloudDownload,
   CloudUpload,
   LogOut,
@@ -27,13 +28,22 @@ import { usePlayer } from "@/context/PlayerContext";
 import { clearDataWithPrompt } from "@/services/db";
 import { syncDown, syncUp } from "@/services/syncService";
 import { createFileRoute } from "@tanstack/react-router";
+import { useDevTools } from "@/context/DevToolContext";
+import { useRef } from "react";
+import { isDevEnv, SUPPORT_EMAIL } from "@/constants";
 
 export const Route = createFileRoute("/settings")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { toggleDevTools } = useDevTools();
   const { user, logout } = useAuth();
+  const allowDebugRef = useRef(
+    user?.email === SUPPORT_EMAIL ||
+      isDevEnv ||
+      window.location.hash.includes("debug"),
+  );
   const { triggerSecureAction } = useSecureAction();
   const { pause } = usePlayer();
   const handleLogout = () => {
@@ -70,6 +80,14 @@ function RouteComponent() {
         <PageMainContainer>
           <PageMainSection>
             <div className="flex flex-col gap-2">
+              {allowDebugRef && (
+                <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
+                  <span>Dev Tools</span>
+                  <IconButton onClick={toggleDevTools}>
+                    <BugPlay className="h-5 w-5" />
+                  </IconButton>
+                </div>
+              )}
               <div className="border border-card rounded-lg p-2 flex flex-row items-center justify-between gap-2">
                 <span>Change Theme</span> <ThemeToggle />
               </div>
