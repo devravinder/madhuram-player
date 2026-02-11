@@ -1,4 +1,4 @@
-import { getAnalytics } from "firebase/analytics";
+// import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
@@ -17,7 +17,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-getAnalytics(app);
+// getAnalytics(app);
 export const auth = getAuth(app);
 
 export const isAuthenticated = () => Boolean(auth.currentUser);
