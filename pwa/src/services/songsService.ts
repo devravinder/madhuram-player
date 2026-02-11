@@ -2,6 +2,7 @@ import type { Playlist, Song } from "@/types/music";
 import db, { COLLECTIONS } from "./db";
 import { deleteFile } from "./filesService";
 import { getPlaylists, updatePlaylist } from "./playlistService";
+import { getId } from "./util";
 
 export const getSongs = () => db.songs.toArray();
 
@@ -17,7 +18,7 @@ export const getPlayListSongs = async (playlist?: Playlist) => {
 export const addSong = async (song: Omit<Song, "id">, id?: string) => {
   const newSong: Song = {
     ...song,
-    id: id || `${crypto.randomUUID().slice(0, 8)}`,
+    id: id || `${getId()}`,
     addedAt: new Date(),
   };
   await db.songs.add(newSong);

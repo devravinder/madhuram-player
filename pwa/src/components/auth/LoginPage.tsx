@@ -5,7 +5,7 @@ import { AvatarContainer, Img, MobileContainer, MobileLayout } from "../Elements
 import { Google } from "../icons/Google";
 
 export function LoginPage() {
-  const { loginWithPopup: login, demoLogin } = useAuth();
+  const { loginWithPopup, loginWithRedirect:login, demoLogin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 

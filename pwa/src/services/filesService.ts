@@ -1,5 +1,6 @@
 import type { AppFile } from "@/types/music";
 import db, { COLLECTIONS } from "./db";
+import { getId } from "./util";
 
 const getFileExtension = (file: File): string => {
   return file.name.split(".").pop()?.toLowerCase() || "";
@@ -8,7 +9,7 @@ const getFileExtension = (file: File): string => {
 export const saveFile = async (file: File, fileId?: string) => {
   const ext = getFileExtension(file);
   const id =
-    fileId || `${crypto.randomUUID().slice(0, 8)}${ext ? "." + ext : ""}`;
+    fileId || `${getId()}${ext ? "." + ext : ""}`;
 
   const newFile: AppFile = {
     id,

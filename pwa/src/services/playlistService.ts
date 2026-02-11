@@ -1,5 +1,6 @@
 import type { Playlist } from "@/types/music";
 import db, { COLLECTIONS } from "./db";
+import { getId } from "./util";
 
 export const createPlaylist = async (
   playlist: Omit<Playlist, "id" | "createdAt" | "updatedAt">,
@@ -7,7 +8,7 @@ export const createPlaylist = async (
 ): Promise<Playlist> => {
   const newPlaylist: Playlist = {
     ...playlist,
-    id: id || `${crypto.randomUUID().slice(0, 8)}`,
+    id: id || `${getId()}`,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
