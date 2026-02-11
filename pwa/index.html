@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Madhuram</title>
   <script type="module">
-    if (import.meta.env.VITE_APP_ENV === "DEV" || window.location.search.includes('debug=true')) {
+    if (import.meta.env.MODE === "development" || window.location.search.includes('debug=true')) {
       import('eruda').then((eruda) => eruda.default.init())
     }
   </script>
