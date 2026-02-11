@@ -1,11 +1,16 @@
 import { useAuth } from "@/context/AuthContext";
 import { Music } from "lucide-react";
 import React, { useState } from "react";
-import { AvatarContainer, Img, MobileContainer, MobileLayout } from "../Elements";
+import {
+  AvatarContainer,
+  Img,
+  MobileContainer,
+  MobileLayout,
+} from "../Elements";
 import { Google } from "../icons/Google";
 
 export function LoginPage() {
-  const { loginWithPopup, loginWithRedirect:login, demoLogin } = useAuth();
+  const { loginWithPopup: login, demoLogin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -40,18 +45,28 @@ export function LoginPage() {
         {error && <p className="text-sm text-destructive">{error}</p>}
 
         <button
-           onClick={handleLogin}
+          onClick={handleLogin}
           className="bg-accent cursor-pointer rounded-lg p-2 w-full flex flex-row gap-2 items-center justify-center"
           disabled={isLoading}
         >
-          <Google className="h-5 w-5" /> {isLoading ? <span>Loggin in with google</span> : <span>Loginin with google</span>}
+          <Google className="h-5 w-5" />{" "}
+          {isLoading ? (
+            <span>Loggin in with google</span>
+          ) : (
+            <span>Loginin with google</span>
+          )}
         </button>
         <button
-           onClick={demoLogin}
+          onClick={demoLogin}
           className="bg-accent cursor-pointer rounded-lg p-2 w-full flex flex-row gap-2 items-center justify-center"
           disabled={isLoading}
         >
-          <Music className="h-5 w-5" /> {isLoading ? <span>Logging in</span> : <span>Just try without login</span>}
+          <Music className="h-5 w-5" />{" "}
+          {isLoading ? (
+            <span>Logging in</span>
+          ) : (
+            <span>Just try without login</span>
+          )}
         </button>
 
         {/* Footer */}
