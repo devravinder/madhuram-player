@@ -1,3 +1,4 @@
+import type { FileMeta } from "../services/FilesService.js";
 import { FirestoreService } from "./FireStoreService.js";
 
 // DbService.ts
@@ -10,4 +11,4 @@ export interface DbService<T> {
 }
 
 
-// export const dbService: DbService<FileMeta> = new FirestoreService()
+export const dbService: DbService<FileMeta> = new FirestoreService("files")

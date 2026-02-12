@@ -1,18 +1,18 @@
 import express, { Router } from "express";
-import { FileService } from "./FilesService.js";
-import { NoFilePayloadError } from "./Errors.js";
-import uploadMiddleware, { type FileRequest } from "./uploadMiddleware.js";
+import { FileService } from "../services/FilesService.js";
+import { NoFilePayloadError } from "../Errors.js";
+import uploadMiddleware, { type FileRequest } from "../uploadMiddleware.js";
 import * as fs from "fs";
 
 const router: Router = express();
 
-const  safeName = (filename: string)=>filename.replace(/[^\w.-]/g, "_");
+const safeName = (filename: string) => filename.replace(/[^\w.-]/g, "_");
 
 router.post(
   ["/upload", "/upload/:id"],
   uploadMiddleware,
   async (req: FileRequest, res) => {
-    const id = req.params.id;
+    const id = req.params.id as string;
 
     const file = req.files?.["file"]; // Match the key from frontend FormData
 
@@ -26,7 +26,7 @@ router.post(
     };
     const result = await FileService.saveFile(appFile, id);
     res.json(result);
-  }
+  },
 );
 
 router.get("/download/:id", async (req, res) => {
@@ -43,7 +43,7 @@ router.get("/content/:id", async (req, res) => {
   res.send(content);
 });
 
-router.put("/update/:id", uploadMiddleware, async (req:FileRequest, res) => {
+router.put("/update/:id", uploadMiddleware, async (req: FileRequest, res) => {
   try {
     const file = req.files?.["file"]; // Match the key from frontend FormData
 
@@ -55,7 +55,10 @@ router.put("/update/:id", uploadMiddleware, async (req:FileRequest, res) => {
       size: fs.statSync(file.filepath).size,
       name: safeName(file.filename),
     };
-    const result = await FileService.updateFile(req.params.id!, appFile);
+    const result = await FileService.updateFile(
+      req.params.id! as string,
+      appFile,
+    );
     res.json(result);
   } catch (err: any) {
     res.status(400).json({ error: err.message });

@@ -1,8 +1,8 @@
 // authMiddleware.ts
-import type { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import admin from "firebase-admin";
-import { FirebaseConfig } from "./FirebaseConfig.js";
 import { AuthorizationError } from "./Errors.js";
+import { FirebaseConfig } from "./FirebaseConfig.js";
 
 export interface AuthRequest extends Request {
   user?: admin.auth.DecodedIdToken;

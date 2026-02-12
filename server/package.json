@@ -4,10 +4,25 @@
   "description": "",
   "main": "dist/server.js",
   "type": "module",
+  "config": {
+    "source": "firebase-src",
+    "firebase_source": "firebase-src",
+    "firebase_env": ".env.firebase"
+  },
   "scripts": {
     "build": "rm -rf dist && tsc -p tsconfig.json",
-    "dev": "tsx --no-warnings --env-file=.env --watch src/server.ts",
-    "start": "node --no-warnings --env-file=.env dist/server.js"
+    "dev": "tsx --no-warnings --env-file=.env --watch src/startLocal.ts",
+    "start": "node --no-warnings --env-file=.env dist/startLocal.js",
+    "remove:firebase_folder": "rm -rf $npm_package_config_firebase_source",
+    "create:firebase_folder": "mkdir -p $npm_package_config_firebase_source",
+    "copy:firebase-files": "cp package.json $npm_package_config_firebase_source && cp -r dist $npm_package_config_firebase_source",
+    "copy:local:envs": "cp $npm_package_config_firebase_env $npm_package_config_firebase_source/.env",
+    "prestart:firebase:functions": "npm run remove:firebase_folder && npm run create:firebase_folder && npm run build && npm run copy:firebase-files && npm run copy:local:envs",
+    "deploy:functions": "npm run prestart:firebase:functions && firebase deploy --only functions"
+   
+  },
+  "engines": {
+    "node": "24"
   },
   "keywords": [],
   "author": "",

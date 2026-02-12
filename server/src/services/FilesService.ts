@@ -1,9 +1,9 @@
 import path from "node:path";
-import { MAX_FILE_SIZE, MAX_TOTAL_SIZE } from "./constants.js";
+import { MAX_FILE_SIZE, MAX_TOTAL_SIZE } from "../constants.js";
 import { randomUUID } from "node:crypto";
-import { fileStorageService } from "./file-stores/FileStorageService.js";
-import { MaxPayloadError, NotFoundError } from "./Errors.js";
-import { dbService } from "./db/DbService.js";
+import { fileStorageService } from "../file-store/FileStorageService.js";
+import { MaxPayloadError, NotFoundError } from "../Errors.js";
+import { dbService } from "../db/DbService.js";
 export interface FileMeta {
     id: string;
     name: string;
