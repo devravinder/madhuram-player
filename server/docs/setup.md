@@ -64,6 +64,7 @@
        "engines": {
             "node": "24"
          },
+        "main": "dist/startFirebase.js"
      ```
 
 6. update the config
@@ -80,5 +81,7 @@
 8. Deploy
 
     ```bash
-    pnpm run deploy:functions
+      pnpm run deploy:functions
     ```
+
+    if deployment is successfull, it'll show api(function) url in the console eg: [api](https://us-central1-music-player-c5127.cloudfunctions.net/app)

@@ -2,7 +2,7 @@
   "name": "music-server",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/server.js",
+  "main": "dist/startFirebase.js",
   "type": "module",
   "config": {
     "source": "firebase-src",

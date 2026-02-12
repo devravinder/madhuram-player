@@ -13,5 +13,11 @@
       "predeploy": ["npm run prestart:firebase:functions"],
       "source": "firebase-src"
     }
-  ]
+  ],
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
 }
