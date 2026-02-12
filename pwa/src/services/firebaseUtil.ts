@@ -35,7 +35,7 @@ export const withAccessToken = async <T>(
   let token: string | undefined = "";
 
   try {
-    token = await user?.getIdToken(true);
+    token = await user?.getIdToken();
     if (!token) {
       throw new Error("Not authenticated");
     }
