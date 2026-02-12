@@ -10,6 +10,8 @@ export const RECENT_PLAYLIST_LIMIT = 10
 export const UNKNOWN = "Unknown";
 export const DEFAULT_SONG_IMAGE = "/default-song.jpeg";
 export const DEFAULT_PROFILE_IMAGE ="/boy.png"
+export const FAVICON = "/favicon.svg";
+export const IMAGE_512 = "/512.png";
 
 export const SUPPORT_EMAIL= "developer.ravinder.reddy@gmail.com"
 export const isDevEnv = import.meta.env.MODE === "development"

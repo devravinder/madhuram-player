@@ -10,6 +10,7 @@ import React, {
 } from "react";
 import { usePlaylists } from "./PlaylistContext";
 import { getFile } from "@/services/filesService";
+import { IMAGE_512, UNKNOWN } from "@/constants";
 
 interface PlayerContextType {
   // State
@@ -39,6 +40,38 @@ interface PlayerContextType {
   cancelSleepTimer: () => void;
 }
 
+const mediaFileMetaData = (song: Song, file: File) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: song?.title || UNKNOWN,
+      artist: song?.artist || UNKNOWN,
+      // not working as expected
+      artwork: [{ src: reader.result as string, type: file.type }],
+    });
+  };
+  reader.readAsDataURL(file);
+};
+
+const mediaStaticMetaData = (song: Song) => {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: song?.title || UNKNOWN,
+    artist: song?.artist || UNKNOWN,
+    artwork: [
+      {
+        src: IMAGE_512,
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  });
+};
+
+async function setMediaSession(song: Song, coverImage?: File) {
+  if (!("mediaSession" in navigator)) return;
+  if (coverImage) mediaFileMetaData(song, coverImage);
+  else mediaStaticMetaData(song);
+}
 const PlayerContext = createContext<PlayerContextType | undefined>(undefined);
 
 export function PlayerProvider({ children }: { children: React.ReactNode }) {
@@ -53,7 +86,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   const [duration, setDuration] = useState(0);
   const [repeatMode, setRepeatMode] = useLocalStorage<RepeatMode>(
     "repeatMode",
-    "off"
+    "off",
   );
   const [shuffle, setShuffle] = useLocalStorage("shuffle", false);
   const [queue, setQueue] = useState<Song[]>([]);
@@ -76,25 +109,27 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       if (!audioRef.current) return;
 
       setCurrentSong(song);
-      getFile(song.audioId)
-      .then(audioFile=>{
+      getFile(song.audioId).then((audioFile) => {
         if (!audioRef.current || !audioFile) return;
 
-        if(audioRef.current.src) // clear previous
-        URL.revokeObjectURL(audioRef.current.src);
+        if (audioRef.current.src)
+          // clear previous
+          URL.revokeObjectURL(audioRef.current.src);
 
-        audioRef.current.src = URL.createObjectURL(audioFile.data);
+        const coverImage = URL.createObjectURL(audioFile.data);
+
+        audioRef.current.src = coverImage;
         audioRef.current
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-          addToRecentlyPlayed(song.id, playListId);
-        })
-        .catch((err) => console.error("Error playing audio:", err));
-      })
-
+          .play()
+          .then(() => {
+            setMediaSession(song);
+            setIsPlaying(true);
+            addToRecentlyPlayed(song.id, playListId);
+          })
+          .catch((err) => console.error("Error playing audio:", err));
+      });
     },
-    [addToRecentlyPlayed]
+    [addToRecentlyPlayed],
   );
 
   const handleSongEnd = useCallback(() => {
@@ -179,13 +214,13 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const playSong = useCallback(
-    (queue: Song[], songIndex:number, playListId?: string) => {
+    (queue: Song[], songIndex: number, playListId?: string) => {
       if (queue.length === 0) return;
       handleQueueChange(queue);
       setQueueIndex(songIndex);
       loadAndPlay(queue[songIndex], playListId);
     },
-    [loadAndPlay, handleQueueChange]
+    [loadAndPlay, handleQueueChange],
   );
 
   const togglePlay = useCallback(() => {
@@ -249,7 +284,7 @@ export function PlayerProvider({ children }: { children: React.ReactNode }) {
       setVolumeState(volume);
       volumeRef.current = volume;
     },
-    [setVolumeState]
+    [setVolumeState],
   );
 
   const toggleRepeat = useCallback(() => {
